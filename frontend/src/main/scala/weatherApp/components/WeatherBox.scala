@@ -64,7 +64,7 @@ object WeatherBox {
           )
           <.div(
             ^.cls := "weather-box",
-            ^.maxWidth := "400px",
+            ^.maxWidth := "800px",
             ^.display := "flex",
             ^.border := "1px solid",
             ^.color := "black",
@@ -107,7 +107,7 @@ object WeatherBox {
                   "more",
                   navigateToCityPage(AppRouter.CityRoute(weather.name.toLowerCase(), weather.id))
                 )
-              ),
+              ),<.div(VoteComp()),
               userInfoOption.map(userInfo =>
                 <.div(
                   ^.display := "flex",

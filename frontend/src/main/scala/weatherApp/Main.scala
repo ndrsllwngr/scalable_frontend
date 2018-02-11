@@ -1,13 +1,14 @@
 package weatherApp
 
+import japgolly.scalajs.react.WebpackRequire.React
 import org.scalajs.dom
-import scala.scalajs.js.{JSApp}
+
+import scala.scalajs.js.JSApp
 import scalajs.js
 import scalajs.js.annotation._
-import japgolly.scalajs.react.WebpackRequire
+import japgolly.scalajs.react.{ReactDOM, WebpackRequire}
 import japgolly.scalajs.react.vdom.html_<^._
-
-import weatherApp.router.{AppRouter}
+import weatherApp.router.AppRouter
 
 object Main extends JSApp {
   @JSImport("normalize.css", JSImport.Namespace)
@@ -28,8 +29,8 @@ object Main extends JSApp {
   object WeatherIconsWind extends js.Any
 
   def require(): Unit = {
-    WebpackRequire.React
-    WebpackRequire.ReactDOM
+    React
+    ReactDOM
     Normalize
     CSS
     WeatherIcons
