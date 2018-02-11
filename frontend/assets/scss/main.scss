@@ -1,0 +1,10 @@
+//Theme scss
+@import "theme/main";
+
+
+//components
+@import "components/WeatherBox";
+@import "components/LoadingIndicator";
+
+//pages
+@import "pages/WeatherPage";
