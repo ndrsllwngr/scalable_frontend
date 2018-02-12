@@ -13,26 +13,29 @@ object VoteComp {
 
   final class Backend($: BackendScope[Unit, State]) {
     def render(s: State): VdomElement =
-      <.div(
-        ^.cls := "container-fluid",
         <.div(
-            ^.cls := "row",
+            ^.cls := "d-flex flex-row align-items-center",
           <.div(
-            ^.cls := "col",
-            <.img(
-              ^.alt := "upvote",
-              ^.src := "./images/ic_arrow_upward_black_24px.svg"
+            ^.cls := "p-2 align-self-center",
+            <.button(
+              ^.cls := "btn btn-default",
+              <.img(
+                ^.alt := "upvote",
+                ^.src := "./images/ic_arrow_upward_black_24px.svg"
+              )
             )),
           <.div(
-            ^.cls := "col",
+            ^.cls := "p-2 align-self-center",
             "000"),
           <.div(
-            ^.cls := "col",
-            <.img(
-              ^.alt := "downvote",
-              ^.src := "./images/ic_arrow_downward_black_24px.svg"
+            ^.cls := "p-2 align-self-center",
+            <.button(
+              ^.cls := "btn btn-default",
+              <.img(
+                ^.alt := "downvote",
+                ^.src := "./images/ic_arrow_downward_black_24px.svg"
+              )
             ))
-        )
       )
   }
 
