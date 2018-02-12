@@ -25,8 +25,8 @@ object VoteComp {
               )
             )),
           <.div(
-            ^.cls := "p-2 align-self-center",
-            "000"),
+            ^.cls := "p-2 align-self-center text-success",
+            "+3"),
           <.div(
             ^.cls := "align-self-center",
             <.button(
