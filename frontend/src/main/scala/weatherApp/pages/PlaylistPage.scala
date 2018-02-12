@@ -143,7 +143,8 @@ object PlaylistPage {
           select
         ),
         <.div(
-          PlaylistBox(PlaylistBox.Props(Some(SongResponse(1,List(Song(864,"streamingService!","song!","artist!","album!","albumcoverUrl!"),Song(865,"streamingService!","song2!","artist2!","album2!","albumcoverUrl2!")))), p.ctl))
+          PlaylistBox(PlaylistBox.Props(Some(SongResponse(1,List(Song(864,"streamingService!","Fineshrine","Purity Ring","Shrines","https://i.scdn.co/image/0beb85a35a4ef3242432207f1a323151db693bce"),
+            Song(865,"streamingService!","Howling","RY X","Dawn","https://i.scdn.co/image/df4dd74119df85d052c0a3423cadca459a8331c1")))), p.ctl))
         )
       )
     }

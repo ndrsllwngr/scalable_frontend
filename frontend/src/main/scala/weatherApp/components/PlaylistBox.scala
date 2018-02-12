@@ -54,52 +54,35 @@ object PlaylistBox {
           song.song.map(x => {
             val name = x.name
             val artist = x.artist
-            <.div(
-              ^.cls := "weather-box",
+            val albumCoverUrl = x.albumCoverUrl
+            <.div( // Playlist Row
+              ^.cls := "d-flex flex-row justify-content-start p-2",
               ^.maxWidth := "800px",
-              ^.display := "flex",
-              ^.border := "1px solid",
+              ^.borderWidth := "1px 0 0 0",
+              ^.borderStyle := "solid",
               ^.color := "black",
               <.div(
-                ^.margin := "5px",
-                ^.display := "flex",
-                ^.flexDirection := "row",
-                ^.justifyContent := "space-between",
-                ^.width := "100%",
-                ^.fontSize := 15.px,
+                ^.cls := "d-flex flex-row justify-content-start mr-auto",
                 <.div(
-                  <.div(name)
-                ),
-                <.div(
-                  <.div(artist)
-                ),
-                <.div(
-                  ^.display := "flex",
-                  ^.justifyContent := "center",
-                  ^.alignItems := "center",
-                  <.div(
-                    ^.className := "",
-                    ^.marginRight := "10px",
-                    ^.fontSize := 25.px,
-                    ^.fontWeight := "100"
-                  ),
-                  <.div(
+                  ^.cls := "",// AlbumCover
+                  <.img(
+                    ^.cls := "",
+                    ^.maxWidth := 100.px,
+                    ^.src := albumCoverUrl
                   )
-                )
-              ),
-              <.div(
-                ^.display := "flex",
-                ^.flexDirection := "row",
-                ^.justifyContent := "center",
-                ^.alignItems := "center",
-                ^.padding := 5.px,
-                WeatherBoxBtn(
-                  WeatherBoxBtn.Props(
-                    "more",
-                    navigateToCityPage(AppRouter.CityRoute("munich", 2867714))
-                  )
-                ), <.div(VoteComp())
-              )
+                ),
+                <.div( // Song & Artist
+                  ^.cls := "d-flex align-items-center p-2",
+                  <.div(
+                    ^.cls := "h3",
+                    name,
+                    <.br,
+                  <.div(
+                    ^.cls := "h6 mb-0 text-muted",
+                    artist)
+                ))),
+              <.div(^.cls := "d-flex align-items-center",
+                VoteComp())
             )
           }).toVdomArray
 
