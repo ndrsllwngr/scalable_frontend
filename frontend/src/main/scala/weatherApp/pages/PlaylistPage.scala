@@ -143,7 +143,7 @@ object PlaylistPage {
           select
         ),
         <.div(
-          PlaylistBox(PlaylistBox.Props(Some(SongResponse(1,List(Song(864,"streamingService!","name!","artist!","album!","albumcoverUrl!"),Song(864,"streamingService!","name!","artist!","album!","albumcoverUrl!")))), p.ctl))
+          PlaylistBox(PlaylistBox.Props(Some(SongResponse(1,List(Song(864,"streamingService!","song!","artist!","album!","albumcoverUrl!"),Song(865,"streamingService!","song2!","artist2!","album2!","albumcoverUrl2!")))), p.ctl))
         )
       )
     }
