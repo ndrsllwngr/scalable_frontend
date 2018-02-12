@@ -14,7 +14,7 @@ import io.circe.generic.auto._
 import io.circe.parser.decode
 import diode.react.ModelProxy
 import weatherApp.models.WeatherResponse
-import weatherApp.components.{PlaylistBox, Select, WeatherBox, PlaylistBox}
+import weatherApp.components.{PlaylistBox, Select, WeatherBox}
 import weatherApp.config.Config
 import weatherApp.router.AppRouter
 import weatherApp.diode.{AppState, GetWeatherSuggestions, SelectWeather}
