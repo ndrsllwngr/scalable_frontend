@@ -15,7 +15,7 @@ import weatherApp.diode.{AddCityToFavs, AppCircuit, RemoveCityFromFavs}
 object PlaylistBox {
 
   case class Props (
-                     song: Option[SongResponse] = Some(SongResponse(1,List(Song(864,"streamingService!","name!","artist!","album!","albumcoverUrl!"),Song(864,"streamingService!","name!","artist!","album!","albumcoverUrl!")))),
+                     song: Option[SongResponse] = None,
                      ctl: RouterCtl[AppRouter.Page]
                    )
 

@@ -13,7 +13,7 @@ import japgolly.scalajs.react.extra.router.RouterCtl
 import io.circe.generic.auto._
 import io.circe.parser.decode
 import diode.react.ModelProxy
-import weatherApp.models.WeatherResponse
+import weatherApp.models.{Song, SongResponse, WeatherResponse}
 import weatherApp.components.{PlaylistBox, Select, WeatherBox}
 import weatherApp.config.Config
 import weatherApp.router.AppRouter
@@ -143,7 +143,7 @@ object PlaylistPage {
           select
         ),
         <.div(
-          PlaylistBox(PlaylistBox.Props(None, p.ctl))
+          PlaylistBox(PlaylistBox.Props(Some(SongResponse(1,List(Song(864,"streamingService!","name!","artist!","album!","albumcoverUrl!"),Song(864,"streamingService!","name!","artist!","album!","albumcoverUrl!")))), p.ctl))
         )
       )
     }
