@@ -25,10 +25,12 @@ object HeaderNav {
     val userInfoOpt = proxy.userInfo
     val homeLink = props.ctl.link(AppRouter.HomeRoute)
     val favLink = props.ctl.link(AppRouter.FavoritesRoute)
+    val roomLink = props.ctl.link(AppRouter.RoomRoute)
 
     <.div(
       ^.display := "flex",
       NavLink(homeLink("Home")),
+      NavLink(roomLink("Room")),
       NavLink(favLink("Favorites").when(userInfoOpt.isDefined))
     )
   })

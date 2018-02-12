@@ -4,13 +4,14 @@ import japgolly.scalajs.react.extra.router._
 import japgolly.scalajs.react.vdom.html_<^._
 import weatherApp.components.Layout
 import weatherApp.diode.AppCircuit
-import weatherApp.pages.{CityPage, WeatherPage, FavoritesPage}
+import weatherApp.pages.{CityPage, FavoritesPage, RoomPage, WeatherPage}
 
 object AppRouter {
   sealed trait Page
   case object HomeRoute extends Page
   case class CityRoute(name: String, id: Int) extends Page
   case object FavoritesRoute extends Page
+  case object RoomRoute extends Page
 
   val connection = AppCircuit.connect(_.state)
 
@@ -19,6 +20,7 @@ object AppRouter {
     (trimSlashes
       | staticRoute(root, HomeRoute) ~> renderR(renderWeatherPage)
       | staticRoute("favorites", FavoritesRoute) ~> renderR(renderFavoritesPage)
+      | staticRoute("rooms", RoomRoute) ~> renderR(renderRoomPage)
       | dynamicRouteCT(("city" / string(".*") / int).caseClass[CityRoute]) ~> dynRenderR(renderCityPage)
     )
       .notFound(redirectToPage(HomeRoute)(Redirect.Replace))
@@ -27,6 +29,10 @@ object AppRouter {
 
   def renderWeatherPage(ctl: RouterCtl[Page]) = {
     connection(proxy => WeatherPage.Component(WeatherPage.Props(proxy, ctl)))
+  }
+
+  def renderRoomPage(ctl: RouterCtl[Page]) = {
+    connection(proxy => RoomPage.Component(RoomPage.Props(proxy, ctl)))
   }
 
   def renderCityPage(p: CityRoute, ctl: RouterCtl[Page]) = {
