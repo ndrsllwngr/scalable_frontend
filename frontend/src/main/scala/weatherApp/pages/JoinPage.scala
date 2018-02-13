@@ -12,7 +12,7 @@ import weatherApp.router.AppRouter
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 
-object RoomPage {
+object JoinPage {
 
   @js.native
   @JSImport("lodash.throttle", JSImport.Default)
@@ -25,10 +25,10 @@ object RoomPage {
                      ctl: RouterCtl[AppRouter.Page]
                    )
 
-  case class RoomCodeState( var input : String)
+  case class JoinState( var input : String)
 
 
-  class Backend(bs: BackendScope[Props, RoomCodeState]) {
+  class Backend(bs: BackendScope[Props, JoinState]) {
     val host: String = Config.AppConfig.apiHost
 
 
@@ -39,16 +39,7 @@ object RoomPage {
         Callback.alert("Room Code may not be empty")
     }
 
-
-    def createRoom(input: String) : Callback = {
-      //Callback.alert(s"The Create button was pressed! [$input]")
-      if(!input.isEmpty)
-        navigateToAdminPage(input)
-      else
-        Callback.alert("Room Code may not be empty")
-    }
-
-    def onTextChange(roomCodeState: RoomCodeState)(e: ReactEventFromInput) = Callback {
+    def onTextChange(roomCodeState: JoinState)(e: ReactEventFromInput) = Callback {
       roomCodeState.input = e.target.value
 
     }
@@ -57,17 +48,13 @@ object RoomPage {
       props.ctl.set(AppRouter.HomeRoute)
     }
 
-    def navigateToAdminPage(input: String): Callback = bs.props.flatMap { props =>
-      props.ctl.set(AppRouter.AdminRoute(input))
-    }
-
-    def render(p: Props, s: RoomCodeState): VdomTagOf[Div] = {
+    def render(p: Props, s: JoinState): VdomTagOf[Div] = {
       val proxy = p.proxy()
 
       <.div(^.cls := "form-group",
         <.label(^.`for` := "roomcode", "Roomcode:"),
-        <.div(^.cls := "row", ^.id := "roomcode-row",
-          <.div(^.cls := "col-xs-10",
+        <.div(^.cls := "column", ^.id := "roomcode-row",
+          <.div(^.cls := "col-xs-1",
             <.input(^.`type` := "text", ^.cls := "form-control",
               ^.onChange ==> onTextChange(s)
             )
@@ -78,22 +65,15 @@ object RoomPage {
               ^.onClick --> searchForRoomCode(s.input),
               "Search"
             )
-          ),
-          <.div(^.cls := "col-xs-3",
-            ^.margin := 8.px,
-            <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width",
-            ^.onClick --> createRoom(s.input),
-            "Create"
           )
-        )
         )
       )
     }
 
   }
 
-  val Component = ScalaComponent.builder[Props]("RoomPage")
-    .initialState(RoomCodeState(input = ""))
+  val Component = ScalaComponent.builder[Props]("JoinPage")
+    .initialState(JoinState(input = ""))
     .renderBackend[Backend]
     .build
 

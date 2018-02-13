@@ -5,6 +5,7 @@ import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
 import japgolly.scalajs.react.{BackendScope, ScalaComponent}
 import org.scalajs.dom.html.Div
+import weatherApp.components.PlaylistBox
 import weatherApp.config.Config
 import weatherApp.diode.AppState
 import weatherApp.models._
@@ -45,7 +46,7 @@ object AdminPage {
         val player : Player= new Player("player", PlayerOptions(
           width = "640",
           height = "360",
-          videoId = "M7lc1UVf-VE",
+          videoId = "ylgXkUN6cQ0",
           events = PlayerEvents(
             onReady = onPlayerReady (_),
             onError = onPlayerError (_),
@@ -58,10 +59,16 @@ object AdminPage {
       }
 
       <.div(^.cls := "form-group",
-        <.label(^.`for` := "roomcode", s"Roomcode ${p.roomCode}"),
+        <.label(^.`for` := "roomcode", s"Room ${p.roomCode}"),
         <.div(^.cls := "column", ^.id := "player-view",
-          <.div(^.id := "player")
+          <.div(^.id := "player"),
           // TODO put playlist here
+          <.div(
+          PlaylistBox(PlaylistBox.Props(Some(SongResponse(1,List(Song(864,"streamingService!","Fineshrine","Purity Ring","Shrines","https://i.scdn.co/image/0beb85a35a4ef3242432207f1a323151db693bce"),
+            Song(865,"streamingService!","Howling","RY X","Dawn","https://i.scdn.co/image/df4dd74119df85d052c0a3423cadca459a8331c1"),
+            Song(866,"streamingService!","Spectrum (Say My Name) - Calvin Harris Remix","Florence + The Machine","None","https://i.scdn.co/image/75c1be006328c8b1888b29728deec0f455ac8207")
+          ))), p.ctl))
+        )
         )
       //  <.iframe(^.id := "player", ^.`type` := "text/html", ^.width := "640", ^.height := "360",
        //   ^.src := "http://www.youtube.com/embed/M7lc1UVf-VE?enablejsapi=1&origin=http://example.com")

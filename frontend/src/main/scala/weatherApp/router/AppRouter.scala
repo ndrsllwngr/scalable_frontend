@@ -11,7 +11,9 @@ object AppRouter {
   case object HomeRoute extends Page
   case class CityRoute(name: String, id: Int) extends Page
   case object FavoritesRoute extends Page
-  case object RoomRoute extends Page
+  case object JoinRoute extends Page
+  case object CreateRoute extends Page
+  case object JoinAsAdminRoute extends Page
   case class AdminRoute(roomCode: String) extends Page
 
   val connection = AppCircuit.connect(_.state)
@@ -21,7 +23,9 @@ object AppRouter {
     (trimSlashes
       | staticRoute(root, HomeRoute) ~> renderR(renderWeatherPage)
       | staticRoute("favorites", FavoritesRoute) ~> renderR(renderFavoritesPage)
-      | staticRoute("rooms", RoomRoute) ~> renderR(renderRoomPage)
+      | staticRoute("join", JoinRoute) ~> renderR(renderJoinPage)
+      | staticRoute("adminjoin", JoinAsAdminRoute) ~> renderR(renderAdminJoinPage)
+      | staticRoute("create", CreateRoute) ~> renderR(renderCreateRoomPage)
       | dynamicRouteCT(("city" / string(".*") / int).caseClass[CityRoute]) ~> dynRenderR(renderCityPage)
       | dynamicRouteCT(("admin"/ string(".*")).caseClass[AdminRoute]) ~> dynRenderR(renderAdminPage)
     )
@@ -29,8 +33,16 @@ object AppRouter {
       .renderWith(layout)
   }
 
-  def renderRoomPage(ctl: RouterCtl[Page]) = {
-    connection(proxy => RoomPage.Component(RoomPage.Props(proxy, ctl)))
+  def renderJoinPage(ctl: RouterCtl[Page]) = {
+    connection(proxy => JoinPage.Component(JoinPage.Props(proxy, ctl)))
+  }
+
+  def renderAdminJoinPage(ctl: RouterCtl[Page]) = {
+    connection(proxy => AdminJoinPage.Component(AdminJoinPage.Props(proxy, ctl)))
+  }
+
+  def renderCreateRoomPage(ctl: RouterCtl[Page]) = {
+    connection(proxy => CreatePage.Component(CreatePage.Props(proxy, ctl)))
   }
 
   def renderAdminPage(p: AdminRoute, ctl: RouterCtl[Page]) = {
