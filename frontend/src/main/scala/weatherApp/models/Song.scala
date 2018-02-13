@@ -5,11 +5,16 @@ import java.util.UUID
 
 case class Song(
                  id: Int,
+                 //id: Long,
                  streamingServiceID: String,
                  name: String,
                  artist: String,
                  album: String,
-                 albumCoverUrl: String
+                 albumCoverUrl: String,
+                 upvotes: Int,
+                 downvotes: Int,
+                 played: Boolean
+
                  //, createdAt: LocalDateTime
                )
 
@@ -22,9 +27,4 @@ case class SongListElement(
                             name: String,
                             artist: String
                           )
-
-case class Votes(
-                  id: Long,
-                  count: Int
-                )
 

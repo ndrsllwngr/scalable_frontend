@@ -83,7 +83,7 @@ object PlaylistBox {
                     artist)
                 ))),
               <.div(^.cls := "d-flex align-items-center d-inline-block",
-                VoteComp())
+                VoteComp(VoteComp.Props(Some(x))))
             )
           }).toVdomArray
 

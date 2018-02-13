@@ -107,7 +107,7 @@ object WeatherBox {
                   "more",
                   navigateToCityPage(AppRouter.CityRoute(weather.name.toLowerCase(), weather.id))
                 )
-              ),<.div(VoteComp()),
+              ),
               userInfoOption.map(userInfo =>
                 <.div(
                   ^.display := "flex",
