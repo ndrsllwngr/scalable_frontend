@@ -15,12 +15,19 @@ object VoteComp {
                         )
 
   class Backend(bs: BackendScope[Props, Unit]) {
-    def calcColor(song: Song) : Boolean = {
-        if(song.upvotes > song.downvotes){
+    def colorGreen(song: Song) : Boolean = {
+        if(calcTotal(song) > 0){
           true
         } else {
           false
         }
+    }
+    def colorRed(song: Song) : Boolean = {
+      if(calcTotal(song) < 0){
+        true
+      } else {
+        false
+      }
     }
     def calcTotal(song: Song) : Int = {
       song.upvotes - song.downvotes
@@ -41,10 +48,9 @@ object VoteComp {
           ^.classSet(
            "p-2 align-self-center" -> true),
           props.song.map(song => {
-            ^.classSet("text-success" -> calcColor(song))
-          }).whenDefined,
-          props.song.map(song => {
-            ^.classSet("text-danger" -> !calcColor(song))
+            ^.classSet(
+              "text-success" -> colorGreen(song),
+              "text-danger" -> colorRed(song))
           }).whenDefined,
           props.song.map(song => {
             calcTotal(song).toString
