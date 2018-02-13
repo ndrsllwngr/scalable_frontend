@@ -1,7 +1,7 @@
 package weatherApp.diode
 
 import diode.Action
-import weatherApp.models.{OpenWeatherBaseCity, UserResponse, WeatherForecastResponse, WeatherResponse}
+import weatherApp.models._
 
 case class AppState (
                       weatherSuggestions: List[WeatherResponse],
@@ -18,11 +18,15 @@ case class AppModel(
 
 case class GetWeatherSuggestions(suggestions: List[WeatherResponse]) extends Action
 
+case class GetVideoSuggestions(suggestions: List[VideoResponse]) extends Action
+
 case class GetWeatherForecast(forecast: Option[WeatherForecastResponse]) extends Action
 
 case class ClearForecast() extends Action
 
 case class SelectWeather(weather: Option[WeatherResponse]) extends Action
+
+case class SelectVideo(video: Option[VideoResponse]) extends Action
 
 case class SetLoadingState() extends Action
 
