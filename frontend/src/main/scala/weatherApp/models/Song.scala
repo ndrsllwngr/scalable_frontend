@@ -28,3 +28,9 @@ case class SongListElement(
                             artist: String
                           )
 
+case class PartyVote (
+                       partyID: String,
+                       songID: Long,
+                       positive:Boolean
+                  )
+

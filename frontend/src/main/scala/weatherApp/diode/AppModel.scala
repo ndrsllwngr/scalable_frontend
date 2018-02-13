@@ -35,3 +35,7 @@ case class GetWeatherForFavCity(weather: WeatherResponse) extends Action
 case class AddCityToFavs(city: OpenWeatherBaseCity, weather: WeatherResponse) extends Action
 
 case class RemoveCityFromFavs(city: OpenWeatherBaseCity, weather: WeatherResponse) extends Action
+
+case class VoteSongForParty(partyID: String,
+                            songID: Long,
+                            positive:Boolean) extends Action

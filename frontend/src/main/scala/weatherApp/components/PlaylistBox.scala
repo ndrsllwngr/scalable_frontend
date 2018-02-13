@@ -15,6 +15,7 @@ import weatherApp.diode.{AddCityToFavs, AppCircuit, RemoveCityFromFavs}
 object PlaylistBox {
 
   case class Props (
+                     partyID: String = "partyID",
                      song: Option[SongResponse] = None,
                      ctl: RouterCtl[AppRouter.Page]
                    )
@@ -83,7 +84,7 @@ object PlaylistBox {
                     artist)
                 ))),
               <.div(^.cls := "d-flex align-items-center d-inline-block",
-                VoteComp(VoteComp.Props(Some(x))))
+                VoteComp(VoteComp.Props(props.partyID,Some(x))))
             )
           }).toVdomArray
 

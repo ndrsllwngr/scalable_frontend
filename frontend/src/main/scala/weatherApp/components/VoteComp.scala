@@ -1,9 +1,16 @@
 package weatherApp.components
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
 import japgolly.scalajs.react.extra._
+import org.scalajs.dom
+import weatherApp.config.Config
 import weatherApp.models._
+import weatherApp.diode.{AppCircuit, RemoveCityFromFavs, VoteSongForParty}
+import io.circe.syntax._
+import io.circe.generic.auto._
+
 
 object VoteComp {
 
@@ -11,13 +18,24 @@ object VoteComp {
   //  Reusability.caseClass
 
   case class Props (
+                          partyID: String = "partyID",
                           song: Option[Song] = None
                         )
 
   class Backend(bs: BackendScope[Props, Unit]) {
-    def upVote(song: Song) : Callback = Callback {
-      println("upvote" + song.id)
+    val host: String = Config.AppConfig.apiHost
+
+    def addPartyVote(partyID: String, song: Song, positive: Boolean) : Callback = {
+        val partyVote = PartyVote(partyID, song.id, positive).asJson.asInstanceOf[dom.ext.Ajax.InputData]
+        Callback {
+          dom.ext.Ajax.post(
+            url = s"$host/party/vote",
+            data = partyVote,
+            headers = Map("Content-Type" -> "application/json")
+          ).map(_ => AppCircuit.dispatch(VoteSongForParty(partyID, song.id, positive)))
+        }
     }
+
     def downVote(song: Song) : Callback = Callback {
       println("downvote" + song.id)
     }
@@ -45,7 +63,7 @@ object VoteComp {
           ^.cls := "align-self-center",
           <.button(
             ^.cls := "btn btn-link",
-            ^.onClick --> upVote(props.song.head),
+            ^.onClick --> addPartyVote(props.partyID, props.song.head, positive = true),
             <.img(
               ^.alt := "upvote",
               ^.src := "/images/ic_expand_less_black_24px.svg"
@@ -66,7 +84,7 @@ object VoteComp {
           ^.cls := "align-self-center",
           <.button(
             ^.cls := "btn btn-link",
-            ^.onClick --> downVote(props.song.head),
+            ^.onClick --> addPartyVote(props.partyID, props.song.head, positive = false),
             <.img(
               ^.alt := "downvote",
               ^.src := "/images/ic_expand_more_black_24px.svg"
