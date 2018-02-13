@@ -15,6 +15,16 @@ object VoteComp {
                         )
 
   class Backend(bs: BackendScope[Props, Unit]) {
+    def calcColor(song: Song) : Boolean = {
+        if(song.upvotes > song.downvotes){
+          true
+        } else {
+          false
+        }
+    }
+    def calcTotal(song: Song) : Int = {
+      song.upvotes - song.downvotes
+    }
     def render(props: Props): VdomElement =
       <.div(
         ^.cls := "d-flex flex-column align-items-center align-self-center",
@@ -24,14 +34,20 @@ object VoteComp {
             ^.cls := "btn btn-default",
             <.img(
               ^.alt := "upvote",
-              ^.src := "/images/ic_arrow_upward_black_24px.svg"
+              ^.src := "/images/ic_expand_less_black_24px.svg"
             )
           )),
         <.div(
-          ^.cls := "p-2 align-self-center text-success",
+          ^.classSet(
+           "p-2 align-self-center" -> true),
           props.song.map(song => {
-            val difference = song.upvotes - song.downvotes
-            difference
+            ^.classSet("text-success" -> calcColor(song))
+          }).whenDefined,
+          props.song.map(song => {
+            ^.classSet("text-danger" -> !calcColor(song))
+          }).whenDefined,
+          props.song.map(song => {
+            calcTotal(song).toString
           }).whenDefined),
         <.div(
           ^.cls := "align-self-center",
@@ -39,7 +55,7 @@ object VoteComp {
             ^.cls := "btn btn-default",
             <.img(
               ^.alt := "downvote",
-              ^.src := "/images/ic_arrow_downward_black_24px.svg"
+              ^.src := "/images/ic_expand_more_black_24px.svg"
             )
           ))
       )
