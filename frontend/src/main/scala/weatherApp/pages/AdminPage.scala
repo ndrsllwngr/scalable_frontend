@@ -33,7 +33,7 @@ object AdminPage {
 
   class Backend(bs: BackendScope[Props, Unit]) {
     val host: String = Config.AppConfig.apiHost
-
+    var player: Option[Player] = Option.empty
 
     def render(p: Props): VdomTagOf[Div] = {
       val proxy = p.proxy()
@@ -42,8 +42,9 @@ object AdminPage {
       tag.src = "https://www.youtube.com/iframe_api"
       val firstScriptTag = org.scalajs.dom.document.getElementsByTagName("script").item(0)
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
+
       org.scalajs.dom.window.asInstanceOf[js.Dynamic].onYouTubeIframeAPIReady = () => {
-        val player : Player= new Player("player", PlayerOptions(
+        player  = Option.apply(new Player("player", PlayerOptions(
           width = "640",
           height = "360",
           videoId = "ylgXkUN6cQ0",
@@ -55,8 +56,9 @@ object AdminPage {
           playerVars = PlayerVars(
             playsinline = 1.0
           )
-        ))
+        )))
       }
+
 
       <.div(^.cls := "form-group",
         <.label(^.`for` := "roomcode", s"Room ${p.roomCode}"),
