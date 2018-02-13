@@ -14,9 +14,9 @@ object VoteComp {
   final class Backend($: BackendScope[Unit, State]) {
     def render(s: State): VdomElement =
         <.div(
-            ^.cls := "d-flex flex-row align-items-center",
+            ^.cls := "d-flex flex-row align-items-center align-self-center",
           <.div(
-            ^.cls := "p-2 align-self-center",
+            ^.cls := "align-self-center",
             <.button(
               ^.cls := "btn btn-default",
               <.img(
@@ -25,10 +25,10 @@ object VoteComp {
               )
             )),
           <.div(
-            ^.cls := "p-2 align-self-center",
-            "000"),
+            ^.cls := "p-2 align-self-center text-success",
+            "+3"),
           <.div(
-            ^.cls := "p-2 align-self-center",
+            ^.cls := "align-self-center",
             <.button(
               ^.cls := "btn btn-default",
               <.img(

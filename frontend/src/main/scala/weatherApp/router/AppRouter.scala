@@ -29,10 +29,6 @@ object AppRouter {
       .renderWith(layout)
   }
 
-  def renderWeatherPage(ctl: RouterCtl[Page]) = {
-    connection(proxy => WeatherPage.Component(WeatherPage.Props(proxy, ctl)))
-  }
-
   def renderRoomPage(ctl: RouterCtl[Page]) = {
     connection(proxy => RoomPage.Component(RoomPage.Props(proxy, ctl)))
   }
@@ -40,6 +36,14 @@ object AppRouter {
   def renderAdminPage(p: AdminRoute, ctl: RouterCtl[Page]) = {
     connection(proxy => AdminPage.Component(AdminPage.Props(proxy, p.roomCode, ctl)))
   }
+
+  //def renderWeatherPage(ctl: RouterCtl[Page]) = {
+  //  connection(proxy => WeatherPage.Component(WeatherPage.Props(proxy, ctl)))
+  //}
+
+    def renderWeatherPage(ctl: RouterCtl[Page]) = {
+      connection(proxy => PlaylistPage.Component(PlaylistPage.Props(proxy, ctl)))
+    }
 
   def renderCityPage(p: CityRoute, ctl: RouterCtl[Page]) = {
     connection(proxy => CityPage.Component(CityPage.Props(proxy, p.id, p.name, ctl)))
