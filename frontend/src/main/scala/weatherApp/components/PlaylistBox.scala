@@ -56,32 +56,33 @@ object PlaylistBox {
             val artist = x.artist
             val albumCoverUrl = x.albumCoverUrl
             <.div( // Playlist Row
-              ^.cls := "d-flex flex-row justify-content-start p-2",
+              ^.cls := "d-flex flex-row justify-content-start bg-white text-dark p-2",
               ^.maxWidth := "800px",
-              ^.borderWidth := "1px 0 0 0",
+              ^.borderWidth := "2px 0 0 0",
               ^.borderStyle := "solid",
-              ^.color := "black",
+              ^.borderColor := "black",
               <.div(
                 ^.cls := "d-flex flex-row justify-content-start mr-auto",
                 <.div(
                   ^.cls := "",// AlbumCover
                   <.img(
                     ^.cls := "",
-                    ^.maxWidth := 100.px,
+                    ^.maxWidth := 118.px,
                     ^.src := albumCoverUrl
                   )
                 ),
                 <.div( // Song & Artist
                   ^.cls := "d-flex align-items-center p-2",
+                  ^.minWidth := "0",
                   <.div(
-                    ^.cls := "h3",
+                    ^.cls := "h3 text-truncate",
                     name,
                     <.br,
                   <.div(
-                    ^.cls := "h6 mb-0 text-muted",
+                    ^.cls := "h6 mb-0 text-muted text-truncate",
                     artist)
                 ))),
-              <.div(^.cls := "d-flex align-items-center",
+              <.div(^.cls := "d-flex align-items-center d-inline-block",
                 VoteComp())
             )
           }).toVdomArray
