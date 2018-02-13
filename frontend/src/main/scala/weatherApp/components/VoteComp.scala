@@ -24,7 +24,7 @@ object VoteComp {
             ^.cls := "btn btn-default",
             <.img(
               ^.alt := "upvote",
-              ^.src := "./images/ic_arrow_upward_black_24px.svg"
+              ^.src := "/images/ic_arrow_upward_black_24px.svg"
             )
           )),
         <.div(
@@ -39,7 +39,7 @@ object VoteComp {
             ^.cls := "btn btn-default",
             <.img(
               ^.alt := "downvote",
-              ^.src := "./images/ic_arrow_downward_black_24px.svg"
+              ^.src := "/images/ic_arrow_downward_black_24px.svg"
             )
           ))
       )
