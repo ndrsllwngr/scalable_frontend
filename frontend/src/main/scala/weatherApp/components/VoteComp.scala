@@ -15,6 +15,12 @@ object VoteComp {
                         )
 
   class Backend(bs: BackendScope[Props, Unit]) {
+    def upVote(song: Song) : Callback = Callback {
+      println("upvote" + song.id)
+    }
+    def downVote(song: Song) : Callback = Callback {
+      println("downvote" + song.id)
+    }
     def colorGreen(song: Song) : Boolean = {
         if(calcTotal(song) > 0){
           true
@@ -38,7 +44,8 @@ object VoteComp {
         <.div(
           ^.cls := "align-self-center",
           <.button(
-            ^.cls := "btn btn-default",
+            ^.cls := "btn btn-link",
+            ^.onClick --> upVote(props.song.head),
             <.img(
               ^.alt := "upvote",
               ^.src := "/images/ic_expand_less_black_24px.svg"
@@ -58,7 +65,8 @@ object VoteComp {
         <.div(
           ^.cls := "align-self-center",
           <.button(
-            ^.cls := "btn btn-default",
+            ^.cls := "btn btn-link",
+            ^.onClick --> downVote(props.song.head),
             <.img(
               ^.alt := "downvote",
               ^.src := "/images/ic_expand_more_black_24px.svg"
