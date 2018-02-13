@@ -17,6 +17,7 @@ object AdminPage {
   @js.native
   @JSImport("lodash.throttle", JSImport.Default)
   private object _throttle extends js.Any
+
   def throttle: js.Dynamic = _throttle.asInstanceOf[js.Dynamic]
 
 
@@ -30,6 +31,7 @@ object AdminPage {
   class Backend(bs: BackendScope[Props, Unit]) {
     val host: String = Config.AppConfig.apiHost
 
+
     def render(p: Props): VdomTagOf[Div] = {
       val proxy = p.proxy()
 
@@ -41,15 +43,15 @@ object AdminPage {
               ^.value := p.roomCode
             )
           )
-        )
+        ),
+        <.iframe(^.id := "player", ^.`type` := "text/html", ^.width := "640", ^.height := "360",
+          ^.src := "http://www.youtube.com/embed/M7lc1UVf-VE?enablejsapi=1&origin=http://example.com")
       )
     }
-
   }
 
   val Component = ScalaComponent.builder[Props]("RoomPage")
     .renderBackend[Backend]
     .build
-
 
 }
