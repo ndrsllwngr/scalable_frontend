@@ -32,13 +32,9 @@ object RestService extends StrictLogging {
       data = content,
       headers = Map("Content-Type" -> "text/plain")
     ).map { res =>
-      println(res)
-      val partyCreateResponse = decode[PartyCreateResponse](res.responseText)
-      print("gaaa")
-      partyCreateResponse match {
-        case Left(failure) => PartyCreateResponse("","","", "")
-        case Right(data) => data
-      }
+      val partyCreateResponse = read[PartyCreateResponse](res.responseText)
+      println(res.responseText)
+      partyCreateResponse
     }
   }
 
