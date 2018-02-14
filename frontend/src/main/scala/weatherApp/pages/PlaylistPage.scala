@@ -1,15 +1,17 @@
 package weatherApp.pages
 
 import diode.react.ModelProxy
-import fr.hmil.roshttp.HttpRequest
 import io.circe.generic.auto._
 import io.circe.parser.decode
+import io.circe.syntax._
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^._
 import org.scalajs.dom
+import org.scalajs.dom.ext.Ajax
+import slogging.StrictLogging
 import weatherApp.components.{PlaylistBox, Select}
-import weatherApp.diode._
+import weatherApp.diode.{AppCircuit, _}
 import weatherApp.models.{Song, SongResponse, VideoResponse}
 import weatherApp.router.AppRouter
 
@@ -41,7 +43,13 @@ object PlaylistPage {
                     var selectedData: Option[VideoResponse]
                   )
 
-  class Backend($: BackendScope[Props, State]) {
+  case class YtRequest( key: String,
+                        maxResults: Int,
+                        part: String,
+                        q :String
+  )
+
+  class Backend($: BackendScope[Props, State]) extends StrictLogging {
     def getSelectOptions(data: List[VideoResponse], intputValue: String) = {
       data.zipWithIndex.map { case (item, index) => Select.Options(
         value = s"$intputValue::$index",
@@ -54,13 +62,15 @@ object PlaylistPage {
       val apiKey = "AIzaSyCLQQRT9Qf_rY12nEAS7cc7k5LO1W_qhcg"
       val setLoading = $.modState(s => s.copy(isLoading = true))
 
-      val request = HttpRequest(s"https://www.googleapis.com/youtube/v3/")
-      request.withPath("search").withQueryParameters(("key", apiKey),("maxResults", "5"), ("part" , "snippet"), ("q" , searchText), ("type", ""))
-      //Callback.alert(request.url)
-      println(request.url)
-
       def getData(): Future[List[VideoResponse]] = {
-        dom.ext.Ajax.get(url=request.url).map(xhr => {
+        val ytData = YtRequest(apiKey, 2, "snippet", "Howling").asJson.asInstanceOf[dom.ext.Ajax.InputData]
+        Callback.alert(ytData.toString)
+        logger.debug(ytData.toString)
+        Ajax.get(
+          url = host,
+          data = ytData
+        ).map(xhr => {
+          logger.debug(xhr.responseText)
           val option = decode[List[VideoResponse]](xhr.responseText)
           option match {
             case Left(failure) => List.empty[VideoResponse]
