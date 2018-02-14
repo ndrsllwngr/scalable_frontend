@@ -37,7 +37,7 @@ object CreatePage {
     def createRoom(input: String): Callback = {
       //Callback.alert(s"The Create button was pressed! [$input]")
       if (!input.isEmpty) {
-        JsonCreator.createParty(input)
+        //JsonCreator.createParty(input)
         navigateToAdminPage(input)
       }
       else
