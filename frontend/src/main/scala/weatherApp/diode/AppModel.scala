@@ -1,7 +1,7 @@
 package weatherApp.diode
 
 import diode.Action
-import weatherApp.models.{OpenWeatherBaseCity, UserResponse, WeatherForecastResponse, WeatherResponse}
+import weatherApp.models._
 
 case class AppState (
                       weatherSuggestions: List[WeatherResponse],
@@ -36,6 +36,11 @@ case class AddCityToFavs(city: OpenWeatherBaseCity, weather: WeatherResponse) ex
 
 case class RemoveCityFromFavs(city: OpenWeatherBaseCity, weather: WeatherResponse) extends Action
 
+case class AddSongForParty(partyID: String,
+                           song: Song) extends Action
+
 case class VoteSongForParty(partyID: String,
                             songID: Long,
                             positive:Boolean) extends Action
+
+case class CreateParty(partyName: String) extends Action
