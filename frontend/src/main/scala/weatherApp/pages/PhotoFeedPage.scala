@@ -1,7 +1,5 @@
 package weatherApp.pages
 
-import chandu0101.scalajs.react.components.WithAsyncScript
-import chandu0101.scalajs.react.components.elementalui.FileUpload
 import diode.react.ModelProxy
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
@@ -34,7 +32,6 @@ object PhotoFeedPage {
   class Backend(bs: BackendScope[Props, Unit]) {
     val host: String = Config.AppConfig.apiHost
 
-
     def choosePhoto(): Callback = {
       Callback.alert("choosePhoto")
     }
@@ -45,19 +42,11 @@ object PhotoFeedPage {
 
     def render(p: Props): VdomTagOf[Div] = {
       val proxy = p.proxy()
-      val className = js.UndefOr.any2undefOrA("image")
-      val accept = js.UndefOr.any2undefOrA("upload")
-      val buttonLabelChange = js.UndefOr.any2undefOrA("change")
-      val buttonLabelInitial = js.UndefOr.any2undefOrA("choose")
-      val file = js.undefined
-
       <.div(^.cls := "form-group",
         <.label("Fotofeed"),
-
         <.div(
-          WithAsyncScript("/elemental_ui-bundle.js")(
-            FileUpload(className, accept, buttonLabelChange, buttonLabelInitial, file, onChange= onPhotoChanged()).apply()
-          )
+          <.input(^.`type` := "file", ^.cls := "form-control", ^.id := "files"
+        )
         )
       )
     }
