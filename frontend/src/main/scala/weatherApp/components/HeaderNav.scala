@@ -28,6 +28,7 @@ object HeaderNav {
     val joinLink = props.ctl.link(AppRouter.JoinRoute)
     val joinAsAdminLink = props.ctl.link(AppRouter.JoinAsAdminRoute)
     val createLink = props.ctl.link(AppRouter.CreateRoute)
+    val photoFeedLink = props.ctl.link(AppRouter.PhotoRoute("test"))
 
     <.div(
       ^.display := "flex",
@@ -35,6 +36,7 @@ object HeaderNav {
       NavLink(joinLink("Join")),
       NavLink(joinAsAdminLink("Join as Admin")),
       NavLink(createLink("Create")),
+      NavLink(photoFeedLink("Gallery")),
       NavLink(favLink("Favorites").when(userInfoOpt.isDefined))
     )
   })

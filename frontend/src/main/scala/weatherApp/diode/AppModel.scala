@@ -8,6 +8,7 @@ case class AppState (
                       videoSuggestions: List[VideoResponse],
                       forecast: Option[WeatherForecastResponse],
                       selectedWeather: Option[WeatherResponse],
+                      selectedVideo: Option[VideoResponse],
                       isLoading: Boolean,
                       userInfo: Option[UserResponse],
                       favCitiesWeather: List[WeatherResponse]
