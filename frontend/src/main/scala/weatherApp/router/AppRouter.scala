@@ -14,6 +14,7 @@ object AppRouter {
   case object JoinRoute extends Page
   case object CreateRoute extends Page
   case object JoinAsAdminRoute extends Page
+  case class PhotoRoute(roomCode: String) extends Page
   case class AdminRoute(roomCode: String) extends Page
 
   val connection = AppCircuit.connect(_.state)
@@ -28,6 +29,7 @@ object AppRouter {
       | staticRoute("create", CreateRoute) ~> renderR(renderCreateRoomPage)
       | dynamicRouteCT(("city" / string(".*") / int).caseClass[CityRoute]) ~> dynRenderR(renderCityPage)
       | dynamicRouteCT(("admin"/ string(".*")).caseClass[AdminRoute]) ~> dynRenderR(renderAdminPage)
+      | dynamicRouteCT(("gallery"/ string(".*")).caseClass[PhotoRoute]) ~> dynRenderR(renderPhotoPage)
     )
       .notFound(redirectToPage(HomeRoute)(Redirect.Replace))
       .renderWith(layout)
@@ -45,13 +47,13 @@ object AppRouter {
     connection(proxy => CreatePage.Component(CreatePage.Props(proxy, ctl)))
   }
 
+  def renderPhotoPage(p: PhotoRoute, ctl: RouterCtl[Page]) = {
+    connection(proxy => PhotoFeedPage.Component(PhotoFeedPage.Props(proxy, p.roomCode, ctl)))
+  }
+
   def renderAdminPage(p: AdminRoute, ctl: RouterCtl[Page]) = {
     connection(proxy => AdminPage.Component(AdminPage.Props(proxy, p.roomCode, ctl)))
   }
-
-  //def renderWeatherPage(ctl: RouterCtl[Page]) = {
-  //  connection(proxy => WeatherPage.Component(WeatherPage.Props(proxy, ctl)))
-  //}
 
     def renderWeatherPage(ctl: RouterCtl[Page]) = {
       connection(proxy => PlaylistPage.Component(PlaylistPage.Props(proxy, ctl)))
