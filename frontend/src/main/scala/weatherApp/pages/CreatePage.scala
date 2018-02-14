@@ -42,7 +42,6 @@ object CreatePage {
       if (!input.isEmpty) {
         val partyCreateResponse = restService.createParty(input)
         partyCreateResponse.map(x => navigateToAdminPage(x.name))
-
       }
       else
         Callback.alert("Room name may not be empty")
