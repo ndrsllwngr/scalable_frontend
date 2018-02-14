@@ -1,16 +1,27 @@
 package weatherApp.json
 
+import java.time.LocalDateTime
+
+import weatherApp.models.PartyCreateResponse._
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import weatherApp.config.Config
 import weatherApp.models._
 import io.circe.generic.auto._
 import io.circe.syntax._
 import org.scalajs.dom.ext.Ajax
+
 import scala.concurrent.Future
 import scala.scalajs.js.JSON
+import io.circe.parser.decode
+
+import scala.util.{Failure, Success}
+import upickle.default._
+import slogging.StrictLogging
 
 
-object restService {
+
+object RestService extends StrictLogging {
 
   val host: String = Config.AppConfig.apiHost
 
@@ -21,8 +32,13 @@ object restService {
       data = content,
       headers = Map("Content-Type" -> "text/plain")
     ).map { res =>
-      val partyCreateResponse = JSON.parse(res.responseText).asInstanceOf[PartyCreateResponse]
-      partyCreateResponse
+      println(res)
+      val partyCreateResponse = decode[PartyCreateResponse](res.responseText)
+      print("gaaa")
+      partyCreateResponse match {
+        case Left(failure) => PartyCreateResponse("","","", "")
+        case Right(data) => data
+      }
     }
   }
 
