@@ -11,6 +11,7 @@ object AppCircuit extends Circuit[AppModel] with ReactConnector[AppModel] {
       videoSuggestions = List.empty[VideoResponse],
       forecast = None: Option[WeatherForecastResponse],
       selectedWeather = None: Option[WeatherResponse],
+      selectedVideo = None: Option[VideoResponse],
       isLoading = false,
       userInfo = None : Option[UserResponse],
       favCitiesWeather = List.empty[WeatherResponse]
@@ -29,6 +30,7 @@ object AppCircuit extends Circuit[AppModel] with ReactConnector[AppModel] {
 class PlaylistPageHandler[M](modelRW: ModelRW[M, AppState]) extends ActionHandler(modelRW) {
   override def handle = {
     case GetVideoSuggestions(videoSuggestions) => updated(value.copy(videoSuggestions = videoSuggestions))
+    case SelectVideo(video) => updated(value.copy(selectedVideo = video))
     }
   }
 
@@ -40,6 +42,7 @@ class WeatherPageHandler[M](modelRW: ModelRW[M, AppState]) extends ActionHandler
     case GetWeatherForecast(forecast) => updated(value.copy(forecast = forecast))
     case ClearForecast() => updated(value.copy(forecast = None))
     case SelectWeather(weather) => updated(value.copy(selectedWeather = weather))
+    case SelectVideo(video) => updated(value.copy(selectedVideo = video))
     case GetWeatherForFavCity(weather) => updated(value.copy(favCitiesWeather = value.favCitiesWeather ++ List(weather)))
     case AddCityToFavs(city, weather) => {
       updated(value.userInfo.fold(value) {userInfo =>
