@@ -5,6 +5,7 @@ import weatherApp.models._
 
 case class AppState (
                       weatherSuggestions: List[WeatherResponse],
+                      videoSuggestions: List[VideoResponse],
                       forecast: Option[WeatherForecastResponse],
                       selectedWeather: Option[WeatherResponse],
                       isLoading: Boolean,

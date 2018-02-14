@@ -1,6 +1,20 @@
 package weatherApp.models
 
 
+case class YoutubeResponse(
+                          kind: String,
+                          etag: String,
+                          nextPageToken: String,
+                          regionCode: String,
+                          pageInfo: PageInfo,
+                          items: List[VideoResponse]
+                        )
+
+case class PageInfo(
+                    totalResults: Int,
+                    resultsPerPage: Int,
+                   )
+
 case class VideoResponse(
                      kind: String,
                      etag: String,
@@ -12,19 +26,17 @@ case class VideoResponse(
 case class VideoId (
                      kind: String,
                      videoId: String,
-                     channelId: String,
-                     playlistId: String
 
                    )
 
 case class VideoSnippet (
-                          publishedAt: Int,
+                          publishedAt: String,
                           channelId: String,
                           title: String,
                           description: String,
+                          thumbnails: Map[String, VideoThumbnails],
                           channelTitle: String,
-                          liveBroadcastContent: String,
-                          thumbnails: Map[String, VideoThumbnails]
+                          liveBroadcastContent: String
                    )
 
 case class VideoThumbnails (

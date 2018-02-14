@@ -2,12 +2,13 @@ package weatherApp.diode
 
 import diode._
 import diode.react.ReactConnector
-import weatherApp.models.{UserResponse, WeatherForecastResponse, WeatherResponse}
+import weatherApp.models.{UserResponse, VideoResponse, WeatherForecastResponse, WeatherResponse}
 
 object AppCircuit extends Circuit[AppModel] with ReactConnector[AppModel] {
   def initialModel = AppModel(
     AppState(
       weatherSuggestions = List.empty[WeatherResponse],
+      videoSuggestions = List.empty[VideoResponse],
       forecast = None: Option[WeatherForecastResponse],
       selectedWeather = None: Option[WeatherResponse],
       isLoading = false,
@@ -17,14 +18,25 @@ object AppCircuit extends Circuit[AppModel] with ReactConnector[AppModel] {
   )
 
   override val actionHandler = composeHandlers(
+    new PlaylistPageHandler(zoomTo(_.state)),
     new WeatherPageHandler(zoomTo(_.state)),
     new AppHandler(zoomTo(_.state))
   )
 }
 
+
+
+class PlaylistPageHandler[M](modelRW: ModelRW[M, AppState]) extends ActionHandler(modelRW) {
+  override def handle = {
+    case GetVideoSuggestions(videoSuggestions) => updated(value.copy(videoSuggestions = videoSuggestions))
+    }
+  }
+
+
 class WeatherPageHandler[M](modelRW: ModelRW[M, AppState]) extends ActionHandler(modelRW) {
   override def handle = {
     case GetWeatherSuggestions(weatherSuggestions) => updated(value.copy(weatherSuggestions = weatherSuggestions))
+    case GetVideoSuggestions(videoSuggestions) => updated(value.copy(videoSuggestions = videoSuggestions))
     case GetWeatherForecast(forecast) => updated(value.copy(forecast = forecast))
     case ClearForecast() => updated(value.copy(forecast = None))
     case SelectWeather(weather) => updated(value.copy(selectedWeather = weather))

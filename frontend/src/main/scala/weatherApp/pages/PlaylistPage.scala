@@ -12,7 +12,7 @@ import org.scalajs.dom.ext.Ajax
 import slogging.StrictLogging
 import weatherApp.components.{PlaylistBox, Select}
 import weatherApp.diode.{AppCircuit, _}
-import weatherApp.models.{Song, SongResponse, VideoResponse}
+import weatherApp.models.{Song, SongResponse, VideoResponse, YoutubeResponse}
 import weatherApp.router.AppRouter
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -53,7 +53,7 @@ object PlaylistPage {
     def getSelectOptions(data: List[VideoResponse], intputValue: String) = {
       data.zipWithIndex.map { case (item, index) => Select.Options(
         value = s"$intputValue::$index",
-        label = s"${item.snippet.title}, ${item.snippet.channelTitle} ${item.snippet.description}"
+        label = s"${item.snippet.title}"
       )}
     }
 
@@ -63,18 +63,17 @@ object PlaylistPage {
       val setLoading = $.modState(s => s.copy(isLoading = true))
 
       def getData(): Future[List[VideoResponse]] = {
-        val ytData = YtRequest(apiKey, 2, "snippet", "Howling").asJson.asInstanceOf[dom.ext.Ajax.InputData]
-        Callback.alert(ytData.toString)
+        val ytData = YtRequest(apiKey, 1, "snippet", searchText).asJson.asInstanceOf[dom.ext.Ajax.InputData]
         logger.debug(ytData.toString)
         Ajax.get(
-          url = host,
-          data = ytData
+          url = songSearch(searchText,apiKey,host)
         ).map(xhr => {
           logger.debug(xhr.responseText)
-          val option = decode[List[VideoResponse]](xhr.responseText)
+          val option = decode[YoutubeResponse](xhr.responseText)
+          logger.debug(option.toString)
           option match {
             case Left(failure) => List.empty[VideoResponse]
-            case Right(data) => data
+            case Right(data) => data.items
           }
         })
       }
@@ -92,6 +91,8 @@ object PlaylistPage {
 
       setLoading >> Callback.future(updateState)
     }
+
+    def songSearch(name: String, apiKey: String, host: String) = s"$host?key=$apiKey&part=snippet&q=$name"
 
     val throttleInputValueChange: js.Dynamic = {
       throttle(() => {
