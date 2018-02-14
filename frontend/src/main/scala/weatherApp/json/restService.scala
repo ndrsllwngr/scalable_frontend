@@ -49,7 +49,7 @@ object restService {
   }
 
     def addPartyVote(partyID: String, song: Song, positive: Boolean, voteType: String): Future[Int] = {
-    val content = SendSongVote(partyID, song.id, positive, voteType).asJson.asInstanceOf[Ajax.InputData]
+    val content = PartyVote(partyID, song.id, positive, voteType).asJson.asInstanceOf[Ajax.InputData]
      Ajax.post(
         url = s"$host/party/vote",
         data = content,

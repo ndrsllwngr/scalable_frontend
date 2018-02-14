@@ -46,7 +46,7 @@ case class SendSong
   albumCoverUrl: String
 )
 
-case class SendSongVote
+case class PartyVote
 (
   partyID: String,
   songID: Long,
@@ -58,5 +58,18 @@ case class SetSongPlayed
 (
   id: Long,
   partyID: String
+)
+
+case class AddPhotosToParty
+(
+  url: String
+)
+
+case class PhotoReturn
+(
+  id: Long,
+  url: String,
+  upvotes: Int,
+  downvote: Int
 )
 
