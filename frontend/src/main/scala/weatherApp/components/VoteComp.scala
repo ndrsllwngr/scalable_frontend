@@ -35,8 +35,8 @@ object VoteComp {
 //        }
 //    }
 
-    def downVote(song: Song) : Callback = Callback {
-      println("downvote" + song.id)
+    def vote(partyID: String, song: Song, positive: Boolean) : Callback = Callback {
+      restService.addPartyVote(partyID, song, positive, "SONG")
     }
     def colorGreen(song: Song) : Boolean = {
         if(calcTotal(song) > 0){
@@ -62,7 +62,7 @@ object VoteComp {
           ^.cls := "align-self-center",
           <.button(
             ^.cls := "btn btn-link",
-            ^.onClick --> JsonCreator.addPartyVote(props.partyID, props.song.head, positive = true),
+            ^.onClick --> vote(props.partyID, props.song.head, positive = true),
             <.img(
               ^.alt := "upvote",
               ^.src := "/images/ic_expand_less_black_24px.svg"
@@ -83,7 +83,7 @@ object VoteComp {
           ^.cls := "align-self-center",
           <.button(
             ^.cls := "btn btn-link",
-            ^.onClick --> JsonCreator.addPartyVote(props.partyID, props.song.head, positive = false),
+            ^.onClick --> vote(props.partyID, props.song.head, positive = false),
             <.img(
               ^.alt := "downvote",
               ^.src := "/images/ic_expand_more_black_24px.svg"

@@ -7,8 +7,11 @@ import japgolly.scalajs.react.{BackendScope, Callback, ReactEventFromInput, Scal
 import org.scalajs.dom.html.Div
 import weatherApp.config.Config
 import weatherApp.diode.AppState
-import weatherApp.json.JsonCreator
+import weatherApp.json.restService
 import weatherApp.router.AppRouter
+import weatherApp.models.PartyCreateResponse
+import scala.concurrent._
+import ExecutionContext.Implicits.global
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
@@ -34,11 +37,12 @@ object CreatePage {
     val host: String = Config.AppConfig.apiHost
 
 
-    def createRoom(input: String): Callback = {
+    def createRoom(input: String): Callback = Callback {
       //Callback.alert(s"The Create button was pressed! [$input]")
       if (!input.isEmpty) {
-        //JsonCreator.createParty(input)
-        navigateToAdminPage(input)
+        val partyCreateResponse = restService.createParty(input)
+        partyCreateResponse.map(x => navigateToAdminPage(x.name))
+
       }
       else
         Callback.alert("Room name may not be empty")
