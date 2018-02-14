@@ -1,7 +1,5 @@
 package weatherApp.json
 
-import java.time.LocalDateTime
-
 import weatherApp.models.PartyCreateResponse._
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -13,9 +11,7 @@ import org.scalajs.dom.ext.Ajax
 
 import scala.concurrent.Future
 import scala.scalajs.js.JSON
-import io.circe.parser.decode
 
-import scala.util.{Failure, Success}
 import upickle.default._
 import slogging.StrictLogging
 

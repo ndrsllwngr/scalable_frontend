@@ -3,13 +3,12 @@ package weatherApp.pages
 import diode.react.ModelProxy
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
-import japgolly.scalajs.react.{BackendScope, Callback, CallbackTo, ReactEventFromInput, ScalaComponent}
+import japgolly.scalajs.react.{BackendScope, Callback, ReactEventFromInput, ScalaComponent}
 import org.scalajs.dom.html.Div
 import weatherApp.config.Config
 import weatherApp.diode.AppState
 import weatherApp.json.RestService
 import weatherApp.router.AppRouter
-import weatherApp.models.PartyCreateResponse
 
 import scala.concurrent._
 import ExecutionContext.Implicits.global
