@@ -88,4 +88,19 @@ object RestService {
     }
   }
 
+  def addPhoto(downloadUrl: String, partyID: String): Future[Int] ={
+    val content = AddPhotosToParty(downloadUrl).asJson.asInstanceOf[Ajax.InputData]
+    Ajax.post(
+      url = s"$host/party/photo/$partyID",
+      data = content,
+      headers = Map("Content-Type" -> "application/json")
+    ).map { res =>
+      val option = decode[Int](res.responseText)
+      option match {
+        case Left(_) => -1
+        case Right(int) => int
+      }
+    }
+  }
+
 }

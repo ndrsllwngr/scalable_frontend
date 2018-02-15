@@ -9,6 +9,7 @@ import org.scalajs.dom.html
 import org.scalajs.dom.html.Div
 import weatherApp.config.Config
 import weatherApp.diode.AppState
+import weatherApp.json.RestService
 import weatherApp.router.AppRouter
 
 import scala.scalajs.js
@@ -47,24 +48,14 @@ object PhotoFeedPage {
     Firebase.initializeApp(config, "scalable")
     val app = Firebase.app("scalable")
 
-    def choosePhoto(): Callback = {
-      Callback.alert("choosePhoto")
-    }
-
-
-    def publishLink(url: String): Unit ={
-
+    def publishLink(url: String, roomCode: String): Unit ={
+        RestService.addPhoto(url,roomCode)
     }
 
     def onPhotoChanged(props: Props) (e: ReactEventFromInput) = Callback {
       val choosenFile = e.target.files.item(0)
       val storage = Firebase.storage(app).refFromURL(s"gs://scalable-195120.appspot.com/${props.roomCode}/${choosenFile.name}")
-      storage.put(choosenFile).then(success => {
-        publishLink(success.downloadURL.toString)
-      }, reject => {
-        Firebase.database(app).ref(props.roomCode).push("error", completed => {})
-      })
-
+      storage.put(choosenFile).then(success => {publishLink(success.downloadURL.toString, props.roomCode)}, reject => {})
       js.undefined
     }
 
