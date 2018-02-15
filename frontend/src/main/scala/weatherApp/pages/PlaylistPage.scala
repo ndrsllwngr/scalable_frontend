@@ -9,10 +9,11 @@ import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^._
 import org.scalajs.dom
 import org.scalajs.dom.ext.Ajax
+import org.scalajs.dom.html
 import slogging.StrictLogging
 import weatherApp.components.{PlaylistBox, Select}
 import weatherApp.diode.{AppCircuit, _}
-import weatherApp.models.{Song, SongResponse, VideoResponse, YoutubeResponse}
+import weatherApp.models.{Song, VideoResponse, YoutubeResponse}
 import weatherApp.router.AppRouter
 import weatherApp.json.RestService
 
@@ -32,7 +33,7 @@ object PlaylistPage {
 
 
   case class Props (
-                     partyID: String = "1",
+                     partyID: String,
                      proxy: ModelProxy[AppState],
                      ctl: RouterCtl[AppRouter.Page]
                    )
@@ -42,7 +43,8 @@ object PlaylistPage {
                     var inputValue: String,
                     var searchData: List[VideoResponse],
                     var selectOptions: List[Select.Options],
-                    var selectedData: Option[VideoResponse]
+                    var selectedData: Option[VideoResponse],
+                    var partyID: String
                   )
 
   case class YtRequest( key: String,
@@ -53,17 +55,19 @@ object PlaylistPage {
 
   class Backend($: BackendScope[Props, State]) extends StrictLogging {
 
-    def getPlaylist(p: Props, s: State) : Future[VdomElement] =  {
+    def getPlaylist(p: Props) : Future[VdomElement] =  {
+      println("testget")
       val songR = RestService.getSongs(p.partyID)
       songR.map(f =>
         <.div(
-          PlaylistBox(PlaylistBox.Props("bla",Some(f), p.ctl))
+          PlaylistBox(PlaylistBox.Props(p.partyID,Some(f), p.ctl))
         )
       )
     }
 
-    def triggerRepaint(p: Props, s: State) = Callback {
-      val x = getPlaylist(p,s).map(x =>
+    def triggerRepaint(p: Props) = Callback {
+      println("testrepaint")
+      val x = getPlaylist(p).map(x =>
           x.renderIntoDOM(dom.document.getElementById("#plBox")))
     }
 
@@ -178,11 +182,7 @@ object PlaylistPage {
           select
         ),
         <.div(
-          ^.id:="plBox",
-          PlaylistBox(PlaylistBox.Props("bla",Some(SongResponse(List(Song(864,"streamingService!","Fineshrine","Purity Ring","Shrines","https://i.scdn.co/image/0beb85a35a4ef3242432207f1a323151db693bce",5,1,false),
-            Song(865,"streamingService!","Howling","RY X","Dawn","https://i.scdn.co/image/df4dd74119df85d052c0a3423cadca459a8331c1",3,3,false),
-            Song(866,"streamingService!","Spectyrum (Say My Name) - Calvin Harris Remix","Florence + The Machine","None","https://i.scdn.co/image/75c1be006328c8b1888b29728deec0f455ac8207",0,1,false)
-          ))), p.ctl))
+
         )
       )
     }
@@ -194,7 +194,8 @@ object PlaylistPage {
       inputValue = "",
       searchData = List.empty[VideoResponse],
       selectOptions = List.empty[Select.Options],
-      selectedData = None : Option[VideoResponse]
+      selectedData = None : Option[VideoResponse],
+      partyID = "partyID"
     ))
     .renderBackend[Backend]
     .build
