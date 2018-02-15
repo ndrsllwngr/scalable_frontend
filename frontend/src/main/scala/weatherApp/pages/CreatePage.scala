@@ -38,7 +38,7 @@ object CreatePage {
 
     def createRoom(input: String) : Callback = {
       val partyCreateResponseFuture = RestService.createParty(input)
-      val FutureOfCallback = partyCreateResponseFuture.map(x => navigateToAdminPage(x.name))
+      val FutureOfCallback = partyCreateResponseFuture.map(x => navigateToAdminPage(x.id))
       Callback.future(FutureOfCallback)
     }
 
@@ -47,8 +47,8 @@ object CreatePage {
 
     }
 
-    def navigateToAdminPage(input: String): Callback = bs.props.flatMap { props =>
-      props.ctl.set(AppRouter.AdminRoute(input))
+    def navigateToAdminPage(id: String): Callback = bs.props.flatMap { props =>
+      props.ctl.set(AppRouter.AdminRoute(id))
     }
 
     def render(p: Props, s: CreateState): VdomTagOf[Div] = {
