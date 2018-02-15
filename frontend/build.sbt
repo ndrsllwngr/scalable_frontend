@@ -7,6 +7,8 @@ scalaVersion := "2.12.4"
 // This is an application with a main method
 scalaJSUseMainModuleInitializer := true
 scalaJSModuleKind := ModuleKind.CommonJSModule
+skip in packageJSDependencies := false
+jsDependencies += "org.webjars" % "firebase" % "3.6.4" / "firebase.js"
 
 libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.9.3"
 libraryDependencies += "com.github.japgolly.scalajs-react" %%% "core" % "1.1.1"

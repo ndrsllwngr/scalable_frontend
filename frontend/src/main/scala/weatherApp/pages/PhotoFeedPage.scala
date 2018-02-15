@@ -14,6 +14,7 @@ import weatherApp.router.AppRouter
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 
+
 object PhotoFeedPage {
 
 
@@ -35,7 +36,6 @@ object PhotoFeedPage {
     val host: String = Config.AppConfig.apiHost
 
     var fileChooser : html.Input = _
-    //var choosenFile : Option[raw.File]
 
     val apiKey = "AIzaSyC8vZ20nRwOpSmuyF0TjimoHHqSxkWK4cE"
     val  authDomain = "scalable-195120.firebaseapp.com"
@@ -43,14 +43,27 @@ object PhotoFeedPage {
     val  projectId = "scalable-195120"
     val  storageBucket = ""
     val  messagingSenderId = "547307244060"
+    val config = FirebaseConfig(apiKey, authDomain, databaseURL, storageBucket, messagingSenderId)
+    Firebase.initializeApp(config, "scalable")
+    val app = Firebase.app("scalable")
 
     def choosePhoto(): Callback = {
       Callback.alert("choosePhoto")
     }
 
+
+    def publishLink(url: String): Unit ={
+
+    }
+
     def onPhotoChanged(props: Props) (e: ReactEventFromInput) = Callback {
       val choosenFile = e.target.files.item(0)
-     // val storage = Firebase.storage().refFromURL(s"gs://scalable-195120.appspot.com/${props.roomCode}/${choosenFile.name}")
+      val storage = Firebase.storage(app).refFromURL(s"gs://scalable-195120.appspot.com/${props.roomCode}/${choosenFile.name}")
+      storage.put(choosenFile).then(success => {
+        publishLink(success.downloadURL.toString)
+      }, reject => {
+        Firebase.database(app).ref(props.roomCode).push("error", completed => {})
+      })
 
       js.undefined
     }
