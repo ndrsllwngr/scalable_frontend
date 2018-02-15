@@ -1,15 +1,15 @@
 package scalable.json
 
+import io.circe.generic.auto._
+import io.circe.parser.decode
+import io.circe.syntax._
+import org.scalajs.dom.ext.Ajax
+import slogging.StrictLogging
+
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 import scalable.config.Config
 import scalable.models._
-import org.scalajs.dom.ext.Ajax
-
-import scala.concurrent.Future
-import io.circe.parser.decode
-import io.circe.generic.auto._
-import io.circe.syntax._
-import slogging.StrictLogging
 
 
 object RestService extends StrictLogging{

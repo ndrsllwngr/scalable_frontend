@@ -5,15 +5,15 @@ import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
 import japgolly.scalajs.react.{BackendScope, ScalaComponent}
 import org.scalajs.dom.html.Div
+
+import scala.scalajs.js
+import scala.scalajs.js.annotation.JSImport
+import scala.scalajs.js.undefined
 import scalable.components.PlaylistBox
 import scalable.config.Config
 import scalable.diode.AppState
 import scalable.models._
 import scalable.router.AppRouter
-
-import scala.scalajs.js
-import scala.scalajs.js.annotation.JSImport
-import scala.scalajs.js.undefined
 
 object AdminPage {
 

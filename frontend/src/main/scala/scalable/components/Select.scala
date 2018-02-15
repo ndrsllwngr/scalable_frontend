@@ -1,8 +1,9 @@
 package scalable.components
 
-import scalajs.js
-import scalajs.js.annotation._
 import japgolly.scalajs.react._
+
+import scala.scalajs.js
+import scala.scalajs.js.annotation._
 
 object Select {
   @JSImport("react-select", JSImport.Default)

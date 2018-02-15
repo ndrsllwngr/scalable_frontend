@@ -2,6 +2,7 @@ package scalable.router
 
 import japgolly.scalajs.react.extra.router._
 import japgolly.scalajs.react.vdom.html_<^._
+
 import scalable.components.Layout
 import scalable.diode.AppCircuit
 import scalable.pages._

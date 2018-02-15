@@ -2,6 +2,7 @@ package scalable.components
 
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
+
 import scalable.json._
 import scalable.models._
 

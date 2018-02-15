@@ -3,6 +3,7 @@ package scalable.components
 import diode.react.ModelProxy
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
+
 import scalable.diode.AppState
 
 object LoadingIndicator {

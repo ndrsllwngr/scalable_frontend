@@ -7,16 +7,16 @@ import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
 import japgolly.scalajs.react.{BackendScope, Callback, ReactEventFromInput, ScalaComponent}
 import org.scalajs.dom.html
 import org.scalajs.dom.html.Div
+
+import scala.concurrent.Future
+import scala.scalajs.js
+import scala.scalajs.js.annotation.JSImport
 import scalable.components.PhotoFeedBox
 import scalable.config.Config
 import scalable.diode.AppState
 import scalable.json.RestService
 import scalable.models.PhotoReturn
 import scalable.router.AppRouter
-
-import scala.concurrent.Future
-import scala.scalajs.js
-import scala.scalajs.js.annotation.JSImport
 
 
 object PhotoFeedPage {

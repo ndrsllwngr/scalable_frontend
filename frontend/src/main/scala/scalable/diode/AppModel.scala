@@ -1,6 +1,7 @@
 package scalable.diode
 
 import diode.Action
+
 import scalable.models._
 
 case class AppState (

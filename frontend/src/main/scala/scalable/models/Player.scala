@@ -2,7 +2,6 @@ package scalable.models
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation._
-import org.scalajs.dom._
 
   trait Event extends js.Object {
     val target:  js.UndefOr[Player] = js.native

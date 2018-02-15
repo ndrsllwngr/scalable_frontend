@@ -3,6 +3,7 @@ package scalable.components
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^._
 import japgolly.scalajs.react.{BackendScope, ScalaComponent}
+
 import scalable.config.Config
 import scalable.models._
 import scalable.router.AppRouter

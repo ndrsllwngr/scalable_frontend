@@ -1,19 +1,14 @@
 package scalable.components
 
-import diode.Action
 import diode.react.ModelProxy
-
-import scala.concurrent.ExecutionContext.Implicits.global
 import japgolly.scalajs.react._
-import japgolly.scalajs.react.vdom.html_<^._
 import japgolly.scalajs.react.extra.router.RouterCtl
-import org.scalajs.dom
+import japgolly.scalajs.react.vdom.html_<^._
+
 import scalable.config.Config
+import scalable.diode._
 import scalable.models._
 import scalable.router.AppRouter
-import io.circe.syntax._
-import io.circe.generic.auto._
-import scalable.diode._
 
 object PlaylistBox {
 
