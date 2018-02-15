@@ -28,8 +28,6 @@ object PlaylistBox {
     val host: String = Config.AppConfig.apiHost
 
     def render(props: Props): VdomElement = {
-
-
       <.div(getSongs(props).toVdomArray)
     }
   }
@@ -43,7 +41,7 @@ object PlaylistBox {
       case Some(id) => songs.map(x => {
         songView(x,id)
       })
-      case None => Seq(<.p("hallo"))
+      case None => Seq(<.p("No party ID set"))
     }
 
   }

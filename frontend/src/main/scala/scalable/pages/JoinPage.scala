@@ -50,7 +50,7 @@ object JoinPage {
 
     def navigateToHomePage(): Callback = bs.props.flatMap { props =>{
       RestService.getSongs(props.proxy.value.partyId.get).map{songs =>
-        AppCircuit.dispatch(SetSongsForParty(songs)) //TODO
+        AppCircuit.dispatch(SetSongsForParty(songs))
       }
       props.ctl.set(AppRouter.HomeRoute)  //TODO
       }

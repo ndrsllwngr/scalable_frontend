@@ -6,9 +6,9 @@ import scalable.models._
 case class AppState (
                     partyId:Option[String],
                     songList:List[Song],
-                      videoSuggestions: List[VideoResponse],
-                      selectedVideo: Option[VideoResponse],
-                      isLoading: Boolean
+                    videoSuggestions: List[VideoResponse],
+                    selectedVideo: Option[VideoResponse],
+                    isLoading: Boolean
                     )
 
 case class AppModel(
@@ -16,11 +16,10 @@ case class AppModel(
                    )
 
 
-//TODO
+
 case class SetPartyId(partyId: String) extends Action
 
 case class SetSongsForParty(songList: List[Song]) extends Action
-
 
 case class GetVideoSuggestions(suggestions: List[VideoResponse]) extends Action
 

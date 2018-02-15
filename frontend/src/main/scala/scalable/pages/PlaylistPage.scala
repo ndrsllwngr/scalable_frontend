@@ -9,19 +9,20 @@ import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^._
 import org.scalajs.dom
 import org.scalajs.dom.ext.Ajax
-import org.scalajs.dom.html
 import slogging.StrictLogging
-import scalable.components.{PlaylistBox, Select}
-import scalable.diode.{AppCircuit, _}
-import scalable.models.{Song, VideoResponse, YoutubeResponse}
-import scalable.router.AppRouter
-import scalable.json.RestService
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters._
 import scala.scalajs.js.annotation._
+import scala.scalajs.js.timers._
+import scalable.components.{PlaylistBox, Select}
+import scalable.config.Config
+import scalable.diode.{AppCircuit, _}
+import scalable.json.RestService
+import scalable.models.{VideoResponse, YoutubeResponse}
+import scalable.router.AppRouter
 
 object PlaylistPage {
 
@@ -54,7 +55,22 @@ object PlaylistPage {
 
   class Backend($: BackendScope[Props, State]) extends StrictLogging {
 
-    def mounted: Callback = Callback.log("Mounted PlayListPage!")
+    def mounted: Callback = Callback{
+      getData();
+    }
+
+    def getData(): Unit ={
+      setTimeout(1000) { // note the absence of () =>
+        Config.partyId match {
+          case Some(id) => RestService.getSongs(id).map{songs =>
+            println("Getting Data")
+            AppCircuit.dispatch(SetSongsForParty(songs))
+          }
+          case None => println("NO PARTY ID")
+        }
+        getData()
+      }
+    }
 
     def getSelectOptions(data: List[VideoResponse], intputValue: String) = {
       data.zipWithIndex.map { case (item, index) => Select.Options(

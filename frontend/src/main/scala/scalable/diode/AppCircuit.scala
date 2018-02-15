@@ -2,6 +2,8 @@ package scalable.diode
 
 import diode._
 import diode.react.ReactConnector
+
+import scalable.config.Config
 import scalable.models._
 
 object AppCircuit extends Circuit[AppModel] with ReactConnector[AppModel] {
@@ -25,7 +27,10 @@ object AppCircuit extends Circuit[AppModel] with ReactConnector[AppModel] {
 
 class PlaylistPageHandler[M](modelRW: ModelRW[M, AppState]) extends ActionHandler(modelRW) {
   override def handle = {
-    case SetPartyId(partyId) => updated(value.copy(partyId = Some(partyId)))
+    case SetPartyId(partyId) => {
+      Config.partyId = Some(partyId)
+      updated(value.copy(partyId = Some(partyId)))
+    }
     case SetSongsForParty(songs) => updated(value.copy(songList = songs))
     case GetVideoSuggestions(videoSuggestions) => updated(value.copy(videoSuggestions = videoSuggestions))
     case SelectVideo(video) => updated(value.copy(selectedVideo = video))
