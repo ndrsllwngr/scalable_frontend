@@ -6,13 +6,13 @@ import weatherApp.models._
 import org.scalajs.dom.ext.Ajax
 
 import scala.concurrent.Future
-
 import io.circe.parser.decode
 import io.circe.generic.auto._
 import io.circe.syntax._
+import slogging.StrictLogging
 
 
-object RestService {
+object RestService extends StrictLogging{
 
   val host: String = Config.AppConfig.apiHost
 
@@ -90,7 +90,8 @@ object RestService {
 
   def addPhoto(downloadUrl: String, partyID: String): Future[Int] ={
     val content = AddPhotosToParty(downloadUrl).asJson.asInstanceOf[Ajax.InputData]
-    Ajax.post(
+    logger.debug(content.toString)
+    Ajax.put(
       url = s"$host/party/photo/$partyID",
       data = content,
       headers = Map("Content-Type" -> "application/json")
