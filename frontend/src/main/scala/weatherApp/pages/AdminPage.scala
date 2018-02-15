@@ -86,7 +86,17 @@ object AdminPage {
     undefined
   }
 
+  def loadNextSong(player: Player): Unit ={
+
+  }
+
   def onPlayerStateChange(e: Event): js.UndefOr[(Event) => Any] = {
+    e.target.whenDefined(p =>{
+      if (p.getPlayerState() == 1){
+          loadNextSong(p)
+      }
+      TagMod()
+    })
     undefined
   }
 

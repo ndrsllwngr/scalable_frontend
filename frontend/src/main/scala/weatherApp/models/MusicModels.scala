@@ -10,8 +10,8 @@ case class PartyCreateResponse
 
 case class Song
 (
-  id: Int,
-  //id: Long,
+  //id: Int,
+  id: Long,
   streamingServiceID: String,
   name: String,
   artist: String,
@@ -53,17 +53,5 @@ case class SetSongPlayed
   partyID: String
 )
 
-case class AddPhotosToParty
-(
-  url: String
-)
-
-case class PhotoReturn
-(
-  id: Long,
-  url: String,
-  upvotes: Int,
-  downvote: Int
-)
 
 

@@ -104,4 +104,16 @@ object RestService extends StrictLogging{
     }
   }
 
+  def getPhotos(partyID: String): Future[List[PhotoReturn]] = {
+    Ajax.get(
+      url = s"$host/party/photo/$partyID"
+    ).map { res =>
+      val option = decode[List[PhotoReturn]](res.responseText)
+      option match {
+        case Left(_) => List.empty[PhotoReturn]
+        case Right(songList) => songList
+      }
+    }
+  }
+
 }

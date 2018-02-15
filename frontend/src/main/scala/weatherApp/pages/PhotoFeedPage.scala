@@ -7,11 +7,14 @@ import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
 import japgolly.scalajs.react.{BackendScope, Callback, ReactEventFromInput, ScalaComponent}
 import org.scalajs.dom.html
 import org.scalajs.dom.html.Div
+import weatherApp.components.PhotoFeedBox
 import weatherApp.config.Config
 import weatherApp.diode.AppState
 import weatherApp.json.RestService
+import weatherApp.models.PhotoReturn
 import weatherApp.router.AppRouter
 
+import scala.concurrent.Future
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 
@@ -37,6 +40,8 @@ object PhotoFeedPage {
     val host: String = Config.AppConfig.apiHost
 
     var fileChooser : html.Input = _
+    var photoFeed : html.Div = _
+
 
     val apiKey = "AIzaSyC8vZ20nRwOpSmuyF0TjimoHHqSxkWK4cE"
     val  authDomain = "scalable-195120.firebaseapp.com"
@@ -59,16 +64,22 @@ object PhotoFeedPage {
       js.undefined
     }
 
+    def getPhotofeed(p: Props) : Future[List[PhotoReturn]] =  {
+       RestService.getPhotos(p.roomCode)
+    }
+
     def render(p: Props): VdomTagOf[Div] = {
       val proxy = p.proxy()
+
+      var photoFeedBox= PhotoFeedBox(PhotoFeedBox.Props(p.roomCode, Option.empty,p.ctl))
+
       <.div(^.cls := "form-group",
         <.label("Fotofeed"),
         <.div(
           <.input(^.`type` := "file", ^.cls := "form-control", ^.id := "files",
             ^.onChange ==> onPhotoChanged(p))
           .ref(fileChooser = _)
-
-        )
+        ),<.div(photoFeedBox).ref(photoFeed = _)
       )
     }
 
