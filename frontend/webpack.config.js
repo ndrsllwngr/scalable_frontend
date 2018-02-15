@@ -9,7 +9,7 @@ module.exports = {
     hot: true,
     inline: true,
     contentBase: './assets',
-    port: 8080,
+    port: 8080
   },
   entry: [
     path.resolve(__dirname, 'target/scala-2.12/scalable-client-fastopt.js')
