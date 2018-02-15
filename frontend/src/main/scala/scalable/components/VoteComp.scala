@@ -55,7 +55,7 @@ object VoteComp {
           ^.classSet(
             "text-success" -> colorGreen(props.song),
             "text-danger" -> colorRed(props.song)),
-          calcTotal(props.song).toString,
+          calcTotal(props.song).toString),
         <.div(
           ^.cls := "align-self-center",
           <.button(
@@ -65,7 +65,7 @@ object VoteComp {
               ^.alt := "downvote",
               ^.src := "/images/ic_expand_more_black_24px.svg"
             )
-          ))
+          )
       ))
   }
 

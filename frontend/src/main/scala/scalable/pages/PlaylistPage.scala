@@ -82,7 +82,7 @@ object PlaylistPage {
     def loadSearchResults(searchText: String): Callback = {
       val host = "https://www.googleapis.com/youtube/v3/search"
       val apiKey = "AIzaSyCLQQRT9Qf_rY12nEAS7cc7k5LO1W_qhcg"
-      val setLoading = $.modState(s => s.copy(isLoading = true)) // TODO always LOADING
+      val setLoading = $.modState(s => s.copy(isLoading = true))
 
       def getData(): Future[List[VideoResponse]] = {
         val ytData = YtRequest(apiKey, 1, "snippet", searchText).asJson.asInstanceOf[dom.ext.Ajax.InputData]
