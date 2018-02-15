@@ -56,7 +56,7 @@ object AppRouter {
   }
 
     def renderWeatherPage(ctl: RouterCtl[Page]) = {
-      connection(proxy => PlaylistPage.Component(PlaylistPage.Props(proxy, ctl)))
+      connection(proxy => PlaylistPage.Component(PlaylistPage.Props("HEOGB7", proxy, ctl)))
     }
 
   def renderCityPage(p: CityRoute, ctl: RouterCtl[Page]) = {

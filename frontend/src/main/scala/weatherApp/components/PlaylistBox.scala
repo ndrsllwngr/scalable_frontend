@@ -15,8 +15,8 @@ import weatherApp.diode.{AddCityToFavs, AppCircuit, RemoveCityFromFavs}
 object PlaylistBox {
 
   case class Props (
-                     partyID: String = "partyID",
-                     song: Option[SongResponse] = None,
+                     partyID: String,
+                     song: Option[List[Song]] = None,
                      ctl: RouterCtl[AppRouter.Page]
                    )
 
@@ -50,9 +50,9 @@ object PlaylistBox {
     }
 
     def render(props: Props): VdomElement = {
-      <.div(
-        props.song.map(song => {
-          song.song.map(x => {
+        props.song match {
+          case None => <.div()
+          case Some(song) => <.div(song.map(x => {
             val name = x.name
             val artist = x.artist
             val albumCoverUrl = x.albumCoverUrl
@@ -65,7 +65,7 @@ object PlaylistBox {
               <.div(
                 ^.cls := "d-flex flex-row justify-content-start mr-auto",
                 <.div(
-                  ^.cls := "",// AlbumCover
+                  ^.cls := "", // AlbumCover
                   <.img(
                     ^.cls := "",
                     ^.maxWidth := 118.px,
@@ -79,17 +79,15 @@ object PlaylistBox {
                     ^.cls := "h3 text-truncate",
                     name,
                     <.br,
-                  <.div(
-                    ^.cls := "h6 mb-0 text-muted text-truncate",
-                    artist)
-                ))),
+                    <.div(
+                      ^.cls := "h6 mb-0 text-muted text-truncate",
+                      artist)
+                  ))),
               <.div(^.cls := "d-flex align-items-center d-inline-block",
-                VoteComp(VoteComp.Props(props.partyID,Some(x))))
+                VoteComp(VoteComp.Props(props.partyID, Some(x))))
             )
-          }).toVdomArray
-
-        }).whenDefined
-      )
+          }).toVdomArray)
+        }
     }
   }
 
