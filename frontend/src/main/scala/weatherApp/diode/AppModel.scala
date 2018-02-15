@@ -11,8 +11,7 @@ case class AppState (
                       selectedVideo: Option[VideoResponse],
                       isLoading: Boolean,
                       userInfo: Option[UserResponse],
-                      favCitiesWeather: List[WeatherResponse],
-                      partyId: String
+                      favCitiesWeather: List[WeatherResponse]
                     )
 
 case class AppModel(

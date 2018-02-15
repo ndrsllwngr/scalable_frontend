@@ -55,28 +55,6 @@ object PlaylistPage {
 
   class Backend($: BackendScope[Props, State]) extends StrictLogging {
 
-    var interval: js.UndefOr[js.timers.SetIntervalHandle] =
-      js.undefined
-
-    def tick(p: Props) = {
-      val songR = RestService.getSongs(p.partyID)
-      songR.map(f =>
-        $.modState(s => s.copy(songList = f))
-        $.
-      )
-    }
-
-    def start(p: Props) = Callback {
-      interval = js.timers.setInterval(1000)(t)
-
-    }
-
-    def clear = Callback {
-      this.props
-      interval foreach js.timers.clearInterval
-      interval = js.undefined
-    }
-
     def getPlaylist(p: Props) : Future[VdomElement] =  {
       println("testget")
       val songR = RestService.getSongs(p.partyID)
@@ -180,12 +158,10 @@ object PlaylistPage {
       }).runNow()
     }
 
-    var playlistBox : VdomElement =
     def render(p: Props, s: State) = {
       val proxy = p.proxy()
       val weatherData = proxy.weatherSuggestions
       val userInfo = proxy.userInfo
-      playlistBox = PlaylistBox(PlaylistBox.Props(p.partyID, Some(List.empty[Song]), p.ctl))
       val select = Select(
         "form-field-name",
         s.selectOptions.toJSArray,
@@ -206,7 +182,6 @@ object PlaylistPage {
           select
         ),
         <.div(
-          playlistBox
 
         )
       )
@@ -220,9 +195,8 @@ object PlaylistPage {
       searchData = List.empty[VideoResponse],
       selectOptions = List.empty[Select.Options],
       selectedData = None : Option[VideoResponse],
-      songList = List.empty[Song]
+      partyID = "partyID"
     ))
     .renderBackend[Backend]
-      .componentDidMount(_.backend.start())
     .build
 }
