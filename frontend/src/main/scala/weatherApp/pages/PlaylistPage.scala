@@ -14,6 +14,7 @@ import weatherApp.components.{PlaylistBox, Select}
 import weatherApp.diode.{AppCircuit, _}
 import weatherApp.models.{Song, SongResponse, VideoResponse, YoutubeResponse}
 import weatherApp.router.AppRouter
+import weatherApp.json.RestService
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -31,6 +32,7 @@ object PlaylistPage {
 
 
   case class Props (
+                     partyID: String = "1",
                      proxy: ModelProxy[AppState],
                      ctl: RouterCtl[AppRouter.Page]
                    )
@@ -50,6 +52,21 @@ object PlaylistPage {
   )
 
   class Backend($: BackendScope[Props, State]) extends StrictLogging {
+
+    def getPlaylist(p: Props, s: State) : Future[VdomElement] =  {
+      val songR = RestService.getSongs(p.partyID)
+      songR.map(f =>
+        <.div(
+          PlaylistBox(PlaylistBox.Props("bla",Some(f), p.ctl))
+        )
+      )
+    }
+
+    def triggerRepaint(p: Props, s: State) = Callback {
+      val x = getPlaylist(p,s).map(x =>
+          x.renderIntoDOM(dom.document.getElementById("#plBox")))
+    }
+
     def getSelectOptions(data: List[VideoResponse], intputValue: String) = {
       data.zipWithIndex.map { case (item, index) => Select.Options(
         value = s"$intputValue::$index",
@@ -60,7 +77,7 @@ object PlaylistPage {
     def loadSearchResults(searchText: String): Callback = {
       val host = "https://www.googleapis.com/youtube/v3/search"
       val apiKey = "AIzaSyCLQQRT9Qf_rY12nEAS7cc7k5LO1W_qhcg"
-      val setLoading = $.modState(s => s.copy(isLoading = true))
+      val setLoading = $.modState(s => s.copy(isLoading = true)) // TODO always LOADING
 
       def getData(): Future[List[VideoResponse]] = {
         val ytData = YtRequest(apiKey, 1, "snippet", searchText).asJson.asInstanceOf[dom.ext.Ajax.InputData]
@@ -161,6 +178,7 @@ object PlaylistPage {
           select
         ),
         <.div(
+          ^.id:="plBox",
           PlaylistBox(PlaylistBox.Props("bla",Some(SongResponse(List(Song(864,"streamingService!","Fineshrine","Purity Ring","Shrines","https://i.scdn.co/image/0beb85a35a4ef3242432207f1a323151db693bce",5,1,false),
             Song(865,"streamingService!","Howling","RY X","Dawn","https://i.scdn.co/image/df4dd74119df85d052c0a3423cadca459a8331c1",3,3,false),
             Song(866,"streamingService!","Spectyrum (Say My Name) - Calvin Harris Remix","Florence + The Machine","None","https://i.scdn.co/image/75c1be006328c8b1888b29728deec0f455ac8207",0,1,false)
