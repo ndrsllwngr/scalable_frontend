@@ -1,23 +1,18 @@
 package weatherApp.json
 
-import weatherApp.models.PartyCreateResponse._
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import weatherApp.config.Config
 import weatherApp.models._
-import io.circe.generic.auto._
-import io.circe.syntax._
 import org.scalajs.dom.ext.Ajax
 
 import scala.concurrent.Future
-import scala.scalajs.js.JSON
 
-import upickle.default._
-import slogging.StrictLogging
+import io.circe.parser.decode
+import io.circe.generic.auto._
+import io.circe.syntax._
 
 
-
-object RestService extends StrictLogging {
+object RestService {
 
   val host: String = Config.AppConfig.apiHost
 
@@ -28,49 +23,69 @@ object RestService extends StrictLogging {
       data = content,
       headers = Map("Content-Type" -> "text/plain")
     ).map { res =>
-      val partyCreateResponse = read[PartyCreateResponse](res.responseText)
-      println(res.responseText)
-      partyCreateResponse
+      val option = decode[PartyCreateResponse](res.responseText)
+      option match {
+        case Left(_) => PartyCreateResponse("", "", "", "")
+        case Right(partyCreateResponse) => partyCreateResponse
+      }
     }
   }
 
-  def addSongToParty(partyID : String, sendSong: SendSong): Future[Song] = {
+  def addSongToParty(partyID: String, sendSong: SendSong): Future[Song] = {
     val content = sendSong.asJson.asInstanceOf[Ajax.InputData]
     Ajax.put(
       url = s"$host/party/song/$partyID",
       data = content,
       headers = Map("Content-Type" -> "application/json")
     ).map { res =>
-      val song = JSON.parse(res.responseText).asInstanceOf[Song]
-      song
+      val option = decode[Song](res.responseText)
+      option match {
+        case Left(_) => Song(0, "", "", "", "", "", 0, 0, false)
+        case Right(song) => song
+      }
     }
   }
 
-  def getSongs(partyID: String): Future[SongResponse] = {
-
+  def getSongs(partyID: String): Future[List[Song]] = {
     Ajax.get(
       url = s"$host/party/song/$partyID"
     ).map { res =>
-      val songResponse= JSON.parse(res.responseText).asInstanceOf[SongResponse]
-      songResponse
+      val option = decode[List[Song]](res.responseText)
+      option match {
+        case Left(_) => List.empty[Song]
+        case Right(songList) => songList
+      }
     }
   }
 
-    def addPartyVote(partyID: String, song: Song, positive: Boolean, voteType: String): Future[Int] = {
+  def addPartyVote(partyID: String, song: Song, positive: Boolean, voteType: String): Future[Int] = {
     val content = PartyVote(partyID, song.id, positive, voteType).asJson.asInstanceOf[Ajax.InputData]
-     Ajax.post(
-        url = s"$host/party/vote",
-        data = content,
-        headers = Map("Content-Type" -> "application/json")
-      ).map(res => res.asInstanceOf[Int])
+    Ajax.post(
+      url = s"$host/party/vote",
+      data = content,
+      headers = Map("Content-Type" -> "application/json")
+    ).map { res =>
+      val option = decode[Int](res.responseText)
+      option match {
+        case Left(_) => -1
+        case Right(int) => int
+      }
     }
+  }
 
-    def setSongPlayed(songID: Long, partyID: String): Future[Int] = {
-      val content = SetSongPlayed(songID, partyID).asJson.asInstanceOf[Ajax.InputData]
-      Ajax.post(
-        url = s"$host/party/song",
-        data = content,
-        headers = Map("Content-Type" -> "application/json")
-      ).map(res => res.asInstanceOf[Int])
+  def setSongPlayed(songID: Long, partyID: String): Future[Int] = {
+    val content = SetSongPlayed(songID, partyID).asJson.asInstanceOf[Ajax.InputData]
+    Ajax.post(
+      url = s"$host/party/song",
+      data = content,
+      headers = Map("Content-Type" -> "application/json")
+    ).map { res =>
+      val option = decode[Int](res.responseText)
+      option match {
+        case Left(_) => -1
+        case Right(int) => int
+      }
     }
+  }
+
 }
