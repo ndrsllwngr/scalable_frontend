@@ -36,7 +36,7 @@ object VoteComp {
 //    }
 
     def vote(partyID: String, song: Song, positive: Boolean) : Callback = Callback {
-      restService.addPartyVote(partyID, song, positive, "SONG")
+      RestService.addPartyVote(partyID, song, positive, "SONG")
     }
     def colorGreen(song: Song) : Boolean = {
         if(calcTotal(song) > 0){
