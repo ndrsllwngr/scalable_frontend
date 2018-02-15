@@ -46,6 +46,7 @@ object Main extends JSApp {
 
   override def main(): Unit = {
     require()
+
     val target = dom.document.getElementById("target")
     AppRouter.router().renderIntoDOM(target)
   }
