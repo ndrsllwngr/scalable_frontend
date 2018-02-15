@@ -4,6 +4,8 @@ import diode.Action
 import weatherApp.models._
 
 case class AppState (
+                    partyId:Option[String],
+                    songList:List[Song],
                       weatherSuggestions: List[WeatherResponse],
                       videoSuggestions: List[VideoResponse],
                       forecast: Option[WeatherForecastResponse],
@@ -18,6 +20,13 @@ case class AppModel(
                      state: AppState
                    )
 
+
+//TODO
+case class SetPartyId(partyId: String) extends Action
+
+case class SetSongsForParty(songList: List[Song]) extends Action
+
+//TODO
 case class GetWeatherSuggestions(suggestions: List[WeatherResponse]) extends Action
 
 case class GetVideoSuggestions(suggestions: List[VideoResponse]) extends Action

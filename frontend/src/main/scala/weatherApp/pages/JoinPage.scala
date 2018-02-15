@@ -6,11 +6,15 @@ import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
 import japgolly.scalajs.react.{BackendScope, Callback, ReactEventFromInput, ScalaComponent}
 import org.scalajs.dom.html.Div
 import weatherApp.config.Config
-import weatherApp.diode.AppState
+import weatherApp.diode._
+import weatherApp.json.RestService
 import weatherApp.router.AppRouter
+
+
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
+import scala.concurrent.ExecutionContext.Implicits.global
 
 object JoinPage {
 
@@ -41,11 +45,15 @@ object JoinPage {
 
     def onTextChange(roomCodeState: JoinState)(e: ReactEventFromInput) = Callback {
       roomCodeState.input = e.target.value
-
+      AppCircuit.dispatch(SetPartyId(e.target.value))
     }
 
-    def navigateToHomePage(): Callback = bs.props.flatMap { props =>
-      props.ctl.set(AppRouter.HomeRoute)
+    def navigateToHomePage(): Callback = bs.props.flatMap { props =>{
+      RestService.getSongs(props.proxy.value.partyId.get).map{songs =>
+        AppCircuit.dispatch(SetSongsForParty(songs)) //TODO
+      }
+      props.ctl.set(AppRouter.HomeRoute)  //TODO
+      }
     }
 
     def render(p: Props, s: JoinState): VdomTagOf[Div] = {

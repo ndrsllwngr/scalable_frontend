@@ -55,21 +55,7 @@ object PlaylistPage {
 
   class Backend($: BackendScope[Props, State]) extends StrictLogging {
 
-    def getPlaylist(p: Props) : Future[VdomElement] =  {
-      println("testget")
-      val songR = RestService.getSongs(p.partyID)
-      songR.map(f =>
-        <.div(
-          PlaylistBox(PlaylistBox.Props(p.partyID,Some(f), p.ctl))
-        )
-      )
-    }
-
-    def triggerRepaint(p: Props) = Callback {
-      println("testrepaint")
-      val x = getPlaylist(p).map(x =>
-          x.renderIntoDOM(dom.document.getElementById("#plBox")))
-    }
+    def mounted: Callback = Callback.log("Mounted PlayListPage!")
 
     def getSelectOptions(data: List[VideoResponse], intputValue: String) = {
       data.zipWithIndex.map { case (item, index) => Select.Options(
@@ -182,9 +168,9 @@ object PlaylistPage {
           select
         ),
         <.div(
-
+          PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl)
         )
-      )
+      ))
     }
   }
 
@@ -198,5 +184,6 @@ object PlaylistPage {
       partyID = "partyID"
     ))
     .renderBackend[Backend]
+    .componentDidMount(scope => scope.backend.mounted)
     .build
 }
