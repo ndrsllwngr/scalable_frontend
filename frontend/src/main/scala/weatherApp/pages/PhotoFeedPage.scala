@@ -1,9 +1,11 @@
 package weatherApp.pages
 
 import diode.react.ModelProxy
+import firebase.{Firebase, FirebaseConfig}
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
-import japgolly.scalajs.react.{BackendScope, Callback, ReactEvent, ScalaComponent}
+import japgolly.scalajs.react.{BackendScope, Callback, ReactEventFromInput, ScalaComponent}
+import org.scalajs.dom.html
 import org.scalajs.dom.html.Div
 import weatherApp.config.Config
 import weatherApp.diode.AppState
@@ -32,11 +34,24 @@ object PhotoFeedPage {
   class Backend(bs: BackendScope[Props, Unit]) {
     val host: String = Config.AppConfig.apiHost
 
+    var fileChooser : html.Input = _
+    //var choosenFile : Option[raw.File]
+
+    val apiKey = "AIzaSyC8vZ20nRwOpSmuyF0TjimoHHqSxkWK4cE"
+    val  authDomain = "scalable-195120.firebaseapp.com"
+    val  databaseURL= "https://scalable-195120.firebaseio.com"
+    val  projectId = "scalable-195120"
+    val  storageBucket = ""
+    val  messagingSenderId = "547307244060"
+
     def choosePhoto(): Callback = {
       Callback.alert("choosePhoto")
     }
 
-    def onPhotoChanged(): js.UndefOr[ReactEvent => Callback] = {
+    def onPhotoChanged(props: Props) (e: ReactEventFromInput) = Callback {
+      val choosenFile = e.target.files.item(0)
+     // val storage = Firebase.storage().refFromURL(s"gs://scalable-195120.appspot.com/${props.roomCode}/${choosenFile.name}")
+
       js.undefined
     }
 
@@ -45,8 +60,10 @@ object PhotoFeedPage {
       <.div(^.cls := "form-group",
         <.label("Fotofeed"),
         <.div(
-          <.input(^.`type` := "file", ^.cls := "form-control", ^.id := "files"
-        )
+          <.input(^.`type` := "file", ^.cls := "form-control", ^.id := "files",
+            ^.onChange ==> onPhotoChanged(p))
+          .ref(fileChooser = _)
+
         )
       )
     }
