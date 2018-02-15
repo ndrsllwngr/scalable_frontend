@@ -17,8 +17,8 @@ object VoteComp {
   //  Reusability.caseClass
 
   case class Props (
-                          partyID: String = "partyID",
-                          song: Option[Song] = None
+                          partyID: String,
+                          song: Song
                         )
 
   class Backend(bs: BackendScope[Props, Unit]) {
@@ -62,7 +62,7 @@ object VoteComp {
           ^.cls := "align-self-center",
           <.button(
             ^.cls := "btn btn-link",
-            ^.onClick --> vote(props.partyID, props.song.head, positive = true),
+            ^.onClick --> vote(props.partyID, props.song, positive = true),
             <.img(
               ^.alt := "upvote",
               ^.src := "/images/ic_expand_less_black_24px.svg"
@@ -71,25 +71,21 @@ object VoteComp {
         <.div(
           ^.classSet(
            "p-2 align-self-center" -> true),
-          props.song.map(song => {
-            ^.classSet(
-              "text-success" -> colorGreen(song),
-              "text-danger" -> colorRed(song))
-          }).whenDefined,
-          props.song.map(song => {
-            calcTotal(song).toString
-          }).whenDefined),
+          ^.classSet(
+            "text-success" -> colorGreen(props.song),
+            "text-danger" -> colorRed(props.song)),
+          calcTotal(props.song).toString,
         <.div(
           ^.cls := "align-self-center",
           <.button(
             ^.cls := "btn btn-link",
-            ^.onClick --> vote(props.partyID, props.song.head, positive = false),
+            ^.onClick --> vote(props.partyID, props.song, positive = false),
             <.img(
               ^.alt := "downvote",
               ^.src := "/images/ic_expand_more_black_24px.svg"
             )
           ))
-      )
+      ))
   }
 
   val Component = ScalaComponent.builder[Props]("VoteComp")
