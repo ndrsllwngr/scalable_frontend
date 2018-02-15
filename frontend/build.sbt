@@ -26,5 +26,4 @@ libraryDependencies += "io.suzaku" %%% "diode" % "1.1.2"
 libraryDependencies += "io.suzaku" %%% "diode-devtools" % "1.1.2"
 libraryDependencies += "io.suzaku" %%% "diode-react"% "1.1.2"
 libraryDependencies += "biz.enef" %%% "slogging" % "0.6.1"
-libraryDependencies += "com.lihaoyi" %%% "upickle" % "0.5.1"
 
