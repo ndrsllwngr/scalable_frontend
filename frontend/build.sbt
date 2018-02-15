@@ -1,7 +1,7 @@
 enablePlugins(ScalaJSPlugin)
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
 
-name := "weather app"
+name := "scalable-client"
 scalaVersion := "2.12.4"
 
 // This is an application with a main method
