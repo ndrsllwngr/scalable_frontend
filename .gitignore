@@ -17,3 +17,4 @@ run_app.sh
 # frontend ignores
 node_modules
 .DS_Store
+.idea
