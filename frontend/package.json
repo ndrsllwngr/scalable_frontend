@@ -1,5 +1,5 @@
 {
-  "name": "weather-app",
+  "name": "scalable-client",
   "license": "MIT",
   "version": "1.0.0",
   "devDependencies": {
@@ -12,9 +12,7 @@
     "file-loader": "^0.11.1",
     "font-loader": "^0.1.2",
     "react-addons-test-utils": "^15.4.2",
-    "node-sass": "^4.5.3",
     "open-browser-webpack-plugin": "^0.0.5",
-    "sass-loader": "^6.0.5",
     "style-loader": "^0.16.1",
     "resolve-url-loader": "^2.0.2",
     "url-loader": "^0.5.8",
@@ -23,17 +21,13 @@
     "webpack-merge": "^4.1.0"
   },
   "dependencies": {
-    "google-map-react": "^0.24.0",
     "lodash.throttle": "^4.1.1",
     "normalize.css": "^7.0.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "react-select": "^1.0.0-rc.4",
-    "weather-icons": "erikflowers/weather-icons"
+    "react-select": "^1.0.0-rc.4"
   },
   "scripts": {
-    "start": "API_HOST=http://localhost:9000 webpack-dev-server --config webpack.config.js --devtool eval --progress --hot",
-    "start:frontend": "API_HOST=http://localhost:5000 webpack-dev-server --config webpack.config.js --devtool eval --progress --hot",
-    "build": "rm -rf ./build && sbt fullOptJS && API_HOST=http://ec2-52-59-160-108.eu-central-1.compute.amazonaws.com/api webpack --config webpack.production.config.js"
-  }
+    "start": "API_HOST=http://localhost:5000 webpack-dev-server --config webpack.config.js --devtool eval --progress --hot"
+    }
 }

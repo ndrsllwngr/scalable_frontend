@@ -12,7 +12,7 @@ module.exports = {
     port: 8080,
   },
   entry: [
-    path.resolve(__dirname, 'target/scala-2.12/weather-app-fastopt.js')
+    path.resolve(__dirname, 'target/scala-2.12/scalable-client-fastopt.js')
   ],
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -21,15 +21,6 @@ module.exports = {
   },
   module: {
     loaders: [
-      {
-        test: /\.scss$/,
-        use: [
-            'style-loader',
-            'css-loader',
-            'resolve-url-loader',
-            'sass-loader?sourceMap'
-          ]
-      },
       {
         test: /\.css$/,
         use: [
@@ -41,27 +32,12 @@ module.exports = {
             options: {
               includePaths: [
                 path.resolve('./node_modules/normalize.css/normalize.css'),
-                path.resolve('./node_modules/react-select/dist/react-select.css'),
-                path.resolve('./node_modules/weather-icons/css/weather-icons.min.css')
-              ]
-            }
-          }
-        ]
-      },
-      {
-        test   : /\.(ttf|eot|svg|woff(2)?|png)(\?[a-z0-9=&.]+)?$/,
-        use : [
-          {
-            loader: 'file-loader',
-            options: {
-              includePaths: [
-                path.resolve('./node_modules/weather-icons/font')
+                path.resolve('./node_modules/react-select/dist/react-select.css')
               ]
             }
           }
         ]
       }
-
     ]
   },
   resolve: {
