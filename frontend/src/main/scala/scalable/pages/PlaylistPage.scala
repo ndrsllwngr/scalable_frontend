@@ -60,7 +60,7 @@ object PlaylistPage {
     }
 
     def getData(): Unit ={
-      setTimeout(1000) { // note the absence of () =>
+      setTimeout(10000) { // note the absence of () =>
         Config.partyId match {
           case Some(id) => RestService.getSongs(id).map{songs =>
             println("Getting Data")
@@ -86,7 +86,6 @@ object PlaylistPage {
 
       def getData(): Future[List[VideoResponse]] = {
         val ytData = YtRequest(apiKey, 1, "snippet", searchText).asJson.asInstanceOf[dom.ext.Ajax.InputData]
-        logger.debug(ytData.toString)
         Ajax.get(
           url = songSearch(searchText,apiKey,host)
         ).map(xhr => {
@@ -119,9 +118,9 @@ object PlaylistPage {
     val throttleInputValueChange: js.Dynamic = {
       throttle(() => {
         $.state.map { state =>
-          val city = state.inputValue
-          if (city.nonEmpty) {
-            loadSearchResults(city).runNow()
+          val song = state.inputValue
+          if (song.nonEmpty) {
+            loadSearchResults(song).runNow()
           }
         }.runNow()
       }, 400)
@@ -180,8 +179,12 @@ object PlaylistPage {
         pIsLoading = s.isLoading
       )
       <.div(
-        <.div("Search for artist or song: "),
+        ^.maxWidth := 800.px,
         <.div(
+          ^.cls := "h6",
+          "Add song to playlist:"),
+        <.div(
+          ^.cls := "mb-2",
           select
         ),
         <.div(

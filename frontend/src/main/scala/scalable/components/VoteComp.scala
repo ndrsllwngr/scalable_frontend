@@ -9,33 +9,32 @@ import scalable.models._
 
 object VoteComp {
 
-  case class Props (
-                          partyID: String,
-                          song: Song
-                        )
+  case class Props (voteAble: VoteAble)
 
   class Backend(bs: BackendScope[Props, Unit]) {
 
-    def vote(partyID: String, song: Song, positive: Boolean) : Callback = Callback {
-      RestService.addPartyVote(partyID, song, positive, "SONG")
+    def vote(voteAble: VoteAble, positive: Boolean) : Callback = Callback {
+      RestService.addPartyVote(voteAble.partyID, voteAble.compId, positive, voteAble.voteType)
     }
-    def colorGreen(song: Song) : Boolean = {
-        if(calcTotal(song) > 0){
+
+    def colorGreen(voteAble: VoteAble) : Boolean = {
+        if(calcTotal(voteAble) > 0){
           true
         } else {
           false
         }
     }
-    def colorRed(song: Song) : Boolean = {
-      if(calcTotal(song) < 0){
+    def colorRed(voteAble: VoteAble) : Boolean = {
+      if(calcTotal(voteAble) < 0){
         true
       } else {
         false
       }
     }
-    def calcTotal(song: Song) : Int = {
-      song.upvotes - song.downvotes
+    def calcTotal(voteAble: VoteAble) : Int = {
+      voteAble.upvotes - voteAble.downvotes
     }
+
     def render(props: Props): VdomElement =
       <.div(
         ^.cls := "d-flex flex-column align-items-center align-self-center",
@@ -43,7 +42,7 @@ object VoteComp {
           ^.cls := "align-self-center",
           <.button(
             ^.cls := "btn btn-link",
-            ^.onClick --> vote(props.partyID, props.song, positive = true),
+            ^.onClick --> vote(props.voteAble, positive = true),
             <.img(
               ^.alt := "upvote",
               ^.src := "/images/ic_expand_less_black_24px.svg"
@@ -53,14 +52,14 @@ object VoteComp {
           ^.classSet(
            "p-2 align-self-center" -> true),
           ^.classSet(
-            "text-success" -> colorGreen(props.song),
-            "text-danger" -> colorRed(props.song)),
-          calcTotal(props.song).toString),
+            "text-success" -> colorGreen(props.voteAble),
+            "text-danger" -> colorRed(props.voteAble)),
+          calcTotal(props.voteAble).toString),
         <.div(
           ^.cls := "align-self-center",
           <.button(
             ^.cls := "btn btn-link",
-            ^.onClick --> vote(props.partyID, props.song, positive = false),
+            ^.onClick --> vote(props.voteAble, positive = false),
             <.img(
               ^.alt := "downvote",
               ^.src := "/images/ic_expand_more_black_24px.svg"

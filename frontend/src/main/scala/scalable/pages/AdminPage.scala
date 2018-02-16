@@ -12,6 +12,7 @@ import scala.scalajs.js.undefined
 import scalable.components.PlaylistBox
 import scalable.config.Config
 import scalable.diode.AppState
+import scalable.json.RestService
 import scalable.models._
 import scalable.router.AppRouter
 
@@ -33,7 +34,57 @@ object AdminPage {
 
   class Backend(bs: BackendScope[Props, Unit]) {
     val host: String = Config.AppConfig.apiHost
-    var player: Option[Player] = Option.empty
+
+    def onPlayerReady(e: Event): js.UndefOr[(Event) => Any] = {
+      e.target.whenDefined(p => {
+        if (p.getVideoUrl().isEmpty){
+            nextSong(p)
+        }
+        else{
+          p.playVideo()
+        }
+        TagMod()
+      })
+      undefined
+    }
+
+    def nextSong(player: Player): Unit = {
+      bs.mapProps(props => {
+        resolveNext(player, props)
+      })
+    }
+
+
+    def resolveNext(player: Player, props: Props): Unit = {
+      val state = props.proxy.modelReader.apply()
+      val songList = state.songList
+      if (songList.isEmpty) {
+
+      } else {
+        loadSong(player, songList.head, props.roomCode)
+      }
+    }
+
+    def loadSong(player: Player, next: Song, roomCode: String): Unit = {
+      RestService.setSongPlaying(next.id, roomCode)
+      player.loadVideoById(next.streamingServiceID, 0.0, "hd720")
+    }
+
+    def onPlayerStateChange(e: Event): js.UndefOr[(Event) => Any] = {
+      e.target.whenDefined(p => {
+        p.getPlayerState() match {
+          case 0 => nextSong(p)
+          case -1 => p.playVideo()
+        }
+
+        TagMod()
+      })
+      undefined
+    }
+
+    def onPlayerError(e: Event): js.UndefOr[(Event) => Any] = {
+      undefined
+    }
 
     def render(p: Props): VdomTagOf[Div] = {
       val proxy = p.proxy()
@@ -44,66 +95,32 @@ object AdminPage {
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
 
       org.scalajs.dom.window.asInstanceOf[js.Dynamic].onYouTubeIframeAPIReady = () => {
-        player  = Option.apply(new Player("player", PlayerOptions(
+        val player = Option.apply(new Player("player", PlayerOptions(
           width = "640",
           height = "360",
-          videoId = "ylgXkUN6cQ0",
+          videoId = undefined,
           events = PlayerEvents(
-            onReady = onPlayerReady (_),
-            onError = onPlayerError (_),
-            onStateChange = onPlayerStateChange (_)
+            onReady = onPlayerReady(_),
+            onError = onPlayerError(_),
+            onStateChange = onPlayerStateChange(_)
           ),
           playerVars = PlayerVars(
             playsinline = 1.0
           )
         )))
       }
-
-     // "bla",Some(List(Song(864,"streamingService!","Fineshrine","Purity Ring","Shrines","https://i.scdn.co/image/0beb85a35a4ef3242432207f1a323151db693bce",5,1,false),
-     //   Song(865,"streamingService!","Howling","RY X","Dawn","https://i.scdn.co/image/df4dd74119df85d052c0a3423cadca459a8331c1",3,3,false),
-     //   Song(866,"streamingService!","Spectrum (Say My Name) - Calvin Harris Remix","Florence + The Machine","None","https://i.scdn.co/image/75c1be006328c8b1888b29728deec0f455ac8207",0,1,false)
-     // ))
-
       <.div(^.cls := "form-group",
         <.label(^.`for` := "roomcode", s"Room ${p.roomCode}"),
         <.div(^.cls := "column", ^.id := "player-view",
           <.div(^.id := "player"),
-          // TODO put playlist here
           <.div(
-          PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl))
+            PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl))
+          )
         )
-        )
-      //  <.iframe(^.id := "player", ^.`type` := "text/html", ^.width := "640", ^.height := "360",
-       //   ^.src := "http://www.youtube.com/embed/M7lc1UVf-VE?enablejsapi=1&origin=http://example.com")
       )
     }
   }
 
-  def onPlayerReady(e: Event): js.UndefOr[(Event) => Any] = {
-    e.target.whenDefined(p => {
-      p.playVideo()
-      TagMod()
-    })
-    undefined
-  }
-
-  def loadNextSong(player: Player): Unit ={
-
-  }
-
-  def onPlayerStateChange(e: Event): js.UndefOr[(Event) => Any] = {
-    e.target.whenDefined(p =>{
-      if (p.getPlayerState() == 1){
-          loadNextSong(p)
-      }
-      TagMod()
-    })
-    undefined
-  }
-
-  def onPlayerError(e: Event): js.UndefOr[(Event) => Any] = {
-    undefined
-  }
 
   val Component = ScalaComponent.builder[Props]("RoomPage")
     .renderBackend[Backend]

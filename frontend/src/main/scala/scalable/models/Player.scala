@@ -148,12 +148,12 @@ import scala.scalajs.js.annotation._
     def setShuffle(shufflePlaylist:Boolean):Unit = js.native
     def getVideoLoadedFraction():Double = js.native
 
-    // -1 – unstarted
-    // 0 – ended
-    // 1 – playing
-    // 2 – paused
-    // 3 – buffering
-    // 5 – video cued
+    /** -1 – unstarted
+     0 – ended
+     1 – playing
+     2 – paused
+     3 – buffering
+     5 – video cued */
     def getPlayerState():Double = js.native
 
     def getCurrentTime():Double = js.native

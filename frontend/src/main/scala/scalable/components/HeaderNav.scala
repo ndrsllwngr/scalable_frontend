@@ -27,7 +27,7 @@ object HeaderNav {
     val joinLink = props.ctl.link(AppRouter.JoinRoute)
     val joinAsAdminLink = props.ctl.link(AppRouter.JoinAsAdminRoute)
     val createLink = props.ctl.link(AppRouter.CreateRoute)
-    val photoFeedLink = props.ctl.link(AppRouter.PhotoRoute("C0LDVK"))
+    val photoFeedLink = props.ctl.link(AppRouter.PhotoRoute)
 
     <.div(
       ^.display := "flex",

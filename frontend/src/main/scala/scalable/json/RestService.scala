@@ -58,8 +58,8 @@ object RestService extends StrictLogging{
     }
   }
 
-  def addPartyVote(partyID: String, song: Song, positive: Boolean, voteType: String): Future[Int] = {
-    val content = PartyVote(partyID, song.id, positive, voteType).asJson.asInstanceOf[Ajax.InputData]
+  def addPartyVote(partyID: String, id: Long, positive: Boolean, voteType: String): Future[Int] = {
+    val content = PartyVote(partyID, id, positive, voteType).asJson.asInstanceOf[Ajax.InputData]
     Ajax.post(
       url = s"$host/vote",
       data = content,
@@ -88,10 +88,10 @@ object RestService extends StrictLogging{
     }
   }
 
-  def deleteSong(songID: Long, partyID: String): Future[Int] = {
-    val content = DeleteSong(songID, partyID).asJson.asInstanceOf[Ajax.InputData]
+  def setSongPlaying(songID: Long, partyID: String): Future[Int] = {
+    val content = SetSongPlayed(songID, partyID).asJson.asInstanceOf[Ajax.InputData]
     Ajax.post(
-      url = s"$host/party/song/delete",
+      url = s"$host/party/song",
       data = content,
       headers = Map("Content-Type" -> "application/json")
     ).map { res =>
@@ -102,6 +102,21 @@ object RestService extends StrictLogging{
       }
     }
   }
+
+    def deleteSong(songID: Long, partyID: String): Future[Int] = {
+      val content = DeleteSong(songID, partyID).asJson.asInstanceOf[Ajax.InputData]
+      Ajax.post(
+        url = s"$host/party/song/delete",
+        data = content,
+        headers = Map("Content-Type" -> "application/json")
+      ).map { res =>
+        val option = decode[Int](res.responseText)
+        option match {
+          case Left(_) => -1
+          case Right(int) => int
+        }
+      }
+    }
 
   def addPhoto(downloadUrl: String, partyID: String): Future[Int] ={
     val content = AddPhotosToParty(downloadUrl).asJson.asInstanceOf[Ajax.InputData]
@@ -126,7 +141,7 @@ object RestService extends StrictLogging{
       val option = decode[List[PhotoReturn]](res.responseText)
       option match {
         case Left(_) => List.empty[PhotoReturn]
-        case Right(songList) => songList
+        case Right(photoFeed) => photoFeed
       }
     }
   }
