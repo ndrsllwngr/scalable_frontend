@@ -59,7 +59,8 @@ object AdminJoinPage {
     def render(p: Props, s: AdminJoinState): VdomTagOf[Div] = {
       val proxy = p.proxy()
 
-      <.div(^.cls := "form-group",
+      <.div(^.cls := "d-flex flex-column justify-content-center form-group",
+        ^.height := "100vh",
         <.label(^.`for` := "roomcode", "Roomcode:"),
         <.div(^.cls := "column", ^.id := "roomcode-row",
           <.div(^.cls := "col-xs-1",
@@ -67,17 +68,17 @@ object AdminJoinPage {
               ^.onChange ==> onTextCodeChange(s)
             )
           ),
-          <.div(^.cls := "col-xs-2",
+          <.div(
+            ^.cls := "mt-2",
             <.label("Password:")
           ),
-          <.div(^.cls := "col-xs-3",
+          <.div(
             <.input(^.`type` := "text", ^.cls := "form-control",
               ^.onChange ==> onTextPWChange(s)
             )
           ),
-          <.div(^.cls := "col-xs-4",
-            ^.margin := 8.px,
-            <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width",
+          <.div(
+            <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width mt-2",
             ^.onClick --> tryLoginAsAdmin(s.code, s.pw),
             "Login"
           )

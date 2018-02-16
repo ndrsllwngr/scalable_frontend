@@ -34,23 +34,23 @@ object JoinPage {
     val host: String = Config.AppConfig.apiHost
 
 
-    def searchForRoomCode(room: String) : Callback = {
-      if(!room.isEmpty) {
-        val partyExistsBooleanFuture = RestService.checkIfPartyExists(room)
+    def searchForRoomCode(partyID: String) : Callback = {
+      if(!partyID.isEmpty) {
+        val partyExistsBooleanFuture = RestService.checkIfPartyExists(partyID)
         val futureCallback = partyExistsBooleanFuture.map { exists =>
-          if (exists)
+          if (exists) {
+            AppCircuit.dispatch(SetPartyId(partyID))
             navigateToHomePage()
-          else
+          } else
             Callback.alert("PartyCode does not exist")
         }
         Callback.future(futureCallback)
       } else
-        Callback.alert("Room Code may not be empty")
+      Callback.alert("Room Code may not be empty")
     }
 
     def onTextChange(roomCodeState: JoinState)(e: ReactEventFromInput) = Callback {
       roomCodeState.input = e.target.value
-      AppCircuit.dispatch(SetPartyId(e.target.value))
     }
 
     def navigateToHomePage(): Callback = bs.props.flatMap {
@@ -66,7 +66,8 @@ object JoinPage {
     def render(p: Props, s: JoinState): VdomTagOf[Div] = {
       val proxy = p.proxy()
 
-      <.div(^.cls := "form-group",
+      <.div(^.cls := "d-flex flex-column justify-content-center form-group",
+        ^.height := "100vh",
         <.label(^.`for` := "roomcode", "Roomcode:"),
         <.div(^.cls := "column", ^.id := "roomcode-row",
           <.div(^.cls := "col-xs-1",
@@ -74,11 +75,10 @@ object JoinPage {
               ^.onChange ==> onTextChange(s)
             )
           ),
-          <.div(^.cls := "col-xs-2",
-            ^.margin := 8.px,
-            <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width",
+          <.div(
+            <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width mt-2",
               ^.onClick --> searchForRoomCode(s.input),
-              "Search"
+              "Join"
             )
           )
         )
