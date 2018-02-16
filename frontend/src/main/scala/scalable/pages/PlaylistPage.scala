@@ -180,8 +180,12 @@ object PlaylistPage {
         pIsLoading = s.isLoading
       )
       <.div(
-        <.div("Search for artist or song: "),
+        ^.maxWidth := 800.px,
         <.div(
+          ^.cls := "h6",
+          "Add song to playlist:"),
+        <.div(
+          ^.cls := "mb-2",
           select
         ),
         <.div(
