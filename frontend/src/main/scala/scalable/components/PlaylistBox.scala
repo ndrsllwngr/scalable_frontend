@@ -42,38 +42,37 @@ object PlaylistBox {
   }
 
   def songView(song:Song, partyID:String ) ={
+    val customStyle = VdomStyle("background-image")
     val id = song.id
     val name = song.name
     val artist = song.artist
     val albumCoverUrl = song.albumCoverUrl
-    <.div( // Playlist Row
-      ^.cls := "d-flex flex-row justify-content-start bg-white text-dark p-2",
-      ^.maxWidth := "800px",
+    <.div( // Playlist Row (Parent)
+      ^.cls := "d-flex flex-row align-items-center bg-white text-dark p-2",
+      ^.maxWidth := 800.px,
       ^.borderWidth := "2px 0 0 0",
       ^.borderStyle := "solid",
       ^.borderColor := "black",
-      <.div(
-        ^.cls := "d-flex flex-row justify-content-start mr-auto",
-        <.div(
-          ^.cls := "", // AlbumCover
-          <.img(
-            ^.cls := "",
-            ^.maxWidth := 118.px,
-            ^.src := albumCoverUrl
-          )
+      <.div( // Child 1 AlbumCover
+        ^.cls := "mr-2",
+        ^.flex := "0 0 auto",
+        ^.width := 100.px,
+        ^.height := 100.px,
+        ^.borderRadius := "50%",
+        ^.backgroundClip := "padding-box",
+        ^.backgroundImage := s"url($albumCoverUrl)",
+        ^.backgroundSize := "cover",
+        ^.backgroundPosition := "center center"
         ),
-        <.div( // Song & Artist
-          ^.cls := "d-flex align-items-center p-2",
-          ^.minWidth := "0",
-          <.div(
-            ^.cls := "h3 text-truncate",
-            name,
-            <.br,
-            <.div(
-              ^.cls := "h6 mb-0 text-muted text-truncate",
+        <.div( // Child 2 Song title
+          ^.flex := "1 1 auto",
+          ^.cls := "h3 mb-0 mr-2 text-truncate",
+            name,<.pre(
+            ^.cls := "h6 mb-0 text-muted",
               artist)
-          ))),
-      <.div(^.cls := "d-flex align-items-center d-inline-block",
+          ),
+      <.div( // Child 3 VoteComp
+        ^.flex := "0 0 auto",
         VoteComp(VoteComp.Props(partyID, song)))
     )
   }

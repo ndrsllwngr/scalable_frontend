@@ -88,7 +88,6 @@ object RestService extends StrictLogging{
     }
   }
 
-
   def setSongPlaying(songID: Long, partyID: String): Future[Int] = {
     val content = SetSongPlayed(songID, partyID).asJson.asInstanceOf[Ajax.InputData]
     Ajax.post(
@@ -103,6 +102,22 @@ object RestService extends StrictLogging{
       }
     }
   }
+
+    def deleteSong(songID: Long, partyID: String): Future[Int] = {
+      val content = DeleteSong(songID, partyID).asJson.asInstanceOf[Ajax.InputData]
+      Ajax.post(
+        url = s"$host/party/song/delete",
+        >>>>>>> master
+          data = content,
+        headers = Map("Content-Type" -> "application/json")
+      ).map { res =>
+        val option = decode[Int](res.responseText)
+        option match {
+          case Left(_) => -1
+          case Right(int) => int
+        }
+      }
+    }
 
   def addPhoto(downloadUrl: String, partyID: String): Future[Int] ={
     val content = AddPhotosToParty(downloadUrl).asJson.asInstanceOf[Ajax.InputData]
@@ -135,7 +150,7 @@ object RestService extends StrictLogging{
   def buildSendSongFromVideoRespone(videoResponse: VideoResponse): SendSong = {
     val streamingServiceID = videoResponse.id.videoId
     val name = videoResponse.snippet.title
-    val artist = ""
+    val artist = videoResponse.snippet.channelTitle
     val album = ""
     val albumCoverUrl = videoResponse.snippet.thumbnails("high").url
 
