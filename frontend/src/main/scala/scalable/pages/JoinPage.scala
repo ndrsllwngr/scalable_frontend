@@ -35,9 +35,16 @@ object JoinPage {
 
 
     def searchForRoomCode(room: String) : Callback = {
-      if(!room.isEmpty)
-        navigateToHomePage()
-      else
+      if(!room.isEmpty) {
+        val partyExistsBooleanFuture = RestService.checkIfPartyExists(room)
+        val futureCallback = partyExistsBooleanFuture.map { exists =>
+          if (exists)
+            navigateToHomePage()
+          else
+            Callback.alert("PartyCode does not exist")
+        }
+        Callback.future(futureCallback)
+      } else
         Callback.alert("Room Code may not be empty")
     }
 

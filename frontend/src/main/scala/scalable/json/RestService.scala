@@ -31,6 +31,18 @@ object RestService extends StrictLogging{
     }
   }
 
+  def checkIfPartyExists(partyId: String): Future[Boolean] = {
+    Ajax.get(
+      url = s"$host/party/$partyId"
+    ).map { res =>
+      val option = decode[Boolean](res.responseText)
+      option match {
+        case Left(_) => false
+        case Right(exists) => exists
+      }
+    }
+  }
+
   def addSongToParty(partyID: String, videoresponse: VideoResponse): Future[Song] = {
     val content = buildSendSongFromVideoRespone(videoresponse).asJson.asInstanceOf[Ajax.InputData]
     Ajax.put(
