@@ -51,9 +51,10 @@ object StartPage {
     def render(props: Props): VdomTagOf[Div] = {
       val proxy = props.proxy()
       <.div(
-        ^.cls := "d-flex flex-column align-items-center",
+        ^.cls := "d-flex flex-column align-items-center justify-content-center",
+        ^.height := "100vh",
         <.div( // Child 1 AlbumCover
-          ^.cls := "mb-5 mt-5",
+          ^.cls := "mb-5 mt-0",
           ^.flex := "0 0 auto",
           ^.width := 150.px,
           ^.height := 150.px,
