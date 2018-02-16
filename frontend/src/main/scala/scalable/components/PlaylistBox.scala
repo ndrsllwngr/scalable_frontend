@@ -63,16 +63,13 @@ object PlaylistBox {
         ^.backgroundImage := s"url($albumCoverUrl)",
         ^.backgroundSize := "cover",
         ^.backgroundPosition := "center center"
-
-//        <.img(
-//          ^.cls := "rounded-circle",
-//          ^.src := albumCoverUrl
-//          )
         ),
         <.div( // Child 2 Song title
           ^.flex := "1 1 auto",
           ^.cls := "h3 mb-0 mr-2 text-truncate",
-            name
+            name,<.pre(
+            ^.cls := "h6 mb-0 text-muted",
+              artist)
           ),
       <.div( // Child 3 VoteComp
         ^.flex := "0 0 auto",
