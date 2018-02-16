@@ -13,6 +13,7 @@ object AppRouter {
   case object PlaylistRoute extends Page
   case object JoinRoute extends Page
   case object CreateRoute extends Page
+  case object CreateInfoRoute extends Page
   case object JoinAsAdminRoute extends Page
   case object PhotoRoute extends Page
   case class AdminRoute(roomCode: String) extends Page
@@ -27,6 +28,7 @@ object AppRouter {
       | staticRoute("join", JoinRoute) ~> renderR(renderJoinPage)
       | staticRoute("adminjoin", JoinAsAdminRoute) ~> renderR(renderAdminJoinPage)
       | staticRoute("create", CreateRoute) ~> renderR(renderCreateRoomPage)
+      | staticRoute("createInfo", CreateInfoRoute) ~> renderR(renderCreateInfoPage)
       | staticRoute("gallery", PhotoRoute) ~> renderR(renderPhotoPage)
       | dynamicRouteCT(("admin"/ string(".*")).caseClass[AdminRoute]) ~> dynRenderR(renderAdminPage)
       | dynamicRouteCT(("room"/ string(".*")).caseClass[PlaylistRoute]) ~> dynRenderR(renderPlaylistPage)
@@ -50,6 +52,10 @@ object AppRouter {
 
   def renderCreateRoomPage(ctl: RouterCtl[Page]) = {
     connection(proxy => CreatePage.Component(CreatePage.Props(proxy, ctl)))
+  }
+
+  def renderCreateInfoPage(ctl: RouterCtl[Page]) = {
+    connection(proxy => CreateInfoPage.Component(CreateInfoPage.Props(proxy, ctl)))
   }
 
   def renderPhotoPage(ctl: RouterCtl[Page]) = {

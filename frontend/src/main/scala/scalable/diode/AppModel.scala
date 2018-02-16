@@ -6,6 +6,7 @@ import scalable.models._
 
 case class AppState (
                     partyId:Option[String],
+                    partyCreateResponse: Option[PartyCreateResponse],
                     songList:List[Song],
                     photoFeed:List[PhotoReturn],
                     videoSuggestions: List[VideoResponse],
@@ -19,6 +20,8 @@ case class AppModel(
 
 
 case class SetPartyId(partyId: String) extends Action
+
+case class SetPartyCreateResponse(createResponse: PartyCreateResponse) extends Action
 
 case class SetSongsForParty(songList: List[Song]) extends Action
 
