@@ -38,13 +38,18 @@ object AdminPage {
     val host: String = Config.AppConfig.apiHost
 
     var timer: SetIntervalHandle = _
+    var hasSong = false
+
+    var player: Option[Player] = Option.empty
+    var props: Props = _
+
 
     def onPlayerReady(e: Event): js.UndefOr[(Event) => Any] = {
       e.target.whenDefined(p => {
-        if (p.getVideoUrl().isEmpty){
-            nextSong(p)
+        if (p.getVideoUrl().isEmpty) {
+          resolveNext(p)
         }
-        else{
+        else {
           p.playVideo()
         }
         TagMod()
@@ -52,32 +57,30 @@ object AdminPage {
       undefined
     }
 
-    def nextSong(player: Player): Unit = {
-      bs.mapProps(props => {
-        resolveNext(player, props)
-      })
-    }
-
-
-    def resolveNext(player: Player, props: Props): Unit = {
+    def resolveNext(player: Player): Unit = {
+      println("resolve")
       val state = props.proxy.modelReader.apply()
       val songList = state.songList
       if (songList.isEmpty) {
-
+        hasSong = false
       } else {
+        hasSong = true
         loadSong(player, songList.head, props.roomCode)
       }
     }
 
     def loadSong(player: Player, next: Song, roomCode: String): Unit = {
+      println("resolve")
       RestService.setSongPlaying(next.id, roomCode)
       player.loadVideoById(next.streamingServiceID, 0.0, "hd720")
     }
 
     def onPlayerStateChange(e: Event): js.UndefOr[(Event) => Any] = {
+      println("state Change")
       e.target.whenDefined(p => {
+        println(s"state ${p.getPlayerState()}")
         p.getPlayerState() match {
-          case 0 => nextSong(p)
+          case 0 => resolveNext(p)
           case -1 => p.playVideo()
         }
 
@@ -90,7 +93,7 @@ object AdminPage {
       undefined
     }
 
-    def mounted: Callback = Callback{
+    def mounted: Callback = Callback {
       getData();
     }
 
@@ -99,11 +102,13 @@ object AdminPage {
       js.timers.clearInterval(timer)
     }
 
-    def getData(): Unit ={
-      timer = js.timers.setInterval(10000)  { // note the absence of () =>
+    def getData(): Unit = {
+      timer = js.timers.setInterval(10000) { // note the absence of () =>
         Config.partyId match {
-          case Some(id) => RestService.getSongs(id).map{songs =>
-            println("Getting Data")
+          case Some(id) => RestService.getSongs(id).map { songs =>
+            if (!hasSong && player.isDefined) {
+              resolveNext(player.get)
+            }
             AppCircuit.dispatch(SetSongsForParty(songs))
           }
           case None => println("NO PARTY ID")
@@ -113,6 +118,7 @@ object AdminPage {
 
     def render(p: Props): VdomTagOf[Div] = {
       val proxy = p.proxy()
+      props = p
 
       val tag = org.scalajs.dom.document.createElement("script").asInstanceOf[org.scalajs.dom.html.Script]
       tag.src = "https://www.youtube.com/iframe_api"
@@ -120,10 +126,10 @@ object AdminPage {
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
 
       org.scalajs.dom.window.asInstanceOf[js.Dynamic].onYouTubeIframeAPIReady = () => {
-        val player = Option.apply(new Player("player", PlayerOptions(
+        player = Option.apply(new Player("player", PlayerOptions(
           width = "640",
           height = "360",
-          videoId = undefined,
+          videoId = "",
           events = PlayerEvents(
             onReady = onPlayerReady(_),
             onError = onPlayerError(_),
