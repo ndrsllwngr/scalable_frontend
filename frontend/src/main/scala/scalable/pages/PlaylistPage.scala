@@ -155,6 +155,16 @@ object PlaylistPage {
           s.selectedData = if (index == -1) None else Some(s.searchData(index))
         }
         AppCircuit.dispatch(SelectVideo(s.selectedData))
+        Config.partyId match {
+          case None => println("No Party ID to Put Song into")
+          case partyId => {
+            s.selectedData match {
+              case None => println("no video response")
+              case videoResponse => RestService.addSongToParty(partyId.get, videoResponse.get)
+            }
+
+          }
+        }
         s
       }).runNow()
     }
