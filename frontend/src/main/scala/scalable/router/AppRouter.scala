@@ -23,7 +23,7 @@ object AppRouter {
   val routerConfig = RouterConfigDsl[Page].buildConfig { dsl =>
     import dsl._
     (trimSlashes
-      | staticRoute(root, StartRoute) ~> renderR(renderJoinPage)
+      | staticRoute(root, StartRoute) ~> renderR(renderStartPage)
       | staticRoute("join", JoinRoute) ~> renderR(renderJoinPage)
       | staticRoute("adminjoin", JoinAsAdminRoute) ~> renderR(renderAdminJoinPage)
       | staticRoute("create", CreateRoute) ~> renderR(renderCreateRoomPage)
@@ -36,7 +36,7 @@ object AppRouter {
   }
 
   def renderStartPage(ctl: RouterCtl[Page]) = {
-    connection(proxy => JoinPage.Component(JoinPage.Props(proxy, ctl)))
+    connection(proxy => StartPage.Component(StartPage.Props(proxy, ctl)))
   }
 
   def renderJoinPage(ctl: RouterCtl[Page]) = {
