@@ -5,11 +5,11 @@ import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
 import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
 import org.scalajs.dom.html.Div
-import scala.concurrent.ExecutionContext.Implicits.global
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
-import scala.scalajs.js.timers.setTimeout
+import scala.scalajs.js.timers.SetIntervalHandle
 import scala.scalajs.js.undefined
 import scalable.components.PlaylistBox
 import scalable.config.Config
@@ -36,6 +36,8 @@ object AdminPage {
 
   class Backend(bs: BackendScope[Props, Unit]) {
     val host: String = Config.AppConfig.apiHost
+
+    var timer: SetIntervalHandle = _
 
     def onPlayerReady(e: Event): js.UndefOr[(Event) => Any] = {
       e.target.whenDefined(p => {
@@ -92,8 +94,13 @@ object AdminPage {
       getData();
     }
 
+    def unmounted: Callback = Callback {
+      println("Unmounted")
+      js.timers.clearInterval(timer)
+    }
+
     def getData(): Unit ={
-      setTimeout(10000) { // note the absence of () =>
+      timer = js.timers.setInterval(10000)  { // note the absence of () =>
         Config.partyId match {
           case Some(id) => RestService.getSongs(id).map{songs =>
             println("Getting Data")
@@ -101,7 +108,6 @@ object AdminPage {
           }
           case None => println("NO PARTY ID")
         }
-        getData()
       }
     }
 
@@ -144,6 +150,7 @@ object AdminPage {
   val Component = ScalaComponent.builder[Props]("RoomPage")
     .renderBackend[Backend]
     .componentDidMount(scope => scope.backend.mounted)
+    .componentWillUnmount(scope => scope.backend.unmounted)
     .build
 
 }

@@ -52,7 +52,6 @@ object PhotoFeedBox {
         ^.flex := "0 0 auto",
         ^.width := 400.px,
         ^.height := 400.px,
-        ^.borderRadius := "50%",
         ^.backgroundClip := "padding-box",
         ^.backgroundImage := s"url($url)",
         ^.backgroundSize := "cover",

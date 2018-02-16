@@ -1,7 +1,7 @@
 package scalable.pages
 
 import diode.react.ModelProxy
-import firebase.{Firebase, FirebaseConfig}
+import firebase.Firebase
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
 import japgolly.scalajs.react.{BackendScope, Callback, ReactEventFromInput, ScalaComponent}
@@ -12,7 +12,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
-import scala.scalajs.js.timers.setTimeout
+import scala.scalajs.js.timers.SetIntervalHandle
 import scalable.components.PhotoFeedBox
 import scalable.config.Config
 import scalable.diode.{AppCircuit, AppState, SetPhotosForParty}
@@ -45,12 +45,14 @@ object PhotoFeedPage {
 
     val app = Firebase.app("scalable")
 
+    var timer: SetIntervalHandle = _
+
     def mounted: Callback = Callback {
       getData()
     }
 
-    def getData(): Unit = {
-      setTimeout(10000) { // note the absence of () =>
+    def getData(): Unit ={
+      timer = js.timers.setInterval(10000) {
         Config.partyId match {
           case Some(id) => RestService.getPhotos(id).map { photos =>
             println("Getting Data")
@@ -58,9 +60,15 @@ object PhotoFeedPage {
           }
           case None => println("NO PARTY ID")
         }
-        getData()
       }
     }
+
+
+    def unmounted: Callback = Callback {
+      println("Unmounted")
+      js.timers.clearInterval(timer)
+    }
+
 
 
     def publishLink(url: String, roomCode: String): Unit = {
@@ -106,6 +114,7 @@ object PhotoFeedPage {
   val Component = ScalaComponent.builder[Props]("PhotoFeedPage")
     .renderBackend[Backend]
     .componentDidMount(scope => scope.backend.mounted)
+    .componentWillUnmount(scope => scope.backend.unmounted)
     .build
 
 }

@@ -55,12 +55,20 @@ object PlaylistPage {
 
   class Backend($: BackendScope[Props, State]) extends StrictLogging {
 
+
+    var timer: SetIntervalHandle = _
+
     def mounted: Callback = Callback{
       getData();
     }
 
+    def unmounted: Callback = Callback {
+      println("Unmounted")
+      js.timers.clearInterval(timer)
+    }
+
     def getData(): Unit ={
-      setTimeout(10000) { // note the absence of () =>
+      timer = js.timers.setInterval(10000)  { // note the absence of () =>
         Config.partyId match {
           case Some(id) => RestService.getSongs(id).map{songs =>
             println("Getting Data")
@@ -68,7 +76,6 @@ object PlaylistPage {
           }
           case None => println("NO PARTY ID")
         }
-        getData()
       }
     }
 
@@ -204,5 +211,6 @@ object PlaylistPage {
     ))
     .renderBackend[Backend]
     .componentDidMount(scope => scope.backend.mounted)
+    .componentWillUnmount(scope => scope.backend.unmounted)
     .build
 }
