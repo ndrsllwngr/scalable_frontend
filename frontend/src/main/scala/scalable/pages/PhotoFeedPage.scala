@@ -43,24 +43,14 @@ object PhotoFeedPage {
     var fileChooser: html.Input = _
     var photoFeed: html.Div = _
 
-    val apiKey = "AIzaSyC8vZ20nRwOpSmuyF0TjimoHHqSxkWK4cE"
-    val authDomain = "scalable-195120.firebaseapp.com"
-    val databaseURL = "https://scalable-195120.firebaseio.com"
-    val projectId = "scalable-195120"
-    val storageBucket = ""
-    val messagingSenderId = "547307244060"
-    val appName = "scalable"
-    val config = FirebaseConfig(apiKey, authDomain, databaseURL, storageBucket, messagingSenderId)
-    Firebase.initializeApp(config, appName)
-
-    val app = Firebase.app(appName)
+    val app = Firebase.app("scalable")
 
     def mounted: Callback = Callback {
       getData()
     }
 
     def getData(): Unit = {
-      setTimeout(1000) { // note the absence of () =>
+      setTimeout(10000) { // note the absence of () =>
         Config.partyId match {
           case Some(id) => RestService.getPhotos(id).map { photos =>
             println("Getting Data")

@@ -37,8 +37,8 @@ object AdminPage {
 
     def onPlayerReady(e: Event): js.UndefOr[(Event) => Any] = {
       e.target.whenDefined(p => {
-        if (p.getPlaylist().length == 0){
-          nextSong(p)
+        if (p.getVideoUrl().isEmpty){
+            nextSong(p)
         }
         else{
           p.playVideo()

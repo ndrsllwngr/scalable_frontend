@@ -60,7 +60,7 @@ object PlaylistPage {
     }
 
     def getData(): Unit ={
-      setTimeout(1000) { // note the absence of () =>
+      setTimeout(10000) { // note the absence of () =>
         Config.partyId match {
           case Some(id) => RestService.getSongs(id).map{songs =>
             println("Getting Data")
