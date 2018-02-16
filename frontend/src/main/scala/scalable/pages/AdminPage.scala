@@ -3,15 +3,17 @@ package scalable.pages
 import diode.react.ModelProxy
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
-import japgolly.scalajs.react.{BackendScope, ScalaComponent}
+import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
 import org.scalajs.dom.html.Div
+import scala.concurrent.ExecutionContext.Implicits.global
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
+import scala.scalajs.js.timers.setTimeout
 import scala.scalajs.js.undefined
 import scalable.components.PlaylistBox
 import scalable.config.Config
-import scalable.diode.AppState
+import scalable.diode.{AppCircuit, AppState, SetSongsForParty}
 import scalable.json.RestService
 import scalable.models._
 import scalable.router.AppRouter
@@ -86,6 +88,23 @@ object AdminPage {
       undefined
     }
 
+    def mounted: Callback = Callback{
+      getData();
+    }
+
+    def getData(): Unit ={
+      setTimeout(10000) { // note the absence of () =>
+        Config.partyId match {
+          case Some(id) => RestService.getSongs(id).map{songs =>
+            println("Getting Data")
+            AppCircuit.dispatch(SetSongsForParty(songs))
+          }
+          case None => println("NO PARTY ID")
+        }
+        getData()
+      }
+    }
+
     def render(p: Props): VdomTagOf[Div] = {
       val proxy = p.proxy()
 
@@ -124,6 +143,7 @@ object AdminPage {
 
   val Component = ScalaComponent.builder[Props]("RoomPage")
     .renderBackend[Backend]
+    .componentDidMount(scope => scope.backend.mounted)
     .build
 
 }

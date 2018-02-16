@@ -34,7 +34,7 @@ object JoinPage {
     val host: String = Config.AppConfig.apiHost
 
 
-    def searchForRoomCode(partyID: String) : Callback = {
+    def join (partyID: String) : Callback = {
       if(!partyID.isEmpty) {
         val partyExistsBooleanFuture = RestService.joinParty(partyID)
         val futureCallback = partyExistsBooleanFuture.map { exists =>
@@ -77,7 +77,7 @@ object JoinPage {
           ),
           <.div(
             <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width mt-2",
-              ^.onClick --> searchForRoomCode(s.input),
+              ^.onClick --> join(s.input),
               "Join"
             )
           )

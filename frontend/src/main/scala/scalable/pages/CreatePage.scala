@@ -11,7 +11,7 @@ import scala.concurrent._
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 import scalable.config.Config
-import scalable.diode.{AppCircuit, AppState, SetPartyCreateResponse}
+import scalable.diode.{AppCircuit, AppState, SetPartyCreateResponse, SetPartyId}
 import scalable.json.RestService
 import scalable.router.AppRouter
 
@@ -38,7 +38,10 @@ object CreatePage {
 
     def createRoom(input: String) : Callback = {
       val partyCreateResponseFuture = RestService.createParty(input)
-      partyCreateResponseFuture.map(x => AppCircuit.dispatch(SetPartyCreateResponse(x)))
+      partyCreateResponseFuture.map{x =>
+        AppCircuit.dispatch(SetPartyCreateResponse(x))
+        AppCircuit.dispatch(SetPartyId(x.id))
+      }
       navigateToCreateInfoPage()
     }
 
