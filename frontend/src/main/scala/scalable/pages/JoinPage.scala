@@ -36,7 +36,7 @@ object JoinPage {
 
     def searchForRoomCode(partyID: String) : Callback = {
       if(!partyID.isEmpty) {
-        val partyExistsBooleanFuture = RestService.checkIfPartyExists(partyID)
+        val partyExistsBooleanFuture = RestService.joinParty(partyID)
         val futureCallback = partyExistsBooleanFuture.map { exists =>
           if (exists) {
             AppCircuit.dispatch(SetPartyId(partyID))

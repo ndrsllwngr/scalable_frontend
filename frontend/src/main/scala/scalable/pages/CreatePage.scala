@@ -11,7 +11,7 @@ import scala.concurrent._
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 import scalable.config.Config
-import scalable.diode.AppState
+import scalable.diode.{AppCircuit, AppState, SetPartyCreateResponse}
 import scalable.json.RestService
 import scalable.router.AppRouter
 
@@ -38,8 +38,8 @@ object CreatePage {
 
     def createRoom(input: String) : Callback = {
       val partyCreateResponseFuture = RestService.createParty(input)
-      val FutureOfCallback = partyCreateResponseFuture.map(x => navigateToAdminPage(x.id))
-      Callback.future(FutureOfCallback)
+      partyCreateResponseFuture.map(x => AppCircuit.dispatch(SetPartyCreateResponse(x)))
+      navigateToCreateInfoPage()
     }
 
     def onTextChange(roomCodeState: CreateState)(e: ReactEventFromInput) = Callback {
@@ -47,8 +47,8 @@ object CreatePage {
 
     }
 
-    def navigateToAdminPage(id: String): Callback = bs.props.flatMap { props =>
-      props.ctl.set(AppRouter.AdminRoute(id))
+    def navigateToCreateInfoPage(): Callback = bs.props.flatMap { props =>
+      props.ctl.set(AppRouter.CreateInfoRoute)
     }
 
     def render(p: Props, s: CreateState): VdomTagOf[Div] = {
