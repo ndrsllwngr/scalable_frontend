@@ -72,9 +72,11 @@ object AdminPage {
 
     def onPlayerStateChange(e: Event): js.UndefOr[(Event) => Any] = {
       e.target.whenDefined(p => {
-        if (p.getPlayerState() == 1) {
-          nextSong(p)
+        p.getPlayerState() match {
+          case 0 => nextSong(p)
+          case -1 => p.playVideo()
         }
+
         TagMod()
       })
       undefined
