@@ -53,5 +53,11 @@ case class SetSongPlayed
   partyID: String
 )
 
+case class DeleteSong
+(
+  id: Long,
+  partyID: String
+)
+
 
 
