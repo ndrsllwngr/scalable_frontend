@@ -66,6 +66,8 @@ object StartPage {
             ^.onClick --> navigateToJoinPage(),
             "Join Party"
           ),
+        <.div(
+          ^.cls := "btn-group-vertical btn-block",
         <.button(^.`type` := "button", ^.cls := "btn btn-outline-primary mt-2 btn-block",
           ^.onClick --> navigateToJoinAsAdminPage(),
           "Join Party As Host"
@@ -73,7 +75,7 @@ object StartPage {
         <.button(^.`type` := "button", ^.cls := "btn btn-outline-primary btn-block mt-0",
           ^.onClick --> navigateToCreatePage(),
           "Create New Party"
-        ),
+        )),
         <.button(^.`type` := "button", ^.cls := "btn btn-danger btn-block mt-2",
           ^.onClick --> navigateToGalleryPage(),
           "Gallery"

@@ -54,25 +54,19 @@ object CreatePage {
     def render(p: Props, s: CreateState): VdomTagOf[Div] = {
       val proxy = p.proxy()
 
-      <.div(^.cls := "form-group",
-        <.label(^.`for` := "roomcode", "Roomname:"),
+      <.div(^.cls := "d-flex flex-column justify-content-center form-group",
+        ^.height := "100vh",
+        <.label(^.`for` := "roomcode", "Enter a room name:"),
         <.div(^.cls := "column", ^.id := "roomcode-row",
           <.div(^.cls := "col-xs-1",
             <.input(^.`type` := "text", ^.cls := "form-control",
               ^.onChange ==> onTextChange(s)
             )
           ),
-          <.div(^.cls := "col-xs-2",
-            <.label("Password:", ^.`for` := "pw-label")
-          ),
-          <.div(^.cls := "col-xs-3",
-            <.label("Eichelheer", ^.id := "pw-label")
-          ),
-          <.div(^.cls := "col-xs-4",
-            ^.margin := 8.px,
-            <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width",
+          <.div(
+            <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width mt-2",
               ^.onClick --> createRoom(s.input),
-              "Create"
+              "Create Room"
             )
           )
         )
