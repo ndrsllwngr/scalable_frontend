@@ -119,9 +119,9 @@ object PlaylistPage {
     val throttleInputValueChange: js.Dynamic = {
       throttle(() => {
         $.state.map { state =>
-          val city = state.inputValue
-          if (city.nonEmpty) {
-            loadSearchResults(city).runNow()
+          val song = state.inputValue
+          if (song.nonEmpty) {
+            loadSearchResults(song).runNow()
           }
         }.runNow()
       }, 400)

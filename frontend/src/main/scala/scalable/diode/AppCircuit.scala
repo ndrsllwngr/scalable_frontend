@@ -11,7 +11,7 @@ object AppCircuit extends Circuit[AppModel] with ReactConnector[AppModel] {
     AppState(
       partyId = None,
       songList = List.empty[Song],
-      currentSong = None: Option[Song],
+      photoFeed = List.empty[PhotoReturn],
       videoSuggestions = List.empty[VideoResponse],
       selectedVideo = None: Option[VideoResponse],
       isLoading = false,
@@ -33,6 +33,7 @@ class PlaylistPageHandler[M](modelRW: ModelRW[M, AppState]) extends ActionHandle
       updated(value.copy(partyId = Some(partyId)))
     }
     case SetSongsForParty(songs) => updated(value.copy(songList = songs))
+    case SetPhotosForParty(photos) => updated(value.copy(photoFeed = photos))
     case GetVideoSuggestions(videoSuggestions) => updated(value.copy(videoSuggestions = videoSuggestions))
     case SelectVideo(video) => updated(value.copy(selectedVideo = video))
     }

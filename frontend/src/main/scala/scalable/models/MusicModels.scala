@@ -21,6 +21,7 @@ case class Song
   downvotes: Int,
   played: Boolean
   //, createdAt: LocalDateTime
+
 )
 
 case class SongListElement
@@ -46,6 +47,16 @@ case class PartyVote
   voteType: String
 )
 
+
+case class VoteAble
+(
+  partyID: String,
+  compId: Long,
+  upvotes: Int,
+  downvotes: Int,
+  voteType: String
+
+)
 
 case class SetSongPlayed
 (

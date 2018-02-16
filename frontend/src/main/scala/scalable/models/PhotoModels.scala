@@ -10,5 +10,5 @@ case class PhotoReturn
   id: Long,
   url: String,
   upvotes: Int,
-  downvote: Int
+  downvotes: Int
 )

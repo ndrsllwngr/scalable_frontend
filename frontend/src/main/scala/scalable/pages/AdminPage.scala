@@ -61,17 +61,13 @@ object AdminPage {
       if (songList.isEmpty) {
 
       } else {
-        state.currentSong = Option.apply(loadSong(player, songList.head, state.currentSong, props.roomCode))
+        loadSong(player, songList.head, props.roomCode)
       }
     }
 
-    def loadSong(player: Player, next: Song, current: Option[Song], roomCode: String): Song = {
-      if (current.isDefined) {
-        RestService.setSongPlayed(current.get.id, roomCode)
-      }
+    def loadSong(player: Player, next: Song, roomCode: String): Unit = {
       RestService.setSongPlaying(next.id, roomCode)
       player.loadVideoById(next.streamingServiceID, 0.0, "hd720")
-      next
     }
 
     def onPlayerStateChange(e: Event): js.UndefOr[(Event) => Any] = {

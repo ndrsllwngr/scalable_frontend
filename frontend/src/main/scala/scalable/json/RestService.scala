@@ -58,8 +58,8 @@ object RestService extends StrictLogging{
     }
   }
 
-  def addPartyVote(partyID: String, song: Song, positive: Boolean, voteType: String): Future[Int] = {
-    val content = PartyVote(partyID, song.id, positive, voteType).asJson.asInstanceOf[Ajax.InputData]
+  def addPartyVote(partyID: String, id: Long, positive: Boolean, voteType: String): Future[Int] = {
+    val content = PartyVote(partyID, id, positive, voteType).asJson.asInstanceOf[Ajax.InputData]
     Ajax.post(
       url = s"$host/vote",
       data = content,
