@@ -134,7 +134,7 @@ object RestService extends StrictLogging{
   def buildSendSongFromVideoRespone(videoResponse: VideoResponse): SendSong = {
     val streamingServiceID = videoResponse.id.videoId
     val name = videoResponse.snippet.title
-    val artist = ""
+    val artist = videoResponse.snippet.channelTitle
     val album = ""
     val albumCoverUrl = videoResponse.snippet.thumbnails("high").url
 
