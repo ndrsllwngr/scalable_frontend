@@ -88,6 +88,22 @@ object RestService extends StrictLogging{
     }
   }
 
+
+  def setSongPlaying(songID: Long, partyID: String): Future[Int] = {
+    val content = SetSongPlayed(songID, partyID).asJson.asInstanceOf[Ajax.InputData]
+    Ajax.post(
+      url = s"$host/party/song",
+      data = content,
+      headers = Map("Content-Type" -> "application/json")
+    ).map { res =>
+      val option = decode[Int](res.responseText)
+      option match {
+        case Left(_) => -1
+        case Right(int) => int
+      }
+    }
+  }
+
   def addPhoto(downloadUrl: String, partyID: String): Future[Int] ={
     val content = AddPhotosToParty(downloadUrl).asJson.asInstanceOf[Ajax.InputData]
     logger.debug(content.toString)

@@ -11,6 +11,7 @@ object AppCircuit extends Circuit[AppModel] with ReactConnector[AppModel] {
     AppState(
       partyId = None,
       songList = List.empty[Song],
+      currentSong = None: Option[Song],
       videoSuggestions = List.empty[VideoResponse],
       selectedVideo = None: Option[VideoResponse],
       isLoading = false,

@@ -7,6 +7,7 @@ import scalable.models._
 case class AppState (
                     partyId:Option[String],
                     songList:List[Song],
+                    var currentSong:Option[Song],
                     videoSuggestions: List[VideoResponse],
                     selectedVideo: Option[VideoResponse],
                     isLoading: Boolean
