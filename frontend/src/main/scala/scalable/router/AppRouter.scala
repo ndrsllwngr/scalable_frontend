@@ -9,27 +9,35 @@ import scalable.pages._
 
 object AppRouter {
   sealed trait Page
-  case object HomeRoute extends Page
+  case object StartRoute extends Page
+  case object PlaylistRoute extends Page
   case object JoinRoute extends Page
   case object CreateRoute extends Page
   case object JoinAsAdminRoute extends Page
   case object PhotoRoute extends Page
   case class AdminRoute(roomCode: String) extends Page
+  case class PlaylistRoute(roomCode: String) extends Page
 
   val connection = AppCircuit.connect(_.state)
 
   val routerConfig = RouterConfigDsl[Page].buildConfig { dsl =>
     import dsl._
     (trimSlashes
-      | staticRoute(root, HomeRoute) ~> renderR(renderPlaylistPage)
+      | staticRoute(root, StartRoute) ~> renderR(renderStartPage)
       | staticRoute("join", JoinRoute) ~> renderR(renderJoinPage)
       | staticRoute("adminjoin", JoinAsAdminRoute) ~> renderR(renderAdminJoinPage)
       | staticRoute("create", CreateRoute) ~> renderR(renderCreateRoomPage)
       | staticRoute("gallery", PhotoRoute) ~> renderR(renderPhotoPage)
       | dynamicRouteCT(("admin"/ string(".*")).caseClass[AdminRoute]) ~> dynRenderR(renderAdminPage)
+      | dynamicRouteCT(("room"/ string(".*")).caseClass[PlaylistRoute]) ~> dynRenderR(renderPlaylistPage)
+
     )
-      .notFound(redirectToPage(HomeRoute)(Redirect.Replace))
+      .notFound(redirectToPage(StartRoute)(Redirect.Replace))
       .renderWith(layout)
+  }
+
+  def renderStartPage(ctl: RouterCtl[Page]) = {
+    connection(proxy => StartPage.Component(StartPage.Props(proxy, ctl)))
   }
 
   def renderJoinPage(ctl: RouterCtl[Page]) = {
@@ -52,9 +60,9 @@ object AppRouter {
     connection(proxy => AdminPage.Component(AdminPage.Props(proxy, p.roomCode, ctl)))
   }
 
-    def renderPlaylistPage(ctl: RouterCtl[Page]) = {
-      connection(proxy => PlaylistPage.Component(PlaylistPage.Props(proxy, ctl)))
-    }
+  def renderPlaylistPage(p: PlaylistRoute, ctl: RouterCtl[Page]) = {
+    connection(proxy => PlaylistPage.Component(PlaylistPage.Props(proxy, ctl)))
+  }
 
 
   def layout (c: RouterCtl[Page], r: Resolution[Page]) = connection(proxy => Layout(Layout.Props(proxy, c, r)))

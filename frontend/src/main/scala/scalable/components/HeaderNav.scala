@@ -23,7 +23,7 @@ object HeaderNav {
 
   val Component = ScalaFnComponent[Props](props => {
     val proxy = props.proxy()
-    val homeLink = props.ctl.link(AppRouter.HomeRoute)
+    val homeLink = props.ctl.link(AppRouter.StartRoute)
     val joinLink = props.ctl.link(AppRouter.JoinRoute)
     val joinAsAdminLink = props.ctl.link(AppRouter.JoinAsAdminRoute)
     val createLink = props.ctl.link(AppRouter.CreateRoute)
