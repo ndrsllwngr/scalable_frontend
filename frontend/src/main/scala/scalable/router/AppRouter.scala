@@ -13,7 +13,7 @@ object AppRouter {
   case object JoinRoute extends Page
   case object CreateRoute extends Page
   case object JoinAsAdminRoute extends Page
-  case class PhotoRoute(roomCode: String) extends Page
+  case object PhotoRoute extends Page
   case class AdminRoute(roomCode: String) extends Page
 
   val connection = AppCircuit.connect(_.state)
@@ -25,8 +25,8 @@ object AppRouter {
       | staticRoute("join", JoinRoute) ~> renderR(renderJoinPage)
       | staticRoute("adminjoin", JoinAsAdminRoute) ~> renderR(renderAdminJoinPage)
       | staticRoute("create", CreateRoute) ~> renderR(renderCreateRoomPage)
+      | staticRoute("gallery", PhotoRoute) ~> renderR(renderPhotoPage)
       | dynamicRouteCT(("admin"/ string(".*")).caseClass[AdminRoute]) ~> dynRenderR(renderAdminPage)
-      | dynamicRouteCT(("gallery"/ string(".*")).caseClass[PhotoRoute]) ~> dynRenderR(renderPhotoPage)
     )
       .notFound(redirectToPage(HomeRoute)(Redirect.Replace))
       .renderWith(layout)
@@ -44,8 +44,8 @@ object AppRouter {
     connection(proxy => CreatePage.Component(CreatePage.Props(proxy, ctl)))
   }
 
-  def renderPhotoPage(p: PhotoRoute, ctl: RouterCtl[Page]) = {
-    connection(proxy => PhotoFeedPage.Component(PhotoFeedPage.Props(proxy, p.roomCode, ctl)))
+  def renderPhotoPage(ctl: RouterCtl[Page]) = {
+    connection(proxy => PhotoFeedPage.Component(PhotoFeedPage.Props(proxy, ctl)))
   }
 
   def renderAdminPage(p: AdminRoute, ctl: RouterCtl[Page]) = {

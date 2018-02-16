@@ -141,7 +141,7 @@ object RestService extends StrictLogging{
       val option = decode[List[PhotoReturn]](res.responseText)
       option match {
         case Left(_) => List.empty[PhotoReturn]
-        case Right(songList) => songList
+        case Right(photoFeed) => photoFeed
       }
     }
   }
