@@ -101,7 +101,7 @@ object RestService extends StrictLogging{
   }
 
   def setSongPlayed(songID: Long, partyID: String): Future[Int] = {
-    val content = SetSongPlayed(songID, partyID).asJson.asInstanceOf[Ajax.InputData]
+    val content = SongPlayStateUpdate(songID, partyID, "PLAYED").asJson.asInstanceOf[Ajax.InputData]
     Ajax.post(
       url = s"$host/party/song",
       data = content,
@@ -116,7 +116,7 @@ object RestService extends StrictLogging{
   }
 
   def setSongPlaying(songID: Long, partyID: String): Future[Int] = {
-    val content = SetSongPlayed(songID, partyID).asJson.asInstanceOf[Ajax.InputData]
+    val content = SongPlayStateUpdate(songID, partyID, "PLAYING").asJson.asInstanceOf[Ajax.InputData]
     Ajax.post(
       url = s"$host/party/song",
       data = content,

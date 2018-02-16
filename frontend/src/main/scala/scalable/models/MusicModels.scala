@@ -59,11 +59,7 @@ case class VoteAble
 
 )
 
-case class SetSongPlayed
-(
-  id: Long,
-  partyID: String
-)
+case class SongPlayStateUpdate(id:Long, partyID:String, playState:String)
 
 case class DeleteSong
 (
