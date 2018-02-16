@@ -31,7 +31,19 @@ object RestService extends StrictLogging{
     }
   }
 
-  def checkIfPartyExists(partyId: String): Future[Boolean] = {
+  def joinParty(partyId: String): Future[Boolean] = {
+    Ajax.get(
+      url = s"$host/party/$partyId"
+    ).map { res =>
+      val option = decode[Boolean](res.responseText)
+      option match {
+        case Left(_) => false
+        case Right(exists) => exists
+      }
+    }
+  }
+
+  def joinPartyAsAdmin(partyId: String, password: String): Future[Boolean] = {
     Ajax.get(
       url = s"$host/party/$partyId"
     ).map { res =>
