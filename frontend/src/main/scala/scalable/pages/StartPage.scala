@@ -36,7 +36,7 @@ object StartPage {
       props.ctl.set(AppRouter.JoinRoute)
     }
 
-    def navigateToJoinAsAdmingPage(): Callback = bs.props.flatMap { props =>
+    def navigateToJoinAsAdminPage(): Callback = bs.props.flatMap { props =>
       props.ctl.set(AppRouter.JoinAsAdminRoute)
     }
 
@@ -63,11 +63,11 @@ object StartPage {
           ^.backgroundPosition := "center center"
         ),
           <.button(^.`type` := "button", ^.cls := "btn btn-primary btn-block",
-            ^.onClick --> navigateToCreatePage(),
+            ^.onClick --> navigateToJoinPage(),
             "Join Party"
           ),
         <.button(^.`type` := "button", ^.cls := "btn btn-outline-primary mt-2 btn-block",
-          ^.onClick --> navigateToCreatePage(),
+          ^.onClick --> navigateToJoinAsAdminPage(),
           "Join Party As Host"
         ),
         <.button(^.`type` := "button", ^.cls := "btn btn-outline-primary btn-block mt-0",
