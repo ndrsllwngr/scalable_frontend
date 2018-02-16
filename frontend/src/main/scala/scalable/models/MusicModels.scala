@@ -11,15 +11,16 @@ case class PartyCreateResponse
 case class Song
 (
   //id: Int,
-  id: Long,
-  streamingServiceID: String,
+
   name: String,
+  albumCoverUrl: String,
+  streamingServiceID: String,
+  downvotes: Int,
+  upvotes: Int,
+  id: Long,
   artist: String,
   album: String,
-  albumCoverUrl: String,
-  upvotes: Int,
-  downvotes: Int,
-  played: Boolean
+  playState: String
   //, createdAt: LocalDateTime
 
 )
