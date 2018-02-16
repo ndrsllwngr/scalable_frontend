@@ -86,7 +86,6 @@ object PlaylistPage {
 
       def getData(): Future[List[VideoResponse]] = {
         val ytData = YtRequest(apiKey, 1, "snippet", searchText).asJson.asInstanceOf[dom.ext.Ajax.InputData]
-        logger.debug(ytData.toString)
         Ajax.get(
           url = songSearch(searchText,apiKey,host)
         ).map(xhr => {
