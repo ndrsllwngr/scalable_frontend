@@ -28,11 +28,11 @@ object Layout {
     def render(props: Props): VdomElement = {
       <.div(
         <.div(
-          ^.cls := "container",
-          connection(proxy => Header(Header.Props(proxy, props.ctl, props.resolution)))
+          ^.cls := "container"
+          //TODO
         ),
-        <.div(^.cls := "container", props.resolution.render()),
-        connection(proxy => LoadingIndicator(LoadingIndicator.Props(proxy)))
+        <.div(^.cls := "container", props.resolution.render())
+        //TODO
       )
     }
   }

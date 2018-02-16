@@ -49,7 +49,6 @@ object PlaylistBox {
     val albumCoverUrl = song.albumCoverUrl
     <.div( // Playlist Row (Parent)
       ^.cls := "d-flex flex-row align-items-center bg-white text-dark p-2",
-      ^.maxWidth := 800.px,
       ^.borderWidth := "2px 0 0 0",
       ^.borderStyle := "solid",
       ^.borderColor := "black",

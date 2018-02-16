@@ -9,7 +9,6 @@ import org.scalajs.dom.html.Div
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
-import scalable.components.HeaderNav.NavLink
 import scalable.config.Config
 import scalable.diode._
 import scalable.json.RestService
@@ -45,11 +44,14 @@ object StartPage {
       props.ctl.set(AppRouter.CreateRoute)
     }
 
+    def navigateToGalleryPage(): Callback = bs.props.flatMap { props =>
+      props.ctl.set(AppRouter.PhotoRoute)
+    }
+
     def render(props: Props): VdomTagOf[Div] = {
       val proxy = props.proxy()
       <.div(
         ^.cls := "d-flex flex-column align-items-center",
-        ^.maxWidth := 800.px,
         <.div( // Child 1 AlbumCover
           ^.cls := "mb-5 mt-5",
           ^.flex := "0 0 auto",
@@ -71,6 +73,10 @@ object StartPage {
         <.button(^.`type` := "button", ^.cls := "btn btn-outline-primary btn-block mt-0",
           ^.onClick --> navigateToCreatePage(),
           "Create New Party"
+        ),
+        <.button(^.`type` := "button", ^.cls := "btn btn-danger btn-block mt-2",
+          ^.onClick --> navigateToGalleryPage(),
+          "Gallery"
         )
       )
     }
