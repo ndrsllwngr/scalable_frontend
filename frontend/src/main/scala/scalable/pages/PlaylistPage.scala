@@ -170,14 +170,8 @@ object PlaylistPage {
         pIsLoading = s.isLoading
       )
       <.div(
-        ^.margin := "0 auto",
-        ^.className := "weather-page",
+        <.div("Search for artist or song: "),
         <.div(
-          ^.className := "weather-page__label",
-          "Search for artist or song: "
-        ),
-        <.div(
-          ^.marginBottom := 10.px,
           select
         ),
         <.div(
