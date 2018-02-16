@@ -44,13 +44,16 @@ object RestService extends StrictLogging{
   }
 
   def joinPartyAsAdmin(partyId: String, password: String): Future[Boolean] = {
-    Ajax.get(
-      url = s"$host/party/$partyId"
+    val content = PartyLoginRequest(partyId, password).asJson.asInstanceOf[Ajax.InputData]
+    Ajax.post(
+      url = s"$host/party/login",
+      data = content,
+      headers = Map("Content-Type" -> "application/json")
     ).map { res =>
       val option = decode[Boolean](res.responseText)
       option match {
         case Left(_) => false
-        case Right(exists) => exists
+        case Right(bool) => bool
       }
     }
   }

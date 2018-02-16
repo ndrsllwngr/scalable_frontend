@@ -71,5 +71,11 @@ case class DeleteSong
   partyID: String
 )
 
+case class PartyLoginRequest
+(
+  id: String,
+  password: String
+)
+
 
 
