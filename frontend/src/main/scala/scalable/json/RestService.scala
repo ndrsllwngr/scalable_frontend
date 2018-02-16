@@ -40,7 +40,7 @@ object RestService extends StrictLogging{
     ).map { res =>
       val option = decode[Song](res.responseText)
       option match {
-        case Left(_) => Song(0, "", "", "", "", "", 0, 0, false)
+        case Left(_) => Song("", "", "", 0, 0, 0,"", "",  "")
         case Right(song) => song
       }
     }
