@@ -5,11 +5,13 @@ import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
 import japgolly.scalajs.react.{BackendScope, Callback, ReactEventFromInput, ScalaComponent}
 import org.scalajs.dom.html.Div
+import scala.concurrent.ExecutionContext.Implicits.global
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 import scalable.config.Config
-import scalable.diode.AppState
+import scalable.diode.{AppCircuit, AppState, SetPartyId}
+import scalable.json.RestService
 import scalable.router.AppRouter
 
 object AdminJoinPage {
@@ -35,12 +37,19 @@ object AdminJoinPage {
     val host: String = Config.AppConfig.apiHost
 
 
-    def tryLoginAsAdmin(room: String, pw: String) : Callback = {
-      //Callback.alert(s"The Create button was pressed! [$input]")
-      if(!room.isEmpty)
-        navigateToAdminPage(room)
-      else
-        Callback.alert("Room Name may not be empty")
+    def joinAsAdmin(partyId: String, password: String) : Callback = {
+      if(!partyId.isEmpty && !password.isEmpty) {
+        val loginApprovedBooleanFuture = RestService.joinPartyAsAdmin(partyId, password)
+        val futureCallback = loginApprovedBooleanFuture.map { bool =>
+          if (bool) {
+            AppCircuit.dispatch(SetPartyId(partyId))
+            navigateToAdminPage(partyId)
+          } else
+            Callback.alert("Entered room code or password was not correct.")
+        }
+        Callback.future(futureCallback)
+      } else
+        Callback.alert("Room code or password may not be empty.")
     }
 
     def onTextCodeChange(adminJoinState: AdminJoinState)(e: ReactEventFromInput) = Callback {
@@ -79,7 +88,7 @@ object AdminJoinPage {
           ),
           <.div(
             <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width mt-2",
-            ^.onClick --> tryLoginAsAdmin(s.code, s.pw),
+            ^.onClick --> joinAsAdmin(s.code, s.pw),
             "Login"
           )
         )
