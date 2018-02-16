@@ -33,29 +33,45 @@ object StartPage {
   class Backend(bs: BackendScope[Props, Unit]) {
     val host: String = Config.AppConfig.apiHost
 
-
-
-    val NavLink = ScalaFnComponent[TagMod] { el =>
-      <.div(el(
-        ^.cls := "secondary-hover",
-        ^.fontWeight := "bold",
-        ^.padding := 10.px
-      )
-      )
+    def navigateToJoinPage(): Callback = bs.props.flatMap { props =>
+      props.ctl.set(AppRouter.JoinRoute)
     }
+
+    def navigateToJoinAsAdmingPage(): Callback = bs.props.flatMap { props =>
+      props.ctl.set(AppRouter.JoinAsAdminRoute)
+    }
+
+    def navigateToCreatePage(): Callback = bs.props.flatMap { props =>
+      props.ctl.set(AppRouter.CreateRoute)
+    }
+
     def render(props: Props): VdomTagOf[Div] = {
-
       val proxy = props.proxy()
-      val joinLink = props.ctl.link(AppRouter.JoinRoute)
-      val joinAsAdminLink = props.ctl.link(AppRouter.JoinAsAdminRoute)
-      val createLink = props.ctl.link(AppRouter.CreateRoute)
-      val photoFeedLink = props.ctl.link(AppRouter.PhotoRoute("C0LDVK"))
-
       <.div(
-        ^.display := "flex",
-        NavLink(joinLink("Join Party")),
-        NavLink(joinAsAdminLink("Join Party As Host")),
-        NavLink(createLink("Create New Party"))
+        ^.cls := "d-flex flex-column align-items-center",
+        ^.maxWidth := 800.px,
+        <.div( // Child 1 AlbumCover
+          ^.cls := "mb-5 mt-5",
+          ^.flex := "0 0 auto",
+          ^.width := 150.px,
+          ^.height := 150.px,
+          ^.backgroundClip := "padding-box",
+          ^.backgroundImage := "url(/images/Scalable.png)",
+          ^.backgroundSize := "cover",
+          ^.backgroundPosition := "center center"
+        ),
+          <.button(^.`type` := "button", ^.cls := "btn btn-primary btn-block",
+            ^.onClick --> navigateToCreatePage(),
+            "Join Party"
+          ),
+        <.button(^.`type` := "button", ^.cls := "btn btn-outline-primary mt-2 btn-block",
+          ^.onClick --> navigateToCreatePage(),
+          "Join Party As Host"
+        ),
+        <.button(^.`type` := "button", ^.cls := "btn btn-outline-primary btn-block mt-0",
+          ^.onClick --> navigateToCreatePage(),
+          "Create New Party"
+        )
       )
     }
   }
