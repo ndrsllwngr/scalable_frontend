@@ -3,15 +3,13 @@ package scalable.pages
 import diode.react.ModelProxy
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
-import japgolly.scalajs.react.{BackendScope, Callback, ReactEventFromInput, ScalaComponent, ScalaFnComponent}
+import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
 import org.scalajs.dom.html.Div
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 import scalable.config.Config
 import scalable.diode._
-import scalable.json.RestService
 import scalable.router.AppRouter
 
 object StartPage {
@@ -44,10 +42,6 @@ object StartPage {
       props.ctl.set(AppRouter.CreateRoute)
     }
 
-    def navigateToGalleryPage(): Callback = bs.props.flatMap { props =>
-      props.ctl.set(AppRouter.PhotoRoute)
-    }
-
     def render(props: Props): VdomTagOf[Div] = {
       val proxy = props.proxy()
       <.div(
@@ -76,11 +70,7 @@ object StartPage {
         <.button(^.`type` := "button", ^.cls := "btn btn-outline-primary btn-block mt-0",
           ^.onClick --> navigateToCreatePage(),
           "Create New Party"
-        )),
-        <.button(^.`type` := "button", ^.cls := "btn btn-danger btn-block mt-2",
-          ^.onClick --> navigateToGalleryPage(),
-          "Gallery"
-        )
+        ))
       )
     }
   }

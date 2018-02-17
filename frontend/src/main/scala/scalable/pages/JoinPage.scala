@@ -58,8 +58,7 @@ object JoinPage {
       RestService.getSongs(props.proxy.value.partyId.get).map{songs =>
         AppCircuit.dispatch(SetSongsForParty(songs))
       }
-        props.ctl.set(AppRouter.PlaylistRoute( props.proxy.value.partyId.get))  //TODO
-
+        props.ctl.set(AppRouter.GuestRoute( props.proxy.value.partyId.get))
       }
     }
 

@@ -1,4 +1,4 @@
-package scalable.pages
+package scalable.components
 
 import diode.react.ModelProxy
 import io.circe.generic.auto._
@@ -17,15 +17,13 @@ import scala.scalajs.js
 import scala.scalajs.js.JSConverters._
 import scala.scalajs.js.annotation._
 import scala.scalajs.js.timers._
-import scalable.components.{PlaylistBox, Select}
-import scalable.config.Config
-import scalable.diode.{GetVideoSuggestions, _}
+import scalable.components.PhotoFeedBox.{Component, Props}
+import scalable.diode._
 import scalable.json.RestService
 import scalable.models.{VideoResponse, YoutubeResponse}
-import scalable.pages.CreatePage.Props
 import scalable.router.AppRouter
 
-object PlaylistPage {
+object PlaylistTab {
 
 
   @js.native
@@ -57,11 +55,6 @@ object PlaylistPage {
   class Backend($: BackendScope[Props, State]) extends StrictLogging {
 
     var props : Props = _
-
-    def logout(props: Props): Callback ={
-      props.proxy.value.partyId = Option.empty
-      props.ctl.set(AppRouter.StartRoute)
-    }
 
 
     var timer: SetIntervalHandle = _
@@ -198,9 +191,7 @@ object PlaylistPage {
         pIsLoading = s.isLoading
       )
       <.div(
-        <.header(^.cls := "form-group",
-          <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width mt-2", ^.onClick --> logout(p), "logout")),
-        <.div(
+         <.div(
           ^.cls := "h6",
           "Add song to playlist:"),
         <.div(
@@ -208,9 +199,11 @@ object PlaylistPage {
           select
         ),
         <.div(
-          PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl)
+          <.div(NowPlayingComp(NowPlayingComp.Props(p.proxy, p.ctl)))
+          ,<.div(PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl)))
+          ,<.div(AlreadyPlayedComp(AlreadyPlayedComp.Props(p.proxy, p.ctl)))
         )
-      ))
+      )
     }
   }
 
@@ -227,4 +220,7 @@ object PlaylistPage {
     .componentDidMount(scope => scope.backend.mounted)
     .componentWillUnmount(scope => scope.backend.unmounted)
     .build
+
+
+  def apply(props: Props) = Component(props)
 }

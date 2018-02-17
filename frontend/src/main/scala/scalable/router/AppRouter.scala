@@ -10,14 +10,12 @@ import scalable.pages._
 object AppRouter {
   sealed trait Page
   case object StartRoute extends Page
-  case object PlaylistRoute extends Page
   case object JoinRoute extends Page
   case object CreateRoute extends Page
   case object CreateInfoRoute extends Page
   case object JoinAsAdminRoute extends Page
-  case object PhotoRoute extends Page
   case class AdminRoute(roomCode: String) extends Page
-  case class PlaylistRoute(roomCode: String) extends Page
+  case class GuestRoute(roomCode: String) extends Page
 
   val connection = AppCircuit.connect(_.state)
 
@@ -29,9 +27,8 @@ object AppRouter {
       | staticRoute("adminjoin", JoinAsAdminRoute) ~> renderR(renderAdminJoinPage)
       | staticRoute("create", CreateRoute) ~> renderR(renderCreateRoomPage)
       | staticRoute("createInfo", CreateInfoRoute) ~> renderR(renderCreateInfoPage)
-      | staticRoute("gallery", PhotoRoute) ~> renderR(renderPhotoPage)
       | dynamicRouteCT(("admin"/ string(".*")).caseClass[AdminRoute]) ~> dynRenderR(renderAdminPage)
-      | dynamicRouteCT(("room"/ string(".*")).caseClass[PlaylistRoute]) ~> dynRenderR(renderPlaylistPage)
+      | dynamicRouteCT(("guest"/ string(".*")).caseClass[GuestRoute]) ~> dynRenderR(renderGuestPage)
 
     )
       .notFound(redirectToPage(StartRoute)(Redirect.Replace))
@@ -59,10 +56,6 @@ object AppRouter {
     connection(proxy => CreateInfoPage.Component(CreateInfoPage.Props(proxy, ctl)))
   }
 
-  def renderPhotoPage(ctl: RouterCtl[Page]) = {
-    connection(proxy => PhotoFeedPage.Component(PhotoFeedPage.Props(proxy, ctl)))
-  }
-
   def renderAdminPage(p: AdminRoute, ctl: RouterCtl[Page]) = {
     connection( proxy => {
       proxy.value.partyId = Some(p.roomCode)
@@ -70,10 +63,10 @@ object AppRouter {
     })
   }
 
-  def renderPlaylistPage(p: PlaylistRoute, ctl: RouterCtl[Page]) = {
+  def renderGuestPage(p: GuestRoute, ctl: RouterCtl[Page]) = {
     connection(proxy => {
       proxy.value.partyId = Some(p.roomCode)
-      PlaylistPage.Component(PlaylistPage.Props(proxy, ctl))
+      GuestPage.Component(GuestPage.Props(proxy, ctl))
     })
   }
 

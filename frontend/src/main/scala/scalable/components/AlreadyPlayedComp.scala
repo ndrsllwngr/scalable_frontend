@@ -10,7 +10,7 @@ import scalable.diode._
 import scalable.models._
 import scalable.router.AppRouter
 
-object PlaylistBox {
+object AlreadyPlayedComp {
 
   case class Props (
                      proxy: ModelProxy[AppState],
@@ -33,10 +33,9 @@ object PlaylistBox {
     val songs                        = proxy.songList
     val partyId                      = proxy.partyId
     partyId match {
-      case Some(id) => for (songs <- songs if songs.playState.equalsIgnoreCase("QUEUE")) yield songView(songs,id)
+      case Some(id) => for (songs <- songs if songs.playState.equalsIgnoreCase("PLAYED")) yield songView(songs,id)
       case None => Seq(<.p("No party ID set"))
     }
-
   }
 
   def songView(song:Song, partyID:String ) ={
@@ -46,9 +45,7 @@ object PlaylistBox {
     val artist = song.artist
     val albumCoverUrl = song.albumCoverUrl
     <.div( // Playlist Row (Parent)
-      ^.cls := "d-flex flex-row align-items-center bg-white text-dark p-2",
-      ^.borderWidth := "2px 0 0 0",
-      ^.borderStyle := "solid",
+      ^.cls := "d-flex flex-row align-items-center bg-white text-dark p-2 mt-2",
       ^.borderColor := "black",
       <.div( // Child 1 AlbumCover
         ^.cls := "mr-2",
@@ -60,17 +57,20 @@ object PlaylistBox {
         ^.backgroundImage := s"url($albumCoverUrl)",
         ^.backgroundSize := "cover",
         ^.backgroundPosition := "center center"
-        ),
-        <.div( // Child 2 Song title
-          ^.flex := "1 1 auto",
-          ^.cls := "h3 mb-0 mr-2 text-truncate",
-            name,<.pre(
-            ^.cls := "h6 mb-0 text-muted",
-              artist)
-          ),
+      ),
+      <.div( // Child 2 Song title
+        <.pre(
+          ^.cls := "h6 mb-0 text-secondary",
+          "ALREADY PLAYED"),
+        ^.flex := "1 1 auto",
+        ^.cls := "h3 mb-0 mr-2 text-truncate",
+        name,<.pre(
+          ^.cls := "h6 mb-0 text-muted",
+          artist)
+      ),
       <.div( // Child 3 VoteComp
-        ^.flex := "0 0 auto",
-        VoteComp(VoteComp.Props(VoteAble(partyID = partyID, compId = song.id, voteType = "SONG" ,upvotes = song.upvotes, downvotes = song.downvotes))))
+        ^.flex := "0 0 auto"
+      )
     )
   }
 

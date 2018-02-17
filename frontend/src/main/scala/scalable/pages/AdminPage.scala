@@ -11,7 +11,7 @@ import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 import scala.scalajs.js.timers.SetIntervalHandle
 import scala.scalajs.js.undefined
-import scalable.components.PlaylistBox
+import scalable.components.{AlreadyPlayedComp, PlaylistBox}
 import scalable.config.Config
 import scalable.diode.{AppCircuit, AppState, SetSongsForParty}
 import scalable.json.RestService
@@ -168,10 +168,9 @@ object AdminPage {
           <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width mt-2", ^.onClick --> logout(props), "logout")),
         <.label(^.`for` := "roomcode", s"Room ${roomCode}"),
         <.div(^.cls := "column", ^.id := "player-view",
-          <.div(^.id := "player"),
-          <.div(
-            PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl))
-          )
+          <.div(^.id := "player")
+          ,<.div(PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl)))
+          ,<.div(AlreadyPlayedComp(AlreadyPlayedComp.Props(p.proxy, p.ctl)))
         )
       )
     }

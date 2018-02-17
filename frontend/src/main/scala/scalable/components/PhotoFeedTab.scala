@@ -1,4 +1,4 @@
-package scalable.pages
+package scalable.components
 
 import diode.react.ModelProxy
 import firebase.Firebase
@@ -13,7 +13,6 @@ import scala.concurrent.Future
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 import scala.scalajs.js.timers.SetIntervalHandle
-import scalable.components.PhotoFeedBox
 import scalable.config.Config
 import scalable.diode.{AppCircuit, AppState, SetPhotosForParty}
 import scalable.json.RestService
@@ -21,7 +20,7 @@ import scalable.models.PhotoReturn
 import scalable.router.AppRouter
 
 
-object PhotoFeedPage {
+object PhotoFeedTab {
 
 
   @js.native
@@ -125,5 +124,8 @@ object PhotoFeedPage {
     .componentDidMount(scope => scope.backend.mounted)
     .componentWillUnmount(scope => scope.backend.unmounted)
     .build
+
+
+  def apply(props: Props) = Component(props)
 
 }
