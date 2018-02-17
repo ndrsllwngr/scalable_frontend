@@ -9,5 +9,4 @@ object Config {
   object AppConfig extends js.Object {
     val apiHost: String = js.native
   }
-  var partyId:Option[String] = None
 }

@@ -30,7 +30,6 @@ object AppCircuit extends Circuit[AppModel] with ReactConnector[AppModel] {
 class PlaylistPageHandler[M](modelRW: ModelRW[M, AppState]) extends ActionHandler(modelRW) {
   override def handle = {
     case SetPartyId(partyId) => {
-      Config.partyId = Some(partyId)
       updated(value.copy(partyId = Some(partyId)))
     }
     case SetPartyCreateResponse(partyCreateResponse) => updated(value.copy(partyCreateResponse = Some(partyCreateResponse)))

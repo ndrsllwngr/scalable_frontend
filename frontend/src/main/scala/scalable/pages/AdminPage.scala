@@ -29,7 +29,6 @@ object AdminPage {
 
   case class Props(
                     proxy: ModelProxy[AppState],
-                    roomCode: String,
                     ctl: RouterCtl[AppRouter.Page]
                   )
 
@@ -65,9 +64,13 @@ object AdminPage {
         hasSong = false
       } else {
         hasSong = true
-        loadSong(player, songList.head, props.roomCode)
+
+        props.proxy.value.partyId match {
+          case Some(id) => loadSong(player, songList.head, id)
+        }
       }
     }
+
 
     def loadSong(player: Player, next: Song, roomCode: String): Unit = {
       println("resolve")
@@ -103,14 +106,15 @@ object AdminPage {
       js.timers.clearInterval(timer)
     }
 
-    def startUpdateInterval(): Unit ={
+    def startUpdateInterval(): Unit = {
       timer = js.timers.setInterval(10000) { // note the absence of () =>
-          getData()
+        getData()
       }
     }
 
     def getData(): Unit = {
-      Config.partyId match {
+
+      props.proxy.value.partyId match {
         case Some(id) => RestService.getSongs(id).map { songs =>
           AppCircuit.dispatch(SetSongsForParty(songs))
           if (!hasSong && player.isDefined) {
@@ -121,14 +125,21 @@ object AdminPage {
       }
     }
 
-    def logout(props: Props): Callback ={
-      Config.partyId = Option.empty
+
+    def logout(props: Props): Callback = {
+      props.proxy.value.partyId = Option.empty
       props.ctl.set(AppRouter.StartRoute)
     }
 
     def render(p: Props): VdomTagOf[Div] = {
       val proxy = p.proxy()
       props = p
+
+      var roomCode: String = "NO PARTY ID"
+      p.proxy.value.partyId match {
+        case Some(id) => roomCode = id
+      }
+
 
       val tag = org.scalajs.dom.document.createElement("script").asInstanceOf[org.scalajs.dom.html.Script]
       tag.src = "https://www.youtube.com/iframe_api"
@@ -155,7 +166,7 @@ object AdminPage {
       <.div(^.cls := "form-group",
         <.header(^.cls := "form-group",
           <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width mt-2", ^.onClick --> logout(props), "logout")),
-        <.label(^.`for` := "roomcode", s"Room ${p.roomCode}"),
+        <.label(^.`for` := "roomcode", s"Room ${roomCode}"),
         <.div(^.cls := "column", ^.id := "player-view",
           <.div(^.id := "player"),
           <.div(
@@ -167,7 +178,7 @@ object AdminPage {
   }
 
 
-  val Component = ScalaComponent.builder[Props]("RoomPage")
+  val Component = ScalaComponent.builder[Props]("AdminPage")
     .renderBackend[Backend]
     .componentDidMount(scope => scope.backend.mounted)
     .componentWillUnmount(scope => scope.backend.unmounted)
