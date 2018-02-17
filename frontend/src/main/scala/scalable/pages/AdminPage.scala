@@ -59,17 +59,15 @@ object AdminPage {
     def resolveNext(player: Player): Unit = {
       println("resolve")
       val state = props.proxy.modelReader.apply()
-      val songList = state.songList.filter(s => s.playState.equals("QUEUE"))
+      var songList = state.songList.filter(s => s.playState.equals("QUEUE"))
       if (songList.isEmpty) {
         hasSong = false
-        player.loadVideoById("PfK213zXvvU",0.0, "hd720")
+        songList = state.songList
+        scala.util.Random.shuffle(songList)
       } else {
         hasSong = true
-
-        props.proxy.value.partyId match {
-          case Some(id) => loadSong(player, songList.head, id)
-        }
       }
+      if (songList.nonEmpty) props.proxy.value.partyId match { case Some(id) => loadSong(player, songList.head, id) }
     }
 
 
@@ -117,13 +115,9 @@ object AdminPage {
 
       props.proxy.value.partyId match {
         case Some(id) => RestService.getSongs(id).map { songs =>
+          if(songs.nonEmpty && player.isEmpty)
+            createPlayer()
           AppCircuit.dispatch(SetSongsForParty(songs))
-          if (!hasSong && player.isEmpty){
-              createPlayer()
-          }
-          if (!hasSong && player.isDefined) {
-            resolveNext(player.get)
-          }
         }
         case None => println("NO PARTY ID")
       }
