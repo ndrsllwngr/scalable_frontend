@@ -1,3 +1,8 @@
+## Minimal Requirements
+
+1. IntelliJ IDEA 2017.3.4
+2. SBT Version 1.1.0
+
 ## Setup
 
 1. Clone repository
