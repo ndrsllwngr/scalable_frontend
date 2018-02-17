@@ -166,10 +166,10 @@ object AdminPage {
       <.div(^.cls := "form-group",
         <.header(^.cls := "form-group",
           <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width mt-2", ^.onClick --> logout(props), "logout")),
-        <.label(^.`for` := "roomcode", s"Room ${roomCode}"),
+        <.label(^.`for` := "roomcode", s"Room $roomCode"),
         <.div(^.cls := "column", ^.id := "player-view",
           <.div(^.id := "player")
-          ,<.div(PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl)))
+          ,<.div(PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl,  _ => getData())))
           ,<.div(AlreadyPlayedComp(AlreadyPlayedComp.Props(p.proxy, p.ctl)))
         )
       )

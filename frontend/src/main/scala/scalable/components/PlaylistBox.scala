@@ -14,7 +14,8 @@ object PlaylistBox {
 
   case class Props (
                      proxy: ModelProxy[AppState],
-                     ctl: RouterCtl[AppRouter.Page]
+                     ctl: RouterCtl[AppRouter.Page],
+                     onVoted : Event => Unit
                    )
 
   class Backend(bs: BackendScope[Props, Unit]) {
@@ -33,13 +34,13 @@ object PlaylistBox {
     val songs                        = proxy.songList
     val partyId                      = proxy.partyId
     partyId match {
-      case Some(id) => for (songs <- songs if songs.playState.equalsIgnoreCase("QUEUE")) yield songView(songs,id)
+      case Some(id) => for (songs <- songs if songs.playState.equalsIgnoreCase("QUEUE")) yield songView(songs,id, props)
       case None => Seq(<.p("No party ID set"))
     }
 
   }
 
-  def songView(song:Song, partyID:String ) ={
+  def songView(song:Song, partyID:String , props: Props) ={
     val customStyle = VdomStyle("background-image")
     val id = song.id
     val name = song.name
@@ -70,7 +71,7 @@ object PlaylistBox {
           ),
       <.div( // Child 3 VoteComp
         ^.flex := "0 0 auto",
-        VoteComp(VoteComp.Props(VoteAble(partyID = partyID, compId = song.id, voteType = "SONG" ,upvotes = song.upvotes, downvotes = song.downvotes))))
+        VoteComp(VoteComp.Props(VoteAble(partyID = partyID, compId = song.id, voteType = "SONG" ,upvotes = song.upvotes, downvotes = song.downvotes), props.onVoted)))
     )
   }
 

@@ -94,6 +94,7 @@ object PhotoFeedTab {
           case None => println("NO PARTY ID")
         }
 
+      fileChooser.select()
       js.undefined
     }
 
@@ -112,7 +113,7 @@ object PhotoFeedTab {
             ^.onChange ==> onPhotoChanged())
             .ref(fileChooser = _)
         ), <.div(
-          PhotoFeedBox(PhotoFeedBox.Props(p.proxy, p.ctl))
+          PhotoFeedBox(PhotoFeedBox.Props(p.proxy,  _ => getData(), p.ctl))
         )
       )
     }

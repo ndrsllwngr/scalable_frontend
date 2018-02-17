@@ -13,6 +13,7 @@ object PhotoFeedBox {
 
   case class Props (
                      proxy: ModelProxy[AppState],
+                     onVoted : Event => Unit,
                      ctl: RouterCtl[AppRouter.Page]
                    )
 
@@ -30,14 +31,14 @@ object PhotoFeedBox {
     val partyId                      = proxy.partyId
     partyId match {
       case Some(id) => feed.map(x => {
-        photoView(x,id)
+        photoView(x,id, props)
       })
       case None => Seq(<.p("No party ID set"))
     }
 
   }
 
-  def photoView(photo: PhotoReturn, partyID:String ) ={
+  def photoView(photo: PhotoReturn, partyID:String ,props: Props) ={
     val customStyle = VdomStyle("background-image")
     val id = photo.id
     val url = photo.url
@@ -59,7 +60,7 @@ object PhotoFeedBox {
       ),
       <.div( // Child 3 VoteComp
         ^.flex := "0 0 auto",
-        VoteComp(VoteComp.Props(VoteAble(partyID = partyID, compId = photo.id, voteType = "PHOTO" ,upvotes = photo.upvotes, downvotes = photo.downvotes))))
+        VoteComp(VoteComp.Props(VoteAble(partyID = partyID, compId = photo.id, voteType = "PHOTO" ,upvotes = photo.upvotes, downvotes = photo.downvotes), props.onVoted)))
     )
   }
 

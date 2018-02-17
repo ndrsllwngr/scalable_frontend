@@ -12,7 +12,7 @@ import scalable.models._
 
 object VoteComp {
 
-  case class Props (voteAble: VoteAble)
+  case class Props (voteAble: VoteAble, onVoted : Event => Unit)
 
   case class State (var voted: Boolean)
 
@@ -23,7 +23,7 @@ object VoteComp {
       if(!state.voted) {
         state.voted = true
         RestService.addPartyVote(props.voteAble.partyID, props.voteAble.compId, positive, props.voteAble.voteType).onComplete{
-          case Success(_) => state.voted = true; createCookie(props.voteAble, state)
+          case Success(_) => state.voted = true; createCookie(props.voteAble, state); props.onVoted
           case Failure(_) => state.voted = false
         }
       }
