@@ -63,25 +63,19 @@ object StartPage {
             ,<.span(dataTxtAttr := "E","E")
           )
         ),
-          <.button(^.`type` := "button", ^.cls := "btn btn-primary btn-block",
-            ^.backgroundColor := 	"rgba(56, 190, 103,1)",
-            ^.borderColor := 	"rgba(56, 190, 103,1)",
+          <.button(^.`type` := "button", ^.cls := "btn btn-success btn-block",
             ^.onClick --> navigateToJoinPage(),
             "Join Party"
           ),
         <.div(
           ^.cls := "btn-group-vertical btn-block",
-        <.button(^.`type` := "button", ^.cls := "btn btn-outline-primary mt-2 btn-block",
-          ^.borderColor := 	"rgba(56, 190, 103,1)",
-          ^.color := 	"rgba(56, 190, 103,1)",
+        <.button(^.`type` := "button", ^.cls := "btn btn-outline-success mt-2 btn-block",
           ^.onClick --> navigateToJoinAsAdminPage(),
-          "Join Party As Host"
+          "Admin Login"
         ),
-        <.button(^.`type` := "button", ^.cls := "btn btn-outline-primary btn-block mt-0",
-          ^.borderColor := 	"rgba(56, 190, 103,1)",
-          ^.color := 	"rgba(56, 190, 103,1)",
+        <.button(^.`type` := "button", ^.cls := "btn btn-outline-success btn-block mt-0",
           ^.onClick --> navigateToCreatePage(),
-          "Create New Party"
+          "Create Party"
         ))
       )
     }
