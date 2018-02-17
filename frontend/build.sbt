@@ -27,8 +27,7 @@ libraryDependencies ++= {
     "io.suzaku" %%% "diode" % "1.1.2",
     "io.suzaku" %%% "diode-devtools" % "1.1.2",
     "io.suzaku" %%% "diode-react" % "1.1.2",
-    "biz.enef" %%% "slogging" % "0.6.1",
-    "io.scalajs.npm" %%% "cookie" % "0.4.2"
+    "biz.enef" %%% "slogging" % "0.6.1"
   )
 }
 

@@ -1,11 +1,10 @@
 package scalable.components
 
-import io.scalajs.npm.cookie.Cookie
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
+import org.scalajs.dom
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.scalajs.js
 import scala.util.{Failure, Success}
 import scalable.json._
 import scalable.models._
@@ -19,21 +18,6 @@ object VoteComp {
 
   class Backend(bs: BackendScope[Props, State]) {
 
-    def checkForExistingCookie(voteAble: VoteAble, state: State) : Unit = {
-      var uri = js.URIUtils.decodeURIComponent(voteAble.partyID)
-      val cookie = Cookie.parse(voteAble.compId.toString)
-      println(cookie)
-
-      state.voted = cookie.get(voteAble.compId.toString).isDefined
-
-    }
-
-    def createCookie(voteAble: VoteAble, state: State) : Unit = {
-      val cname = voteAble.compId + "=" + state.voted
-      val set = Cookie.serialize(voteAble.compId.toString, state.voted.toString)
-
-      println(set.toString)
-    }
 
     def vote(props: Props, positive: Boolean, state: State) : Callback = Callback {
       if(!state.voted) {
@@ -44,6 +28,7 @@ object VoteComp {
         }
       }
     }
+
 
     def colorGreen(voteAble: VoteAble) : Boolean = {
         if(calcTotal(voteAble) > 0){
@@ -61,6 +46,17 @@ object VoteComp {
     }
     def calcTotal(voteAble: VoteAble) : Int = {
       voteAble.upvotes - voteAble.downvotes
+    }
+
+
+    def checkForExistingCookie(voteAble: VoteAble, state: State) : Unit = {
+      val cookie = dom.document.cookie
+      state.voted = cookie.contains(s"${voteAble.partyID}/${voteAble.voteType}/${voteAble.compId}") &&  cookie.contains("true")
+
+    }
+
+    def createCookie(voteAble: VoteAble, state: State) : Unit = {
+      dom.document.cookie = s"${voteAble.compId}=${voteAble.partyID}/${voteAble.voteType}/${voteAble.compId}/${state.voted}"
     }
 
     def render(props: Props, state: State): VdomElement = {
