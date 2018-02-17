@@ -22,7 +22,6 @@ libraryDependencies ++= {
   val catsVersion = "0.9.0"
   val circeVersion = "0.8.0"
   val diodeVersion = "1.1.2"
-  val sloggingVersion = "0.6.1"
 
   Seq(
     "org.scala-js"                      %%% "scalajs-dom"               % scalajsDomVersion,
@@ -45,9 +44,7 @@ libraryDependencies ++= {
 
     "io.suzaku"                         %%% "diode"                     % diodeVersion,
     "io.suzaku"                         %%% "diode-devtools"            % diodeVersion,
-    "io.suzaku"                         %%% "diode-react"               % diodeVersion,
-
-    "biz.enef"                          %%% "slogging"                  % sloggingVersion
+    "io.suzaku"                         %%% "diode-react"               % diodeVersion
   )
 }
 

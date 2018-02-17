@@ -9,7 +9,6 @@ import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^._
 import org.scalajs.dom
 import org.scalajs.dom.ext.Ajax
-import slogging.StrictLogging
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -53,7 +52,7 @@ object PlaylistTab {
                         q :String
   )
 
-  class Backend($: BackendScope[Props, State]) extends StrictLogging {
+  class Backend($: BackendScope[Props, State]) {
 
     var props : Props = _
 
