@@ -7,7 +7,6 @@ import japgolly.scalajs.react.{BackendScope, Callback, ReactEventFromInput, Scal
 import org.scalajs.dom.html.Div
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent._
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 import scalable.config.Config
@@ -35,6 +34,11 @@ object CreatePage {
   class Backend(bs: BackendScope[Props, CreateState]) {
     val host: String = Config.AppConfig.apiHost
 
+    def logout(props: Props): Callback ={
+      Config.partyId = Option.empty
+      props.ctl.set(AppRouter.StartRoute)
+    }
+
 
     def createRoom(input: String) : Callback = {
       val partyCreateResponseFuture = RestService.createParty(input)
@@ -58,6 +62,9 @@ object CreatePage {
       val proxy = p.proxy()
 
       <.div(^.cls := "d-flex flex-column justify-content-center form-group",
+        <.header(^.cls := "form-group",
+          <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width mt-2", ^.onClick --> logout(p), "logout")),
+
         ^.height := "100vh",
         <.label(^.`for` := "roomcode", "Enter a room name:"),
         <.div(^.cls := "column", ^.id := "roomcode-row",

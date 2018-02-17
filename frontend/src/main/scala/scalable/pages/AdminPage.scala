@@ -121,6 +121,11 @@ object AdminPage {
       }
     }
 
+    def logout(props: Props): Callback ={
+      Config.partyId = Option.empty
+      props.ctl.set(AppRouter.StartRoute)
+    }
+
     def render(p: Props): VdomTagOf[Div] = {
       val proxy = p.proxy()
       props = p
@@ -146,7 +151,10 @@ object AdminPage {
           )
         )))
       }
+
       <.div(^.cls := "form-group",
+        <.header(^.cls := "form-group",
+          <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width mt-2", ^.onClick --> logout(props), "logout")),
         <.label(^.`for` := "roomcode", s"Room ${p.roomCode}"),
         <.div(^.cls := "column", ^.id := "player-view",
           <.div(^.id := "player"),
