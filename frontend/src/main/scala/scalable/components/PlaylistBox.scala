@@ -15,7 +15,8 @@ object PlaylistBox {
   case class Props (
                      proxy: ModelProxy[AppState],
                      ctl: RouterCtl[AppRouter.Page],
-                     onVoted : Event => Unit
+                     onVoted : Event => Unit,
+                     admin: Boolean
                    )
 
   class Backend(bs: BackendScope[Props, Unit]) {
@@ -71,7 +72,7 @@ object PlaylistBox {
           ),
       <.div( // Child 3 VoteComp
         ^.flex := "0 0 auto",
-        VoteComp(VoteComp.Props(VoteAble(partyID = partyID, compId = song.id, voteType = "SONG" ,upvotes = song.upvotes, downvotes = song.downvotes), props.onVoted)))
+        VoteComp(VoteComp.Props(VoteAble(partyID = partyID, compId = song.id, voteType = "SONG" ,upvotes = song.upvotes, downvotes = song.downvotes), props.onVoted, admin = props.admin)))
     )
   }
 

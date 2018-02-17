@@ -44,10 +44,10 @@ object GuestPage {
 
 
     def render(p: Props, state: State): VdomTagOf[Div] = {
-      var tabContent : VdomTagOf[Div] = <.div(PlaylistTab(PlaylistTab.Props(p.proxy, p.ctl)))
+      var tabContent : VdomTagOf[Div] = <.div(PlaylistTab(PlaylistTab.Props(p.proxy, p.ctl, admin = false)))
       state.pageIndex match{
-        case 0 => tabContent = <.div(PlaylistTab(PlaylistTab.Props(p.proxy, p.ctl)))
-        case 1 => tabContent = <.div(PhotoFeedTab(PhotoFeedTab.Props(p.proxy, p.ctl)))
+        case 0 => tabContent = <.div(PlaylistTab(PlaylistTab.Props(p.proxy, p.ctl, admin = false)))
+        case 1 => tabContent = <.div(PhotoFeedTab(PhotoFeedTab.Props(p.proxy, p.ctl, admin = false)))
       }
 
       <.div(

@@ -3,6 +3,7 @@ package scalable.components
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
 import org.scalajs.dom
+import shapeless.ops.nat.Div
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success}
@@ -12,7 +13,7 @@ import scalable.models._
 
 object VoteComp {
 
-  case class Props (voteAble: VoteAble, onVoted : Event => Unit)
+  case class Props (voteAble: VoteAble, onVoted : Event => Unit, admin: Boolean)
 
   case class State (var voted: Boolean)
 
@@ -59,10 +60,17 @@ object VoteComp {
       dom.document.cookie = s"${voteAble.compId}=${voteAble.partyID}/${voteAble.voteType}/${voteAble.compId}/${state.voted}"
     }
 
-    def render(props: Props, state: State): VdomElement = {
-      checkForExistingCookie(props.voteAble, state)
-      <.div(
-        ^.cls := "d-flex flex-column align-items-center align-self-center",
+    def renderVoteCompAsAdminOrGuest(props: Props, state: State) : VdomArray = {
+      if(props.admin){
+        VdomArray(
+        <.div(
+          ^.classSet(
+            "p-2 align-self-center" -> true),
+          calcTotal(props.voteAble).toString
+        )
+        )
+      } else {
+        VdomArray(
         <.div(
           ^.cls := "align-self-center",
           <.button(
@@ -73,14 +81,16 @@ object VoteComp {
               ^.alt := "upvote",
               ^.src := "/images/ic_expand_less_black_24px.svg"
             )
-          )),
+          )
+        ),
         <.div(
           ^.classSet(
             "p-2 align-self-center" -> true),
           ^.classSet(
             "text-success" -> colorGreen(props.voteAble),
             "text-danger" -> colorRed(props.voteAble)),
-          calcTotal(props.voteAble).toString),
+          calcTotal(props.voteAble).toString
+        ),
         <.div(
           ^.cls := "align-self-center",
           <.button(
@@ -92,7 +102,17 @@ object VoteComp {
               ^.src := "/images/ic_expand_more_black_24px.svg"
             )
           )
-        ))
+        )
+        )
+      }
+    }
+
+    def render(props: Props, state: State): VdomElement = {
+      checkForExistingCookie(props.voteAble, state)
+      <.div(
+        ^.cls := "d-flex flex-column align-items-center align-self-center",
+        renderVoteCompAsAdminOrGuest(props,state)
+        )
     }
   }
 

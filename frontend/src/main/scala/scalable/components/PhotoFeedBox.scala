@@ -14,7 +14,8 @@ object PhotoFeedBox {
   case class Props (
                      proxy: ModelProxy[AppState],
                      onVoted : Event => Unit,
-                     ctl: RouterCtl[AppRouter.Page]
+                     ctl: RouterCtl[AppRouter.Page],
+                     admin: Boolean
                    )
 
   class Backend(bs: BackendScope[Props, Unit]) {
@@ -60,7 +61,7 @@ object PhotoFeedBox {
       ),
       <.div( // Child 3 VoteComp
         ^.flex := "0 0 auto",
-        VoteComp(VoteComp.Props(VoteAble(partyID = partyID, compId = photo.id, voteType = "PHOTO" ,upvotes = photo.upvotes, downvotes = photo.downvotes), props.onVoted)))
+        VoteComp(VoteComp.Props(VoteAble(partyID = partyID, compId = photo.id, voteType = "PHOTO" ,upvotes = photo.upvotes, downvotes = photo.downvotes), props.onVoted, admin = props.admin)))
     )
   }
 

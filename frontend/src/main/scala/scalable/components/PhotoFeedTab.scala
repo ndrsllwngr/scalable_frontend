@@ -32,7 +32,8 @@ object PhotoFeedTab {
 
   case class Props(
                     proxy: ModelProxy[AppState],
-                    ctl: RouterCtl[AppRouter.Page]
+                    ctl: RouterCtl[AppRouter.Page],
+                    admin: Boolean
                   )
 
 
@@ -113,7 +114,7 @@ object PhotoFeedTab {
             ^.onChange ==> onPhotoChanged())
             .ref(fileChooser = _)
         ), <.div(
-          PhotoFeedBox(PhotoFeedBox.Props(p.proxy,  _ => getData(), p.ctl))
+          PhotoFeedBox(PhotoFeedBox.Props(p.proxy,  _ => getData(), p.ctl, admin = p.admin))
         )
       )
     }
