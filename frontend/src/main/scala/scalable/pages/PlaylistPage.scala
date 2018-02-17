@@ -17,7 +17,7 @@ import scala.scalajs.js
 import scala.scalajs.js.JSConverters._
 import scala.scalajs.js.annotation._
 import scala.scalajs.js.timers._
-import scalable.components.{NowPlayingComp, PlaylistBox, Select}
+import scalable.components.{AlreadyPlayedComp, NowPlayingComp, PlaylistBox, Select}
 import scalable.config.Config
 import scalable.diode._
 import scalable.json.RestService
@@ -207,8 +207,9 @@ object PlaylistPage {
           ^.cls := "mb-2",
           select
         ),
-        <.div(NowPlayingComp(NowPlayingComp.Props(p.proxy, p.ctl))),
-        <.div(PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl)))
+        <.div(NowPlayingComp(NowPlayingComp.Props(p.proxy, p.ctl)))
+        ,<.div(PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl)))
+        ,<.div(AlreadyPlayedComp(AlreadyPlayedComp.Props(p.proxy, p.ctl)))
       )
     }
   }

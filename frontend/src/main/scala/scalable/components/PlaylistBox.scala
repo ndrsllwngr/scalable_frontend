@@ -30,12 +30,10 @@ object PlaylistBox {
   def getSongs(props: Props) ={
     val proxy                        = props.proxy()
     //val dispatch: Action => Callback = props.proxy.dispatchCB
-    val songs                        = proxy.songList.filter(x => x.playState.equalsIgnoreCase("QUEUE"))
+    val songs                        = proxy.songList
     val partyId                      = proxy.partyId
     partyId match {
-      case Some(id) => songs.map(x => {
-        songView(x,id)
-      })
+      case Some(id) => for (songs <- songs if songs.playState.equalsIgnoreCase("QUEUE")) yield songView(songs,id)
       case None => Seq(<.p("No party ID set"))
     }
 

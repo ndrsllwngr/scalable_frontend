@@ -23,31 +23,19 @@ object AlreadyPlayedComp {
     val host: String = Config.AppConfig.apiHost
 
     def render(props: Props): VdomElement = {
-      <.div(getSongs(props))
+      <.div(getSongs(props).toVdomArray)
     }
   }
 
-  def getSongs(props: Props) : VdomTag ={
+  def getSongs(props: Props) ={
     val proxy                        = props.proxy()
     //val dispatch: Action => Callback = props.proxy.dispatchCB
     val songs                        = proxy.songList
-    val nowPlaying = proxy.songList.find(x => x.playState.equalsIgnoreCase("PLAYING"))
-    nowPlaying match {
-      case Some(song) => {
-        val partyId = proxy.partyId
-        partyId match {
-          case Some(id) => songView(song,id)
-          case None => noView("No party id set.")
-        }
-      }
-      case None => noView("At the moment no song is playing.")
+    val partyId                      = proxy.partyId
+    partyId match {
+      case Some(id) => for (songs <- songs if songs.playState.equalsIgnoreCase("PLAYED")) yield songView(songs,id)
+      case None => Seq(<.p("No party ID set"))
     }
-
-  }
-
-  def noView(message: String) = {
-    <.div(
-      <.p(message))
   }
 
   def songView(song:Song, partyID:String ) ={
@@ -72,8 +60,8 @@ object AlreadyPlayedComp {
       ),
       <.div( // Child 2 Song title
         <.pre(
-          ^.cls := "h6 mb-0 text-success",
-          "NOW PLAYING"),
+          ^.cls := "h6 mb-0 text-secondary",
+          "ALREADY PLAYED"),
         ^.flex := "1 1 auto",
         ^.cls := "h3 mb-0 mr-2 text-truncate",
         name,<.pre(
