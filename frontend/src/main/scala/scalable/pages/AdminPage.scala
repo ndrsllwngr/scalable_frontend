@@ -71,7 +71,7 @@ object AdminPage {
 
     def loadSong(player: Player, next: Song, roomCode: String): Unit = {
       println("resolve")
-      RestService.setSongPlaying(next.id, roomCode)
+      RestService.setSongPlaying(next.id, roomCode).onComplete(_ => getData())
       player.loadVideoById(next.streamingServiceID, 0.0, "hd720")
     }
 
@@ -94,7 +94,8 @@ object AdminPage {
     }
 
     def mounted: Callback = Callback {
-      getData();
+      getData()
+      startUpdateInterval()
     }
 
     def unmounted: Callback = Callback {
@@ -102,17 +103,21 @@ object AdminPage {
       js.timers.clearInterval(timer)
     }
 
-    def getData(): Unit = {
+    def startUpdateInterval(): Unit ={
       timer = js.timers.setInterval(10000) { // note the absence of () =>
-        Config.partyId match {
-          case Some(id) => RestService.getSongs(id).map { songs =>
-            if (!hasSong && player.isDefined) {
-              resolveNext(player.get)
-            }
-            AppCircuit.dispatch(SetSongsForParty(songs))
+          getData()
+      }
+    }
+
+    def getData(): Unit = {
+      Config.partyId match {
+        case Some(id) => RestService.getSongs(id).map { songs =>
+          if (!hasSong && player.isDefined) {
+            resolveNext(player.get)
           }
-          case None => println("NO PARTY ID")
+          AppCircuit.dispatch(SetSongsForParty(songs))
         }
+        case None => println("NO PARTY ID")
       }
     }
 
@@ -124,6 +129,7 @@ object AdminPage {
       tag.src = "https://www.youtube.com/iframe_api"
       val firstScriptTag = org.scalajs.dom.document.getElementsByTagName("script").item(0)
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
+
 
       org.scalajs.dom.window.asInstanceOf[js.Dynamic].onYouTubeIframeAPIReady = () => {
         player = Option.apply(new Player("player", PlayerOptions(

@@ -19,7 +19,7 @@ import scala.scalajs.js.annotation._
 import scala.scalajs.js.timers._
 import scalable.components.{PlaylistBox, Select}
 import scalable.config.Config
-import scalable.diode.{AppCircuit, _}
+import scalable.diode.{AppCircuit, GetVideoSuggestions, _}
 import scalable.json.RestService
 import scalable.models.{VideoResponse, YoutubeResponse}
 import scalable.router.AppRouter
@@ -58,8 +58,15 @@ object PlaylistPage {
 
     var timer: SetIntervalHandle = _
 
-    def mounted: Callback = Callback{
-      getData();
+    def mounted: Callback = Callback {
+      getData()
+      startUpdateInterval()
+    }
+
+    def startUpdateInterval(): Unit ={
+      timer = js.timers.setInterval(10000) {
+        getData()
+      }
     }
 
     def unmounted: Callback = Callback {
@@ -68,14 +75,13 @@ object PlaylistPage {
     }
 
     def getData(): Unit ={
-      timer = js.timers.setInterval(10000)  { // note the absence of () =>
         Config.partyId match {
           case Some(id) => RestService.getSongs(id).map{songs =>
             println("Getting Data")
             AppCircuit.dispatch(SetSongsForParty(songs))
           }
           case None => println("NO PARTY ID")
-        }
+
       }
     }
 
@@ -166,7 +172,7 @@ object PlaylistPage {
           case partyId => {
             s.selectedData match {
               case None => println("no video response")
-              case videoResponse => RestService.addSongToParty(partyId.get, videoResponse.get)
+              case videoResponse => RestService.addSongToParty(partyId.get, videoResponse.get).onComplete(_ => getData())
             }
 
           }

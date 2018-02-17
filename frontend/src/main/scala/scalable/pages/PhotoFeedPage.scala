@@ -49,10 +49,16 @@ object PhotoFeedPage {
 
     def mounted: Callback = Callback {
       getData()
+      startUpdateInterval()
+    }
+
+    def startUpdateInterval(): Unit ={
+      timer = js.timers.setInterval(10000) { // note the absence of () =>
+        getData()
+      }
     }
 
     def getData(): Unit ={
-      timer = js.timers.setInterval(10000) {
         Config.partyId match {
           case Some(id) => RestService.getPhotos(id).map { photos =>
             println("Getting Data")
@@ -60,7 +66,7 @@ object PhotoFeedPage {
           }
           case None => println("NO PARTY ID")
         }
-      }
+
     }
 
 
@@ -72,7 +78,7 @@ object PhotoFeedPage {
 
 
     def publishLink(url: String, roomCode: String): Unit = {
-      RestService.addPhoto(url, roomCode)
+      RestService.addPhoto(url, roomCode).onComplete(_ => getData())
     }
 
     def onPhotoChanged()(e: ReactEventFromInput) = Callback {
