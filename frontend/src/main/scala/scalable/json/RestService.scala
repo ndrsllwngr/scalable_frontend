@@ -132,8 +132,8 @@ object RestService extends StrictLogging{
 
     def deleteSong(songID: Long, partyID: String, playState: String): Future[Int] = {
       val content = DeleteSong(songID, partyID, playState).asJson.asInstanceOf[Ajax.InputData]
-      Ajax.post(
-        url = s"$host/party/song/delete",
+      Ajax.delete(
+        url = s"$host/party/song",
         data = content,
         headers = Map("Content-Type" -> "application/json")
       ).map { res =>
