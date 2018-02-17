@@ -15,7 +15,7 @@ object Select {
   object CSS extends js.Any
   CSS
 
-  @ScalaJSDefined
+
   trait Options extends js.Object {
     val value: String
     val label: String
@@ -25,7 +25,7 @@ object Select {
     def apply(value: String, label: String) =  js.Dynamic.literal(value = value, label = label).asInstanceOf[Options]
   }
 
-  @ScalaJSDefined
+
   trait Props extends js.Object {
     val name: String
     val options: js.Array[Options]

@@ -3,6 +3,7 @@ package scalable.models
 import scala.scalajs.js
 import scala.scalajs.js.annotation._
 
+  @js.native
   trait Event extends js.Object {
     val target:  js.UndefOr[Player] = js.native
     val data: js.UndefOr[js.Object] = js.native
@@ -22,6 +23,7 @@ import scala.scalajs.js.annotation._
 
 
   //https://developers.google.com/youtube/
+  @js.native
   trait PlayerEvents extends js.Object {
     val onReady:  js.UndefOr[(Event) => Any] = js.native
     val onStateChange: js.UndefOr[(Event) => Any] = js.native
@@ -43,7 +45,7 @@ import scala.scalajs.js.annotation._
   }
 
 
-
+  @js.native
   trait VideoIdStartOptions extends js.Object {
     var videoId:js.UndefOr[String] = js.native
     var startSeconds:js.UndefOr[Double] = js.native
@@ -67,6 +69,7 @@ import scala.scalajs.js.annotation._
     }
   }
 
+  @js.native
   trait PlayerVars extends js.Object {
     var playsinline:js.UndefOr[Double] = js.native
   }
@@ -82,7 +85,7 @@ import scala.scalajs.js.annotation._
   }
 
 
-
+  @js.native
   trait PlayerOptions extends js.Object {
     var height:String = js.native
     var width:String = js.native
@@ -110,7 +113,7 @@ import scala.scalajs.js.annotation._
   }
 
 
-
+  @js.native
   @JSGlobal("YT.Player")
   class Player protected() extends js.Object {
     def this(divId:String, settings:PlayerOptions) = this()

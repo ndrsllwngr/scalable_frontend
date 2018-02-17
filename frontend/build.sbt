@@ -4,6 +4,8 @@ addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.fu
 name := "scalable-client"
 scalaVersion := "2.12.4"
 
+scalacOptions += "-P:scalajs:sjsDefinedByDefault"
+
 // This is an application with a main method
 scalaJSUseMainModuleInitializer := true
 scalaJSModuleKind := ModuleKind.CommonJSModule

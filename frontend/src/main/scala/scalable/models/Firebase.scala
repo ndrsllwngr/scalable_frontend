@@ -2,7 +2,7 @@ import scala.scalajs.js
 
 package firebase {
 
-  import scala.scalajs.js.annotation.{JSExportAll, JSName}
+  import scala.scalajs.js.annotation.{JSExportAll, JSGlobal}
   import scala.scalajs.js.|
 
   @js.native
@@ -14,12 +14,12 @@ package firebase {
   }
 
   @js.native
-  @JSName("firebase.Promise")
+  @JSGlobal("firebase.Promise")
   class Promise[T] extends Promise_Instance[T] {
   }
 
   @js.native
-  @JSName("firebase.Promise")
+  @JSGlobal("firebase.Promise")
   object Promise extends js.Object {
     def all(values: js.Array[firebase.Promise[js.Any]]): firebase.Promise[js.Array[js.Any]] = js.native
 
@@ -29,7 +29,7 @@ package firebase {
   }
 
   @js.native
-  @JSName("firebase.Promise_Instance")
+  @JSGlobal("firebase.Promise_Instance")
   class Promise_Instance[T] protected() extends firebase.Thenable[js.Any] {
     def this(resolver: js.Function2[js.Function1[T, Unit], js.Function1[Error, Unit], Any]) = this()
   }
@@ -163,12 +163,12 @@ package firebase {
     }
 
     @js.native
-    @JSName("firebase.auth.EmailAuthProvider")
+    @JSGlobal("firebase.auth.EmailAuthProvider")
     class EmailAuthProvider extends EmailAuthProvider_Instance {
     }
 
     @js.native
-    @JSName("firebase.auth.EmailAuthProvider")
+    @JSGlobal("firebase.auth.EmailAuthProvider")
     object EmailAuthProvider extends js.Object {
       var PROVIDER_ID: String = js.native
 
@@ -176,7 +176,7 @@ package firebase {
     }
 
     @js.native
-    @JSName("firebase.auth.EmailAuthProvider_Instance")
+    @JSGlobal("firebase.auth.EmailAuthProvider_Instance")
     class EmailAuthProvider_Instance extends firebase.auth.AuthProvider {
     }
 
@@ -187,12 +187,12 @@ package firebase {
     }
 
     @js.native
-    @JSName("firebase.auth.FacebookAuthProvider")
+    @JSGlobal("firebase.auth.FacebookAuthProvider")
     class FacebookAuthProvider extends FacebookAuthProvider_Instance {
     }
 
     @js.native
-    @JSName("firebase.auth.FacebookAuthProvider")
+    @JSGlobal("firebase.auth.FacebookAuthProvider")
     object FacebookAuthProvider extends js.Object {
       var PROVIDER_ID: String = js.native
 
@@ -200,7 +200,7 @@ package firebase {
     }
 
     @js.native
-    @JSName("firebase.auth.FacebookAuthProvider_Instance")
+    @JSGlobal("firebase.auth.FacebookAuthProvider_Instance")
     class FacebookAuthProvider_Instance extends firebase.auth.AuthProvider {
       def addScope(scope: String): js.Dynamic = js.native
 
@@ -209,12 +209,12 @@ package firebase {
     }
 
     @js.native
-    @JSName("firebase.auth.GithubAuthProvider")
+    @JSGlobal("firebase.auth.GithubAuthProvider")
     class GithubAuthProvider extends GithubAuthProvider_Instance {
     }
 
     @js.native
-    @JSName("firebase.auth.GithubAuthProvider")
+    @JSGlobal("firebase.auth.GithubAuthProvider")
     object GithubAuthProvider extends js.Object {
       var PROVIDER_ID: String = js.native
 
@@ -222,7 +222,7 @@ package firebase {
     }
 
     @js.native
-    @JSName("firebase.auth.GithubAuthProvider_Instance")
+    @JSGlobal("firebase.auth.GithubAuthProvider_Instance")
     class GithubAuthProvider_Instance extends firebase.auth.AuthProvider {
       def addScope(scope: String): js.Dynamic = js.native
 
@@ -231,12 +231,12 @@ package firebase {
     }
 
     @js.native
-    @JSName("firebase.auth.GoogleAuthProvider")
+    @JSGlobal("firebase.auth.GoogleAuthProvider")
     class GoogleAuthProvider extends GoogleAuthProvider_Instance {
     }
 
     @js.native
-    @JSName("firebase.auth.GoogleAuthProvider")
+    @JSGlobal("firebase.auth.GoogleAuthProvider")
     object GoogleAuthProvider extends js.Object {
       var PROVIDER_ID: String = js.native
 
@@ -244,7 +244,7 @@ package firebase {
     }
 
     @js.native
-    @JSName("firebase.auth.GoogleAuthProvider_Instance")
+    @JSGlobal("firebase.auth.GoogleAuthProvider_Instance")
     class GoogleAuthProvider_Instance extends firebase.auth.AuthProvider {
       def addScope(scope: String): js.Dynamic = js.native
 
@@ -253,12 +253,12 @@ package firebase {
     }
 
     @js.native
-    @JSName("firebase.auth.TwitterAuthProvider")
+    @JSGlobal("firebase.auth.TwitterAuthProvider")
     class TwitterAuthProvider extends TwitterAuthProvider_Instance {
     }
 
     @js.native
-    @JSName("firebase.auth.TwitterAuthProvider")
+    @JSGlobal("firebase.auth.TwitterAuthProvider")
     object TwitterAuthProvider extends js.Object {
       var PROVIDER_ID: String = js.native
 
@@ -266,13 +266,13 @@ package firebase {
     }
 
     @js.native
-    @JSName("firebase.auth.TwitterAuthProvider_Instance")
+    @JSGlobal("firebase.auth.TwitterAuthProvider_Instance")
     class TwitterAuthProvider_Instance extends firebase.auth.AuthProvider {
 
       def setCustomParameters(customOAuthParameters: Object): js.Dynamic = js.native
     }
 
-    @JSName("firebase.auth")
+    @JSGlobal("firebase.auth")
     @js.native
     object Auth extends js.Object {
       type UserCredential = js.Any
@@ -399,7 +399,7 @@ package firebase {
 
     package ServerValue {
 
-      @JSName("firebase.database.ServerValue")
+      @JSGlobal("firebase.database.ServerValue")
       @js.native
       object ServerValue extends js.Object {
         var TIMESTAMP: Object = js.native
@@ -407,7 +407,7 @@ package firebase {
 
     }
 
-    @JSName("firebase.database")
+    @JSGlobal("firebase.database")
     @js.native
     object Database extends js.Object {
       def enableLogging(enabled: Boolean, persistent: Boolean): js.Dynamic = js.native
@@ -506,7 +506,7 @@ package firebase {
     }
 
     @js.native
-    @JSName("firebase.storage.StringFormat")
+    @JSGlobal("firebase.storage.StringFormat")
     object StringFormat extends js.Object {
       var BASE64: firebase.storage.Storage.StringFormat = js.native
       var BASE64URL: firebase.storage.Storage.StringFormat = js.native
@@ -515,13 +515,13 @@ package firebase {
     }
 
     @js.native
-    @JSName("firebase.storage.TaskEvent")
+    @JSGlobal("firebase.storage.TaskEvent")
     object TaskEvent extends js.Object {
       var STATE_CHANGED: firebase.storage.Storage.TaskEvent = js.native
     }
 
     @js.native
-    @JSName("firebase.storage.TaskState")
+    @JSGlobal("firebase.storage.TaskState")
     object TaskState extends js.Object {
       var CANCELED: firebase.storage.Storage.TaskState = js.native
       var ERROR: firebase.storage.Storage.TaskState = js.native
@@ -563,7 +563,7 @@ package firebase {
       var totalBytes: Double = js.native
     }
 
-    @JSName("firebase.storage")
+    @JSGlobal("firebase.storage")
     @js.native
     object Storage extends js.Object {
       type StringFormat = String
@@ -573,7 +573,7 @@ package firebase {
 
   }
 
-  @JSName("firebase")
+  @JSGlobal("firebase")
   @js.native
   object Firebase extends js.Object {
     var SDK_VERSION: String = js.native
