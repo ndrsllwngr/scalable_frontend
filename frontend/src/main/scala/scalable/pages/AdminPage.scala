@@ -59,9 +59,10 @@ object AdminPage {
     def resolveNext(player: Player): Unit = {
       println("resolve")
       val state = props.proxy.modelReader.apply()
-      val songList = state.songList
+      val songList = state.songList.filter(s => s.playState.equals("QUEUE"))
       if (songList.isEmpty) {
         hasSong = false
+        player.loadVideoById("PfK213zXvvU",0.0, "hd720")
       } else {
         hasSong = true
 
@@ -117,11 +118,32 @@ object AdminPage {
       props.proxy.value.partyId match {
         case Some(id) => RestService.getSongs(id).map { songs =>
           AppCircuit.dispatch(SetSongsForParty(songs))
+          if (!hasSong && player.isEmpty){
+              createPlayer()
+          }
           if (!hasSong && player.isDefined) {
             resolveNext(player.get)
           }
         }
         case None => println("NO PARTY ID")
+      }
+    }
+
+    def createPlayer(): Unit ={
+      org.scalajs.dom.window.asInstanceOf[js.Dynamic].onYouTubeIframeAPIReady = () => {
+        player = Option.apply(new Player("player", PlayerOptions(
+          width = "640",
+          height = "360",
+          videoId = "PfK213zXvvU",
+          events = PlayerEvents(
+            onReady = onPlayerReady(_),
+            onError = onPlayerError(_),
+            onStateChange = onPlayerStateChange(_)
+          ),
+          playerVars = PlayerVars(
+            playsinline = 1.0
+          )
+        )))
       }
     }
 
@@ -145,23 +167,6 @@ object AdminPage {
       tag.src = "https://www.youtube.com/iframe_api"
       val firstScriptTag = org.scalajs.dom.document.getElementsByTagName("script").item(0)
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
-
-
-      org.scalajs.dom.window.asInstanceOf[js.Dynamic].onYouTubeIframeAPIReady = () => {
-        player = Option.apply(new Player("player", PlayerOptions(
-          width = "640",
-          height = "360",
-          videoId = "",
-          events = PlayerEvents(
-            onReady = onPlayerReady(_),
-            onError = onPlayerError(_),
-            onStateChange = onPlayerStateChange(_)
-          ),
-          playerVars = PlayerVars(
-            playsinline = 1.0
-          )
-        )))
-      }
 
       <.div(^.cls := "form-group",
         <.header(^.cls := "form-group",
