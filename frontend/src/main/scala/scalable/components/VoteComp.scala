@@ -30,6 +30,10 @@ object VoteComp {
       }
     }
 
+    def deleteSong(props: Props, state: State) : Callback = Callback {
+        RestService.deleteSong(props.voteAble.compId, props.voteAble.partyID, "QUEUE")
+    }
+
 
     def colorGreen(voteAble: VoteAble) : Boolean = {
         if(calcTotal(voteAble) > 0){
@@ -67,6 +71,15 @@ object VoteComp {
           ^.classSet(
             "p-2 align-self-center" -> true),
           calcTotal(props.voteAble).toString
+        ),
+          <.button(
+            ^.cls := "btn btn-link",
+            ^.onClick --> deleteSong(props, state),
+            ^.disabled := state.voted,
+            <.img(
+              ^.alt := "upvote",
+              ^.src := "/images/ic_clear_black_24px.svg"
+            )
         )
         )
       } else {

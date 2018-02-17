@@ -64,7 +64,8 @@ case class SongPlayStateUpdate(id:Long, partyID:String, playState:String)
 case class DeleteSong
 (
   id: Long,
-  partyID: String
+  partyID: String,
+  playState: String
 )
 
 case class PartyLoginRequest
