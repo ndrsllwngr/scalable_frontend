@@ -64,9 +64,21 @@ object JoinPage {
 
     def render(p: Props, s: JoinState): VdomTagOf[Div] = {
       val proxy = p.proxy()
-
+      val dataTxtAttr = VdomAttr("data-text")
       <.div(^.cls := "d-flex flex-column justify-content-center form-group",
         ^.height := "100vh",
+        <.div( // LOGO
+          ^.cls := "peeledLogo d-flex flex-row align-items-center mb-5 mt-0",
+          ^.flex := "0 0 auto",
+          <.p(
+            ^.aria.label := "CodePen"
+            ,<.span(dataTxtAttr := "R","R")
+            ,<.span(dataTxtAttr := "E","E")
+            ,<.span(dataTxtAttr := "A","A")
+            ,<.span(dataTxtAttr := "C","C")
+            ,<.span(dataTxtAttr := "T","T")
+          )
+        ),
         <.label(^.`for` := "roomcode", "Roomcode:"),
         <.div(^.cls := "column", ^.id := "roomcode-row",
           <.div(^.cls := "col-xs-1",
@@ -75,7 +87,7 @@ object JoinPage {
             )
           ),
           <.div(
-            <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width mt-2",
+            <.button(^.`type` := "button", ^.cls := "btn btn-success custom-button-width mt-2",
               ^.onClick --> join(s.input),
               "Join"
             )

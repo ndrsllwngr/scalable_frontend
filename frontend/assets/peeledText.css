@@ -1,0 +1,88 @@
+.peeledLogo p {
+  color: #fff;
+  font-family: Avenir Next, Helvetica Neue, Helvetica, Tahoma, sans-serif;
+  font-size: 1em;
+  font-weight: 700;
+}
+.peeledLogo p span {
+  display: inline-block;
+  position: relative;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-perspective: 500;
+  perspective: 500;
+  -webkit-font-smoothing: antialiased;
+}
+.peeledLogo p span::before,
+.peeledLogo p span::after {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: -1px;
+  -webkit-transform-origin: left top;
+  transform-origin: left top;
+  -webkit-transition: all ease-out 0.3s;
+  transition: all ease-out 0.3s;
+  content: attr(data-text);
+}
+.peeledLogo p span::before {
+  z-index: 1;
+  color: rgba(0,0,0,0.2);
+  -webkit-transform: scale(1.1, 1) skew(0deg, 20deg);
+  transform: scale(1.1, 1) skew(0deg, 20deg);
+}
+.peeledLogo p span::after {
+  z-index: 2;
+  color: #252527;
+  text-shadow: -1px 0 1px #252527, 1px 0 1px rgba(0,0,0,0.8);
+  -webkit-transform: rotateY(-40deg);
+  transform: rotateY(-40deg);
+}
+.peeledLogo p span:hover::before {
+  -webkit-transform: scale(1.1, 1) skew(0deg, 5deg);
+  transform: scale(1.1, 1) skew(0deg, 5deg);
+}
+.peeledLogo p span:hover::after {
+  -webkit-transform: rotateY(-10deg);
+  transform: rotateY(-10deg);
+}
+.peeledLogo p span + span {
+  margin-left: 0.3em;
+}
+@media (min-width: 20em) {
+  .peeledLogo p {
+    font-size: 2em;
+  }
+  .peeledLogo p span::before,
+  .peeledLogo p span::after {
+    display: block;
+  }
+}
+@media (min-width: 30em) {
+  .peeledLogo p {
+    font-size: 3em;
+  }
+}
+@media (min-width: 40em) {
+  .peeledLogo p {
+    font-size: 5em;
+  }
+}
+@media (min-width: 60em) {
+  .peeledLogo p {
+    font-size: 8em;
+  }
+}
+
+body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  background-color: #252527;
+}
