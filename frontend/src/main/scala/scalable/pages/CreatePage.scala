@@ -34,10 +34,7 @@ object CreatePage {
   class Backend(bs: BackendScope[Props, CreateState]) {
     val host: String = Config.AppConfig.apiHost
 
-    def logout(props: Props): Callback ={
-      Config.partyId = Option.empty
-      props.ctl.set(AppRouter.StartRoute)
-    }
+
 
 
     def createRoom(input: String) : Callback = {
@@ -62,9 +59,6 @@ object CreatePage {
       val proxy = p.proxy()
 
       <.div(^.cls := "d-flex flex-column justify-content-center form-group",
-        <.header(^.cls := "form-group",
-          <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width mt-2", ^.onClick --> logout(p), "logout")),
-
         ^.height := "100vh",
         <.label(^.`for` := "roomcode", "Enter a room name:"),
         <.div(^.cls := "column", ^.id := "roomcode-row",

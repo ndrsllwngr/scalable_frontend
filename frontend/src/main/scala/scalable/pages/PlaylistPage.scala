@@ -22,6 +22,7 @@ import scalable.config.Config
 import scalable.diode._
 import scalable.json.RestService
 import scalable.models.{VideoResponse, YoutubeResponse}
+import scalable.pages.CreatePage.Props
 import scalable.router.AppRouter
 
 object PlaylistPage {
@@ -54,6 +55,11 @@ object PlaylistPage {
   )
 
   class Backend($: BackendScope[Props, State]) extends StrictLogging {
+
+    def logout(props: Props): Callback ={
+      Config.partyId = Option.empty
+      props.ctl.set(AppRouter.StartRoute)
+    }
 
 
     var timer: SetIntervalHandle = _
@@ -192,6 +198,8 @@ object PlaylistPage {
         pIsLoading = s.isLoading
       )
       <.div(
+        <.header(^.cls := "form-group",
+          <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width mt-2", ^.onClick --> logout(p), "logout")),
         <.div(
           ^.cls := "h6",
           "Add song to playlist:"),
