@@ -5,7 +5,7 @@ import diode.Action
 import scalable.models._
 
 case class AppState (
-                    partyId:Option[String],
+                    var partyId:Option[String],
                     partyCreateResponse: Option[PartyCreateResponse],
                     songList:List[Song],
                     photoFeed:List[PhotoReturn],

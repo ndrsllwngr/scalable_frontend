@@ -19,7 +19,7 @@ import scala.scalajs.js.annotation._
 import scala.scalajs.js.timers._
 import scalable.components.{AlreadyPlayedComp, NowPlayingComp, PlaylistBox, Select}
 import scalable.config.Config
-import scalable.diode._
+import scalable.diode.{GetVideoSuggestions, _}
 import scalable.json.RestService
 import scalable.models.{VideoResponse, YoutubeResponse}
 import scalable.pages.CreatePage.Props
@@ -56,8 +56,10 @@ object PlaylistPage {
 
   class Backend($: BackendScope[Props, State]) extends StrictLogging {
 
+    var props : Props = _
+
     def logout(props: Props): Callback ={
-      Config.partyId = Option.empty
+      props.proxy.value.partyId = Option.empty
       props.ctl.set(AppRouter.StartRoute)
     }
 
@@ -81,14 +83,14 @@ object PlaylistPage {
     }
 
     def getData(): Unit ={
-        Config.partyId match {
-          case Some(id) => RestService.getSongs(id).map{songs =>
+      props.proxy.value.partyId match {
+          case Some(id) => RestService.getSongs(id).map { songs =>
             println("Getting Data")
             AppCircuit.dispatch(SetSongsForParty(songs))
           }
           case None => println("NO PARTY ID")
+        }
 
-      }
     }
 
     def getSelectOptions(data: List[VideoResponse], intputValue: String) = {
@@ -108,9 +110,7 @@ object PlaylistPage {
         Ajax.get(
           url = songSearch(searchText,apiKey,host)
         ).map(xhr => {
-          logger.debug(xhr.responseText)
           val option = decode[YoutubeResponse](xhr.responseText)
-          logger.debug(option.toString)
           option match {
             case Left(failure) => List.empty[VideoResponse]
             case Right(data) => data.items
@@ -173,15 +173,14 @@ object PlaylistPage {
           s.selectedData = if (index == -1) None else Some(s.searchData(index))
         }
         AppCircuit.dispatch(SelectVideo(s.selectedData))
-        Config.partyId match {
-          case None => println("No Party ID to Put Song into")
-          case partyId => {
-            s.selectedData match {
-              case None => println("no video response")
-              case videoResponse => RestService.addSongToParty(partyId.get, videoResponse.get).onComplete(_ => getData())
+        props.proxy.value.partyId match {
+            case None => println("No Party ID to Put Song into")
+            case partyId => {
+              s.selectedData match {
+                case None => println("no video response")
+                case videoResponse => RestService.addSongToParty(partyId.get, videoResponse.get).onComplete(_ => getData())
+              }
             }
-
-          }
         }
         s
       }).runNow()
@@ -189,6 +188,7 @@ object PlaylistPage {
 
     def render(p: Props, s: State) = {
       val proxy = p.proxy()
+      props = p
       val select = Select(
         "form-field-name",
         s.selectOptions.toJSArray,

@@ -42,6 +42,7 @@ object PhotoFeedPage {
 
     var fileChooser: html.Input = _
     var photoFeed: html.Div = _
+    var props: Props = _
 
     val app = Firebase.app("scalable")
 
@@ -59,7 +60,7 @@ object PhotoFeedPage {
     }
 
     def getData(): Unit ={
-        Config.partyId match {
+        props.proxy.value.partyId match {
           case Some(id) => RestService.getPhotos(id).map { photos =>
             println("Getting Data")
             AppCircuit.dispatch(SetPhotosForParty(photos))
@@ -83,16 +84,17 @@ object PhotoFeedPage {
 
     def onPhotoChanged()(e: ReactEventFromInput) = Callback {
       val choosenFile = e.target.files.item(0)
-      Config.partyId match {
-        case Some(id) =>
-          val storage = Firebase.storage(app).refFromURL(s"gs://scalable-195120.appspot.com/$id/${choosenFile.name}")
-          storage.put(choosenFile).then(success => {
-            publishLink(success.downloadURL.toString, id)
-          }, reject => {
-            println("Upload Failed")
-          })
-        case None => println("NO PARTY ID")
-      }
+      props.proxy.value.partyId match {
+          case Some(id) =>
+            val storage = Firebase.storage(app).refFromURL(s"gs://scalable-195120.appspot.com/$id/${choosenFile.name}")
+            storage.put(choosenFile).then(success => {
+              publishLink(success.downloadURL.toString, id)
+            }, reject => {
+              println("Upload Failed")
+            })
+          case None => println("NO PARTY ID")
+        }
+
       js.undefined
     }
 
@@ -102,6 +104,7 @@ object PhotoFeedPage {
 
     def render(p: Props): VdomTagOf[Div] = {
       val proxy = p.proxy()
+      props = p
 
       <.div(^.cls := "form-group",
         <.label("Fotofeed"),

@@ -51,6 +51,7 @@ object AppRouter {
   }
 
   def renderCreateRoomPage(ctl: RouterCtl[Page]) = {
+
     connection(proxy => CreatePage.Component(CreatePage.Props(proxy, ctl)))
   }
 
@@ -63,11 +64,17 @@ object AppRouter {
   }
 
   def renderAdminPage(p: AdminRoute, ctl: RouterCtl[Page]) = {
-    connection(proxy => AdminPage.Component(AdminPage.Props(proxy, p.roomCode, ctl)))
+    connection( proxy => {
+      proxy.value.partyId = Some(p.roomCode)
+      AdminPage.Component(AdminPage.Props(proxy, ctl))
+    })
   }
 
   def renderPlaylistPage(p: PlaylistRoute, ctl: RouterCtl[Page]) = {
-    connection(proxy => PlaylistPage.Component(PlaylistPage.Props(proxy, ctl)))
+    connection(proxy => {
+      proxy.value.partyId = Some(p.roomCode)
+      PlaylistPage.Component(PlaylistPage.Props(proxy, ctl))
+    })
   }
 
 
