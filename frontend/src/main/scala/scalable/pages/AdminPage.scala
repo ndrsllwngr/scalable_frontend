@@ -169,7 +169,7 @@ object AdminPage {
         <.label(^.`for` := "roomcode", s"Room $roomCode"),
         <.div(^.cls := "column", ^.id := "player-view",
           <.div(^.id := "player")
-          ,<.div(PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl,  _ => getData())))
+          ,<.div(PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl,  _ => getData(), admin = true)))
           ,<.div(AlreadyPlayedComp(AlreadyPlayedComp.Props(p.proxy, p.ctl)))
         )
       )

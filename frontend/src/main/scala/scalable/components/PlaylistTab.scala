@@ -34,7 +34,8 @@ object PlaylistTab {
 
   case class Props (
                      proxy: ModelProxy[AppState],
-                     ctl: RouterCtl[AppRouter.Page]
+                     ctl: RouterCtl[AppRouter.Page],
+                     admin: Boolean
                    )
 
   case class State(
@@ -200,7 +201,7 @@ object PlaylistTab {
         ),
         <.div(
           <.div(NowPlayingComp(NowPlayingComp.Props(p.proxy, p.ctl)))
-          ,<.div(PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl,  _ => getData())))
+          ,<.div(PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl,  _ => getData(),admin = p.admin)))
           ,<.div(AlreadyPlayedComp(AlreadyPlayedComp.Props(p.proxy, p.ctl)))
         )
       )
