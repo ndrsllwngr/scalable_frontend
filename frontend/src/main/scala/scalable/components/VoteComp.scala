@@ -3,6 +3,7 @@ package scalable.components
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
 
+import scala.util.{Failure, Success}
 import scalable.json._
 import scalable.models._
 
@@ -11,10 +12,18 @@ object VoteComp {
 
   case class Props (voteAble: VoteAble)
 
-  class Backend(bs: BackendScope[Props, Unit]) {
+  case class State (var voted: Boolean)
 
-    def vote(voteAble: VoteAble, positive: Boolean) : Callback = Callback {
-      RestService.addPartyVote(voteAble.partyID, voteAble.compId, positive, voteAble.voteType)
+  class Backend(bs: BackendScope[Props, State]) {
+
+    def vote(props: Props, positive: Boolean, state: State) : Callback = Callback {
+      if(!state.voted) {
+        state.voted = true
+        RestService.addPartyVote(props.voteAble.partyID, props.voteAble.compId, positive, props.voteAble.voteType).onComplete{
+          case Success(_) => state.voted = true
+          case Failure(_) => state.voted = false
+        }
+      }
     }
 
     def colorGreen(voteAble: VoteAble) : Boolean = {
@@ -35,14 +44,15 @@ object VoteComp {
       voteAble.upvotes - voteAble.downvotes
     }
 
-    def render(props: Props): VdomElement =
+    def render(props: Props, state: State): VdomElement =
       <.div(
         ^.cls := "d-flex flex-column align-items-center align-self-center",
         <.div(
           ^.cls := "align-self-center",
           <.button(
             ^.cls := "btn btn-link",
-            ^.onClick --> vote(props.voteAble, positive = true),
+            ^.onClick --> vote(props, positive = true, state),
+            ^.disabled := state.voted,
             <.img(
               ^.alt := "upvote",
               ^.src := "/images/ic_expand_less_black_24px.svg"
@@ -59,7 +69,8 @@ object VoteComp {
           ^.cls := "align-self-center",
           <.button(
             ^.cls := "btn btn-link",
-            ^.onClick --> vote(props.voteAble, positive = false),
+            ^.onClick --> vote(props, positive = false,state),
+            ^.disabled := state.voted,
             <.img(
               ^.alt := "downvote",
               ^.src := "/images/ic_expand_more_black_24px.svg"
@@ -69,8 +80,8 @@ object VoteComp {
   }
 
   val Component = ScalaComponent.builder[Props]("VoteComp")
+    .initialState(State(false))
     .renderBackend[Backend]
-    //.configure(Reusability.shouldComponentUpdate)
     .build
 
   def apply(props: Props) = Component(props)

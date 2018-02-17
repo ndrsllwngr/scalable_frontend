@@ -19,7 +19,7 @@ import scala.scalajs.js.annotation._
 import scala.scalajs.js.timers._
 import scalable.components.{PlaylistBox, Select}
 import scalable.config.Config
-import scalable.diode.{AppCircuit, GetVideoSuggestions, _}
+import scalable.diode._
 import scalable.json.RestService
 import scalable.models.{VideoResponse, YoutubeResponse}
 import scalable.router.AppRouter
