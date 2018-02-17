@@ -1,8 +1,11 @@
 package scalable.components
 
+import io.scalajs.npm.cookie.Cookie
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
 
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.scalajs.js
 import scala.util.{Failure, Success}
 import scalable.json._
 import scalable.models._
@@ -16,11 +19,27 @@ object VoteComp {
 
   class Backend(bs: BackendScope[Props, State]) {
 
+    def checkForExistingCookie(voteAble: VoteAble, state: State) : Unit = {
+      var uri = js.URIUtils.decodeURIComponent(voteAble.partyID)
+      val cookie = Cookie.parse(voteAble.compId.toString)
+      println(cookie)
+
+      state.voted = cookie.get(voteAble.compId.toString).isDefined
+
+    }
+
+    def createCookie(voteAble: VoteAble, state: State) : Unit = {
+      val cname = voteAble.compId + "=" + state.voted
+      val set = Cookie.serialize(voteAble.compId.toString, state.voted.toString)
+
+      println(set.toString)
+    }
+
     def vote(props: Props, positive: Boolean, state: State) : Callback = Callback {
       if(!state.voted) {
         state.voted = true
         RestService.addPartyVote(props.voteAble.partyID, props.voteAble.compId, positive, props.voteAble.voteType).onComplete{
-          case Success(_) => state.voted = true
+          case Success(_) => state.voted = true; createCookie(props.voteAble, state)
           case Failure(_) => state.voted = false
         }
       }
@@ -44,7 +63,8 @@ object VoteComp {
       voteAble.upvotes - voteAble.downvotes
     }
 
-    def render(props: Props, state: State): VdomElement =
+    def render(props: Props, state: State): VdomElement = {
+      checkForExistingCookie(props.voteAble, state)
       <.div(
         ^.cls := "d-flex flex-column align-items-center align-self-center",
         <.div(
@@ -60,7 +80,7 @@ object VoteComp {
           )),
         <.div(
           ^.classSet(
-           "p-2 align-self-center" -> true),
+            "p-2 align-self-center" -> true),
           ^.classSet(
             "text-success" -> colorGreen(props.voteAble),
             "text-danger" -> colorRed(props.voteAble)),
@@ -69,14 +89,15 @@ object VoteComp {
           ^.cls := "align-self-center",
           <.button(
             ^.cls := "btn btn-link",
-            ^.onClick --> vote(props, positive = false,state),
+            ^.onClick --> vote(props, positive = false, state),
             ^.disabled := state.voted,
             <.img(
               ^.alt := "downvote",
               ^.src := "/images/ic_expand_more_black_24px.svg"
             )
           )
-      ))
+        ))
+    }
   }
 
   val Component = ScalaComponent.builder[Props]("VoteComp")
