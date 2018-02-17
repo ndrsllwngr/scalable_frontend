@@ -115,8 +115,10 @@ object AdminPage {
 
       props.proxy.value.partyId match {
         case Some(id) => RestService.getSongs(id).map { songs =>
-          if(songs.nonEmpty && player.isEmpty)
+          if(songs.nonEmpty && player.isEmpty) {
             createPlayer()
+          }
+
           AppCircuit.dispatch(SetSongsForParty(songs))
         }
         case None => println("NO PARTY ID")
@@ -124,11 +126,16 @@ object AdminPage {
     }
 
     def createPlayer(): Unit ={
+      println("create player")
+      val tag = org.scalajs.dom.document.createElement("script").asInstanceOf[org.scalajs.dom.html.Script]
+      tag.src = "https://www.youtube.com/iframe_api"
+      val firstScriptTag = org.scalajs.dom.document.getElementsByTagName("script").item(0)
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
       org.scalajs.dom.window.asInstanceOf[js.Dynamic].onYouTubeIframeAPIReady = () => {
-        player = Option.apply(new Player("player", PlayerOptions(
+        player = Some(new Player("player", PlayerOptions(
           width = "640",
           height = "360",
-          videoId = "PfK213zXvvU",
+          videoId = "xecWX51PElI",
           events = PlayerEvents(
             onReady = onPlayerReady(_),
             onError = onPlayerError(_),
@@ -150,17 +157,12 @@ object AdminPage {
     def render(p: Props): VdomTagOf[Div] = {
       val proxy = p.proxy()
       props = p
-
+      createPlayer()
       var roomCode: String = "NO PARTY ID"
       p.proxy.value.partyId match {
         case Some(id) => roomCode = id
       }
 
-
-      val tag = org.scalajs.dom.document.createElement("script").asInstanceOf[org.scalajs.dom.html.Script]
-      tag.src = "https://www.youtube.com/iframe_api"
-      val firstScriptTag = org.scalajs.dom.document.getElementsByTagName("script").item(0)
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
 
       <.div(^.cls := "form-group",
         <.header(^.cls := "form-group",
