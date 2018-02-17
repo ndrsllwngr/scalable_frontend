@@ -44,30 +44,42 @@ object StartPage {
 
     def render(props: Props): VdomTagOf[Div] = {
       val proxy = props.proxy()
+      val dataTxtAttr = VdomAttr("data-text")
       <.div(
         ^.cls := "d-flex flex-column align-items-center justify-content-center",
         ^.height := "100vh",
-        <.div( // Child 1 AlbumCover
-          ^.cls := "mb-5 mt-0",
+        <.div( // LOGO
+          ^.cls := "peeledLogo d-flex flex-row align-items-center mb-5 mt-0",
           ^.flex := "0 0 auto",
-          ^.width := 150.px,
-          ^.height := 150.px,
-          ^.backgroundClip := "padding-box",
-          ^.backgroundImage := "url(/images/Scalable.png)",
-          ^.backgroundSize := "cover",
-          ^.backgroundPosition := "center center"
+          <.p(
+            ^.aria.label := "CodePen"
+            ,<.span(dataTxtAttr := "S","S")
+            ,<.span(dataTxtAttr := "C","C")
+            ,<.span(dataTxtAttr := "A","A")
+            ,<.span(dataTxtAttr := "L","L")
+            ,<.span(dataTxtAttr := "A","A")
+            ,<.span(dataTxtAttr := "B","B")
+            ,<.span(dataTxtAttr := "L","L")
+            ,<.span(dataTxtAttr := "E","E")
+          )
         ),
           <.button(^.`type` := "button", ^.cls := "btn btn-primary btn-block",
+            ^.backgroundColor := 	"rgba(56, 190, 103,1)",
+            ^.borderColor := 	"rgba(56, 190, 103,1)",
             ^.onClick --> navigateToJoinPage(),
             "Join Party"
           ),
         <.div(
           ^.cls := "btn-group-vertical btn-block",
         <.button(^.`type` := "button", ^.cls := "btn btn-outline-primary mt-2 btn-block",
+          ^.borderColor := 	"rgba(56, 190, 103,1)",
+          ^.color := 	"rgba(56, 190, 103,1)",
           ^.onClick --> navigateToJoinAsAdminPage(),
           "Join Party As Host"
         ),
         <.button(^.`type` := "button", ^.cls := "btn btn-outline-primary btn-block mt-0",
+          ^.borderColor := 	"rgba(56, 190, 103,1)",
+          ^.color := 	"rgba(56, 190, 103,1)",
           ^.onClick --> navigateToCreatePage(),
           "Create New Party"
         ))
