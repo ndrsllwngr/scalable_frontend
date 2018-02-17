@@ -112,10 +112,10 @@ object AdminPage {
     def getData(): Unit = {
       Config.partyId match {
         case Some(id) => RestService.getSongs(id).map { songs =>
+          AppCircuit.dispatch(SetSongsForParty(songs))
           if (!hasSong && player.isDefined) {
             resolveNext(player.get)
           }
-          AppCircuit.dispatch(SetSongsForParty(songs))
         }
         case None => println("NO PARTY ID")
       }
