@@ -10,7 +10,7 @@ import scalable.diode._
 import scalable.models._
 import scalable.router.AppRouter
 
-object PlaylistBox {
+object AlreadyPlayedComp {
 
   case class Props (
                      proxy: ModelProxy[AppState],
@@ -23,22 +23,31 @@ object PlaylistBox {
     val host: String = Config.AppConfig.apiHost
 
     def render(props: Props): VdomElement = {
-      <.div(getSongs(props).toVdomArray)
+      <.div(getSongs(props))
     }
   }
 
-  def getSongs(props: Props) ={
+  def getSongs(props: Props) : VdomTag ={
     val proxy                        = props.proxy()
     //val dispatch: Action => Callback = props.proxy.dispatchCB
-    val songs                        = proxy.songList.filter(x => x.playState.equalsIgnoreCase("QUEUE"))
-    val partyId                      = proxy.partyId
-    partyId match {
-      case Some(id) => songs.map(x => {
-        songView(x,id)
-      })
-      case None => Seq(<.p("No party ID set"))
+    val songs                        = proxy.songList
+    val nowPlaying = proxy.songList.find(x => x.playState.equalsIgnoreCase("PLAYING"))
+    nowPlaying match {
+      case Some(song) => {
+        val partyId = proxy.partyId
+        partyId match {
+          case Some(id) => songView(song,id)
+          case None => noView("No party id set.")
+        }
+      }
+      case None => noView("At the moment no song is playing.")
     }
 
+  }
+
+  def noView(message: String) = {
+    <.div(
+      <.p(message))
   }
 
   def songView(song:Song, partyID:String ) ={
@@ -48,9 +57,7 @@ object PlaylistBox {
     val artist = song.artist
     val albumCoverUrl = song.albumCoverUrl
     <.div( // Playlist Row (Parent)
-      ^.cls := "d-flex flex-row align-items-center bg-white text-dark p-2",
-      ^.borderWidth := "2px 0 0 0",
-      ^.borderStyle := "solid",
+      ^.cls := "d-flex flex-row align-items-center bg-white text-dark p-2 mt-2",
       ^.borderColor := "black",
       <.div( // Child 1 AlbumCover
         ^.cls := "mr-2",
@@ -62,17 +69,20 @@ object PlaylistBox {
         ^.backgroundImage := s"url($albumCoverUrl)",
         ^.backgroundSize := "cover",
         ^.backgroundPosition := "center center"
-        ),
-        <.div( // Child 2 Song title
-          ^.flex := "1 1 auto",
-          ^.cls := "h3 mb-0 mr-2 text-truncate",
-            name,<.pre(
-            ^.cls := "h6 mb-0 text-muted",
-              artist)
-          ),
+      ),
+      <.div( // Child 2 Song title
+        <.pre(
+          ^.cls := "h6 mb-0 text-success",
+          "NOW PLAYING"),
+        ^.flex := "1 1 auto",
+        ^.cls := "h3 mb-0 mr-2 text-truncate",
+        name,<.pre(
+          ^.cls := "h6 mb-0 text-muted",
+          artist)
+      ),
       <.div( // Child 3 VoteComp
-        ^.flex := "0 0 auto",
-        VoteComp(VoteComp.Props(VoteAble(partyID = partyID, compId = song.id, voteType = "SONG" ,upvotes = song.upvotes, downvotes = song.downvotes))))
+        ^.flex := "0 0 auto"
+      )
     )
   }
 
