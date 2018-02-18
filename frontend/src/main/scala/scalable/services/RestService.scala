@@ -144,17 +144,17 @@ object RestService {
       }
     }
 
-  def deletePhoto(photoID: Long, partyID: String): Future[Int] = {
+  def deletePhoto(photoID: Long, partyID: String): Future[String] = {
     val content = PhotoToDelete(photoID, partyID).asJson.asInstanceOf[Ajax.InputData]
     Ajax.delete(
       url = s"$host/party/photo",
       data = content,
       headers = Map("Content-Type" -> "application/json")
     ).map { res =>
-      val option = decode[Int](res.responseText)
+      val option = decode[String](res.responseText)
       option match {
-        case Left(_) => -1
-        case Right(int) => int
+        case Left(_) => ""
+        case Right(response) => response
       }
     }
   }

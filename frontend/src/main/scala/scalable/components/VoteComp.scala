@@ -12,7 +12,7 @@ import scalable.services._
 
 object VoteComp {
 
-  case class Props (voteAble: VoteAble, onVoted : Event => Unit, admin: Boolean)
+  case class Props (voteAble: VoteAble,  admin: Boolean)
 
   case class State (var voted: Boolean)
 
@@ -23,15 +23,14 @@ object VoteComp {
       if(!state.voted) {
         state.voted = true
         RestService.addPartyVote(props.voteAble.partyID, props.voteAble.compId, positive, props.voteAble.voteType).onComplete{
-          case Success(_) => state.voted = true; createCookie(props.voteAble, state); props.onVoted
+          case Success(_) => state.voted = true; createCookie(props.voteAble, state);
           case Failure(_) => state.voted = false
         }
       }
     }
 
     def delete(props: Props) : Callback = Callback{
-      println("delete")
-      props.onVoted
+        DeleteService.delete(props.voteAble)
     }
 
     def colorGreen(voteAble: VoteAble) : Boolean = {

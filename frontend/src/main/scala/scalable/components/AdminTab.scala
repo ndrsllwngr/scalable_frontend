@@ -146,7 +146,8 @@ object AdminTab {
     def render(p: Props): VdomTagOf[Div] = {
       val proxy = p.proxy()
       props = p
-      createPlayer()
+      if(player.isEmpty)
+        createPlayer()
       var roomCode: String = "NO PARTY ID"
       p.proxy.value.partyId match {
         case Some(id) => roomCode = id
@@ -159,7 +160,7 @@ object AdminTab {
         <.label(^.`for` := "roomcode", s"Room $roomCode"),
         <.div(^.cls := "column", ^.id := "player-view", ^.maxWidth := s"$maxCompWidth",
           <.div(^.id := "player")
-          , <.div(PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl, _ => getData(), admin = true)))
+          , <.div(PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl, admin = true)))
           , <.div(AlreadyPlayedComp(AlreadyPlayedComp.Props(p.proxy, p.ctl)))
         )
       )

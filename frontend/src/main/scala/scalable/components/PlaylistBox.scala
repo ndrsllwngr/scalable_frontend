@@ -16,7 +16,6 @@ object PlaylistBox {
   case class Props (
                      proxy: ModelProxy[AppState],
                      ctl: RouterCtl[AppRouter.Page],
-                     var onVoted : Event => Unit,
                      admin: Boolean
                    )
 
@@ -55,8 +54,6 @@ object PlaylistBox {
     val artist = song.artist
     val albumCoverUrl = song.albumCoverUrl
 
-    if(props.admin)
-      props.onVoted = _ => DeleteService.deleteSong(id, partyID)
 
     <.div( // Playlist Row (Parent)
       ^.cls := "d-flex flex-row align-items-center bg-white text-dark p-2",
@@ -83,7 +80,7 @@ object PlaylistBox {
           ),
       <.div( // Child 3 VoteComp
         ^.flex := "0 0 auto",
-        VoteComp(VoteComp.Props(VoteAble(partyID = partyID, compId = song.id, voteType = "SONG" ,upvotes = song.upvotes, downvotes = song.downvotes), props.onVoted, admin = props.admin)))
+        VoteComp(VoteComp.Props(VoteAble(partyID = partyID, compId = song.id, voteType = "SONG" ,upvotes = song.upvotes, downvotes = song.downvotes), admin = props.admin)))
     )
   }
 
