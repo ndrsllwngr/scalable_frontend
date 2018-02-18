@@ -64,8 +64,14 @@ object StartPage {
           )
         ),
           <.button(^.`type` := "button", ^.cls := "btn btn-success btn-block",
-            ^.onClick --> navigateToJoinPage(),
-            "Join Party"
+            ^.onClick --> navigateToJoinPage() ,
+            ^.maxWidth := 300.px,
+            ^.borderRadius := "500px",
+            ^.fontWeight := "700",
+            ^.textTransform := "uppercase",
+            ^.letterSpacing := "3px",
+            ^.margin:= "0",
+            "Join"
           ),
         <.div(
           ^.cls := "btn-group-vertical btn-block",

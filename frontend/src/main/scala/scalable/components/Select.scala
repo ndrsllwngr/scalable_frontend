@@ -32,6 +32,7 @@ object Select {
     val value: String
     val onInputChange: js.Function1[String, Unit]
     val onChange: js.Function1[Options, Unit]
+    val placeholder : String
     val isLoading: Boolean
     val backspaceRemoves: Boolean
   }
@@ -44,15 +45,17 @@ object Select {
     pValue: String,
     pOnInputChange: js.Function1[String, Unit],
     pOnChange: js.Function1[Options, Unit],
+    pPlaceholder : String,
     pIsLoading: Boolean = false
   ): Props = {
     new Props {
-      val name = pName
-      val options = pOptions
-      val value = pValue
-      val onInputChange = pOnInputChange
-      val onChange = pOnChange
-      val isLoading = pIsLoading
+      val name: String = pName
+      val options: js.Array[Options] = pOptions
+      val value: String = pValue
+      val onInputChange: js.Function1[String, Unit] = pOnInputChange
+      val onChange: js.Function1[Options, Unit] = pOnChange
+      val isLoading: Boolean = pIsLoading
+      val placeholder: String = pPlaceholder
       val backspaceRemoves = false
     }
   }
@@ -62,6 +65,7 @@ object Select {
                 pValue: String,
                 pOnInputChange: js.Function1[String, Unit],
                 pOnChange: js.Function1[Options, Unit],
+                pPlaceholder : String,
                 pIsLoading: Boolean = false
-           ) = Component(props(pName, pOptions, pValue, pOnInputChange, pOnChange, pIsLoading))()
+           ) = Component(props(pName, pOptions, pValue, pOnInputChange, pOnChange, pPlaceholder, pIsLoading))()
 }
