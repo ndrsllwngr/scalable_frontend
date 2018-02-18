@@ -108,7 +108,7 @@ object PhotoFeedTab {
             ^.onChange ==> onPhotoChanged())
             .ref(fileChooser = _)
         ), <.div(
-          PhotoFeedBox(PhotoFeedBox.Props(p.proxy,  _ => Callback{getData()}, p.ctl, admin = p.admin))
+          PhotoFeedBox(PhotoFeedBox.Props(p.proxy, p.ctl, admin = p.admin))
         )
       )
     }

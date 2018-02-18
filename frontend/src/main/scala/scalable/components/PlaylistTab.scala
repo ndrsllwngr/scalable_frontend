@@ -199,7 +199,7 @@ object PlaylistTab {
         ),
         <.div(
           <.div(NowPlayingComp(NowPlayingComp.Props(p.proxy, p.ctl)))
-          ,<.div(PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl,  _ => getData(),admin = p.admin)))
+          ,<.div(PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl, admin = p.admin)))
           ,<.div(AlreadyPlayedComp(AlreadyPlayedComp.Props(p.proxy, p.ctl)))
         )
       )

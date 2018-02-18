@@ -8,13 +8,11 @@ import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
 import scalable.diode.AppState
 import scalable.models._
 import scalable.router.AppRouter
-import scalable.services.DeleteService
 
 object PhotoFeedBox {
 
   case class Props (
                      proxy: ModelProxy[AppState],
-                     var onVoted : Event => Unit,
                      ctl: RouterCtl[AppRouter.Page],
                      admin: Boolean
                    )
@@ -45,10 +43,6 @@ object PhotoFeedBox {
     val id = photo.id
     val url = photo.url
 
-    if(props.admin)
-      props.onVoted = _ => DeleteService.deletePhoto(id, partyID, url)
-
-
     <.div( // Playlist Row (Parent)
       ^.cls := "d-flex flex-row align-items-center bg-white text-dark p-2",
       ^.maxWidth := 800.px,
@@ -67,7 +61,7 @@ object PhotoFeedBox {
       ),
       <.div( // Child 3 VoteComp
         ^.flex := "0 0 auto",
-        VoteComp(VoteComp.Props(VoteAble(partyID = partyID, compId = photo.id, voteType = "PHOTO" ,upvotes = photo.upvotes, downvotes = photo.downvotes), props.onVoted, admin = props.admin)))
+        VoteComp(VoteComp.Props(VoteAble(partyID = partyID, compId = photo.id, voteType = "PHOTO" ,upvotes = photo.upvotes, downvotes = photo.downvotes), admin = props.admin)))
     )
   }
 
