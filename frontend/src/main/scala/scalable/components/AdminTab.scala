@@ -52,8 +52,7 @@ object AdminTab {
       val state = props.proxy.modelReader.apply()
       var songList = state.songList.filter(s => s.playState.equals("QUEUE"))
       if (songList.isEmpty) {
-        songList = state.songList
-        scala.util.Random.shuffle(songList)
+        songList = scala.util.Random.shuffle(state.songList)
       }
       player.hasSong = true
       if (songList.nonEmpty) props.proxy.value.partyId match {
@@ -75,6 +74,7 @@ object AdminTab {
         p.getPlayerState() match {
           case 0 => resolveNext(p)
           case -1 => p.playVideo()
+          case _ =>
         }
 
         TagMod()

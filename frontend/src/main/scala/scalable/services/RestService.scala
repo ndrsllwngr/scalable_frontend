@@ -129,8 +129,8 @@ object RestService {
     }
   }
 
-    def deleteSong(songID: Long, partyID: String, playState: String): Future[Int] = {
-      val content = DeleteSong(songID, partyID, playState).asJson.asInstanceOf[Ajax.InputData]
+    def deleteSong(songID: Long, partyID: String): Future[Int] = {
+      val content = DeleteSong(songID, partyID).asJson.asInstanceOf[Ajax.InputData]
       Ajax.delete(
         url = s"$host/party/song",
         data = content,

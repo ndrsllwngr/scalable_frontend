@@ -46,8 +46,7 @@ object DeleteService{
   }
 
   def deleteSong(id: Long, partyId: String): Unit = {
-    println("delete Song")
-    RestService.deleteSong (id, partyId, "QUEUE")
+    RestService.deleteSong (id, partyId)
   }
 
   def deletePhoto(votable: VoteAble): Unit ={
