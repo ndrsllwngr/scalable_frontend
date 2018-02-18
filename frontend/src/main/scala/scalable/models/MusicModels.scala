@@ -57,8 +57,8 @@ case class VoteAble
   compId: Long,
   upvotes: Int,
   downvotes: Int,
-  voteType: String
-
+  voteType: String,
+  var url: Option[String] = Option.empty
 )
 
 case class SongPlayStateUpdate(id:Long, partyID:String, playState:String)

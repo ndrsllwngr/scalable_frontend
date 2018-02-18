@@ -41,7 +41,7 @@ object PhotoFeedBox {
   def photoView(photo: PhotoReturn, partyID:String ,props: Props) ={
     val customStyle = VdomStyle("background-image")
     val id = photo.id
-    val url = photo.url
+    val pUrl = photo.url
 
     <.div( // Playlist Row (Parent)
       ^.cls := "d-flex flex-row align-items-center bg-white text-dark p-2",
@@ -55,13 +55,13 @@ object PhotoFeedBox {
         ^.width := 500.px,
         ^.height := 500.px,
         ^.backgroundClip := "padding-box",
-        ^.backgroundImage := s"url($url)",
+        ^.backgroundImage := s"url($pUrl)",
         ^.backgroundSize := "cover",
         ^.backgroundPosition := "center center"
       ),
       <.div( // Child 3 VoteComp
         ^.flex := "0 0 auto",
-        VoteComp(VoteComp.Props(VoteAble(partyID = partyID, compId = photo.id, voteType = "PHOTO" ,upvotes = photo.upvotes, downvotes = photo.downvotes), admin = props.admin)))
+        VoteComp(VoteComp.Props(VoteAble(partyID = partyID, compId = photo.id, voteType = "PHOTO" ,upvotes = photo.upvotes, downvotes = photo.downvotes, url = Some(pUrl)), admin = props.admin)))
     )
   }
 
