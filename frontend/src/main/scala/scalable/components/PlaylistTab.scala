@@ -28,14 +28,15 @@ object PlaylistTab {
   @js.native
   @JSImport("lodash.throttle", JSImport.Default)
   private object _throttle extends js.Any
+
   def throttle: js.Dynamic = _throttle.asInstanceOf[js.Dynamic]
 
 
-  case class Props (
-                     proxy: ModelProxy[AppState],
-                     ctl: RouterCtl[AppRouter.Page],
-                     admin: Boolean
-                   )
+  case class Props(
+                    proxy: ModelProxy[AppState],
+                    ctl: RouterCtl[AppRouter.Page],
+                    admin: Boolean
+                  )
 
   case class State(
                     var isLoading: Boolean,
@@ -46,15 +47,15 @@ object PlaylistTab {
                     //var partyID: String
                   )
 
-  case class YtRequest( key: String,
-                        maxResults: Int,
-                        part: String,
-                        q :String
-  )
+  case class YtRequest(key: String,
+                       maxResults: Int,
+                       part: String,
+                       q: String
+                      )
 
   class Backend($: BackendScope[Props, State]) {
 
-    var props : Props = _
+    var props: Props = _
 
 
     var timer: SetIntervalHandle = _
@@ -64,8 +65,8 @@ object PlaylistTab {
       getData()
     }
 
-    def startUpdateInterval(): Unit ={
-      timer = js.timers.setInterval(10000) {
+    def startUpdateInterval(): Unit = {
+      timer = js.timers.setInterval(1000) {
         getData()
       }
     }
@@ -77,12 +78,12 @@ object PlaylistTab {
 
     def getData(): Unit = {
       props.proxy.value.partyId match {
-          case Some(id) => RestService.getSongs(id).map { songs =>
-            println("Getting Data")
-            AppCircuit.dispatch(SetSongsForParty(songs))
-          }
-          case None => println("NO PARTY ID")
+        case Some(id) => RestService.getSongs(id).map { songs =>
+          println("Getting Data")
+          AppCircuit.dispatch(SetSongsForParty(songs))
         }
+        case None => println("NO PARTY ID")
+      }
 
     }
 
@@ -90,7 +91,8 @@ object PlaylistTab {
       data.zipWithIndex.map { case (item, index) => Select.Options(
         value = s"$intputValue::$index",
         label = s"${item.snippet.title}"
-      )}
+      )
+      }
     }
 
     def loadSearchResults(searchText: String): Callback = {
@@ -101,7 +103,7 @@ object PlaylistTab {
       def getData(): Future[List[VideoResponse]] = {
         val ytData = YtRequest(apiKey, 15, "snippet", searchText).asJson.asInstanceOf[dom.ext.Ajax.InputData]
         Ajax.get(
-          url = songSearch(searchText,apiKey,host)
+          url = songSearch(searchText, apiKey, host)
         ).map(xhr => {
           val option = decode[YoutubeResponse](xhr.responseText)
           option match {
@@ -112,10 +114,10 @@ object PlaylistTab {
       }
 
       def updateState: Future[Callback] = {
-        getData().map {result =>
+        getData().map { result =>
           AppCircuit.dispatch(GetVideoSuggestions(result))
           $.modState(s => s.copy(
-            isLoading =  false,
+            isLoading = false,
             searchData = result,
             selectOptions = getSelectOptions(result, s.inputValue))
           )
@@ -139,12 +141,8 @@ object PlaylistTab {
     }
 
     def onInputValueChange(value: String): Unit = {
-      val selectedValue = try {
-        Some(value)
-      } catch {
-        case e: Exception => None : Option[String]
-      }
-      $.modState(s => s.copy(inputValue = selectedValue.getOrElse(""))).runNow()
+      if (value.length >= 3)
+        $.modState(s => s.copy(inputValue = value)).runNow()
       throttleInputValueChange()
     }
 
@@ -152,7 +150,7 @@ object PlaylistTab {
       val selectedValue = try {
         Some(option.value)
       } catch {
-        case e: Exception => None : Option[String]
+        case e: Exception => None: Option[String]
       }
       $.modState(s => {
         s.inputValue = selectedValue.getOrElse("")
@@ -167,13 +165,13 @@ object PlaylistTab {
         }
         AppCircuit.dispatch(SelectVideo(s.selectedData))
         props.proxy.value.partyId match {
-            case None => println("No Party ID to Put Song into")
-            case partyId => {
-              s.selectedData match {
-                case None => println("no video response")
-                case videoResponse => RestService.addSongToParty(partyId.get, videoResponse.get).onComplete(_ => getData())
-              }
+          case None => println("No Party ID to Put Song into")
+          case partyId => {
+            s.selectedData match {
+              case None => println("no video response")
+              case videoResponse => RestService.addSongToParty(partyId.get, videoResponse.get).onComplete(_ => getData())
             }
+          }
         }
         s
       }).runNow()
@@ -196,15 +194,15 @@ object PlaylistTab {
 
         <.div(NowPlayingComp(NowPlayingComp.Props(p.proxy, p.ctl))),
         <.div(
-          ^.cls := "mb-2 mt-2",
+          ^.cls := "mb-5 mt-2",
           select
         ),
         <.div(
-          <.div(PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl, admin = p.admin))),
+          <.div(^.cls := "mb-5", PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl, admin = p.admin))),
           <.div(AlreadyPlayedComp(AlreadyPlayedComp.Props(p.proxy, p.ctl)))
         )
       )
-      }
+    }
   }
 
   val Component = ScalaComponent.builder[Props]("PlaylistPage")
@@ -213,7 +211,7 @@ object PlaylistTab {
       inputValue = "",
       searchData = List.empty[VideoResponse],
       selectOptions = List.empty[Select.Options],
-      selectedData = None : Option[VideoResponse],
+      selectedData = None: Option[VideoResponse],
       //partyID = "partyID"
     ))
     .renderBackend[Backend]

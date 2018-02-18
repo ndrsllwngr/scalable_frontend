@@ -56,10 +56,7 @@ object PlaylistBox {
 
 
     <.div( // Playlist Row (Parent)
-      ^.cls := "d-flex flex-row align-items-center bg-white text-dark p-2",
-      ^.borderWidth := "2px 0 0 0",
-      ^.borderStyle := "solid",
-      ^.borderColor := "black",
+      ^.cls := "d-flex flex-row align-items-center bg-white text-dark p-2 mt-2",
       <.div( // Child 1 AlbumCover
         ^.cls := "mr-2",
         ^.flex := "0 0 auto",

@@ -54,7 +54,7 @@ object PhotoFeedTab {
     }
 
     def startUpdateInterval(): Unit ={
-      timer = js.timers.setInterval(10000) { // note the absence of () =>
+      timer = js.timers.setInterval(1000) { // note the absence of () =>
         getData()
       }
     }
