@@ -90,7 +90,7 @@ object StartPage {
             ^.onClick --> navigateToJoinAsAdminPage(),
             "Rejoin"
         ),
-        <.button(^.`type` := "button", ^.cls := "btn btn-ligth btn-block mt-2",
+        <.button(^.`type` := "button", ^.cls := "btn btn-light btn-block mt-2",
           ^.onClick --> navigateToJoinPage() ,
           ^.maxWidth := 300.px,
           ^.borderRadius := "500px",
