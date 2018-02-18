@@ -87,9 +87,9 @@ object AdminTab {
       undefined
     }
 
-    def mounted: Callback = Callback {
-      getData()
+    def mounted: Callback = Callback  {
       startUpdateInterval()
+      getData()
     }
 
     def unmounted: Callback = Callback {
@@ -103,7 +103,7 @@ object AdminTab {
       }
     }
 
-    def getData(): Callback = Callback{
+    def getData(): Unit = {
       props.proxy.value.partyId match {
         case Some(id) => RestService.getSongs(id).map { songs => {
           AppCircuit.dispatch(SetSongsForParty(songs))

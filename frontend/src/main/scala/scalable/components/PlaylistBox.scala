@@ -16,7 +16,7 @@ object PlaylistBox {
   case class Props (
                      proxy: ModelProxy[AppState],
                      ctl: RouterCtl[AppRouter.Page],
-                     var onVoted : Event => Callback,
+                     var onVoted : Event => Unit,
                      admin: Boolean
                    )
 
@@ -56,7 +56,7 @@ object PlaylistBox {
     val albumCoverUrl = song.albumCoverUrl
 
     if(props.admin)
-      props.onVoted = _ => DeleteService.deleteSong(id, partyID)
+      DeleteService.deleteSong(id, partyID)
 
     <.div( // Playlist Row (Parent)
       ^.cls := "d-flex flex-row align-items-center bg-white text-dark p-2",

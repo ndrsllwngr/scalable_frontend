@@ -20,7 +20,8 @@ case class Song
   id: Long,
   artist: String,
   album: String,
-  playState: String
+  playState: String,
+  streamingServiceType: String
   //, createdAt: LocalDateTime
 
 )
@@ -37,7 +38,8 @@ case class SendSong
   name: String,
   artist: String,
   album: String,
-  albumCoverUrl: String
+  albumCoverUrl: String,
+  streamingServiceType: String
 )
 
 case class PartyVote

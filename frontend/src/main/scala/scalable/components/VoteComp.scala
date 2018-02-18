@@ -12,7 +12,7 @@ import scalable.services._
 
 object VoteComp {
 
-  case class Props (voteAble: VoteAble, onVoted : Event => Callback, admin: Boolean)
+  case class Props (voteAble: VoteAble, onVoted : Event => Unit, admin: Boolean)
 
   case class State (var voted: Boolean)
 
@@ -30,6 +30,7 @@ object VoteComp {
     }
 
     def delete(props: Props) : Callback = Callback{
+      println("delete")
       props.onVoted
     }
 
@@ -73,7 +74,6 @@ object VoteComp {
           <.button(
             ^.cls := "btn btn-link",
             ^.onClick --> delete(props),
-            ^.disabled := state.voted,
             <.img(
               ^.alt := "upvote",
               ^.src := "/images/ic_clear_black_24px.svg"

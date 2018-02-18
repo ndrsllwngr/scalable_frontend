@@ -14,7 +14,7 @@ object PhotoFeedBox {
 
   case class Props (
                      proxy: ModelProxy[AppState],
-                     var onVoted : Event => Callback,
+                     var onVoted : Event => Unit,
                      ctl: RouterCtl[AppRouter.Page],
                      admin: Boolean
                    )

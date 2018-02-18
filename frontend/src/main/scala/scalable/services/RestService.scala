@@ -66,7 +66,7 @@ object RestService {
     ).map { res =>
       val option = decode[Song](res.responseText)
       option match {
-        case Left(_) => Song("", "", "", 0, 0, 0,"", "",  "")
+        case Left(_) => Song("", "", "", 0, 0, 0,"", "",  "", "")
         case Right(song) => song
       }
     }
@@ -194,6 +194,6 @@ object RestService {
     val album = ""
     val albumCoverUrl = videoResponse.snippet.thumbnails("high").url
 
-    SendSong(streamingServiceID, name, artist, album, albumCoverUrl)
+    SendSong(streamingServiceID, name, artist, album, albumCoverUrl, "YOUTUBE")
   }
 }

@@ -48,9 +48,9 @@ object PhotoFeedTab {
 
     var timer: SetIntervalHandle = _
 
-    def mounted: Callback = Callback {
-      getData()
+    def mounted: Callback = Callback{
       startUpdateInterval()
+      getData()
     }
 
     def startUpdateInterval(): Unit ={
@@ -59,7 +59,7 @@ object PhotoFeedTab {
       }
     }
 
-    def getData(): Callback = Callback {
+    def getData(): Unit = {
         props.proxy.value.partyId match {
           case Some(id) => RestService.getPhotos(id).map { photos =>
             println("Getting Data")
@@ -108,7 +108,7 @@ object PhotoFeedTab {
             ^.onChange ==> onPhotoChanged())
             .ref(fileChooser = _)
         ), <.div(
-          PhotoFeedBox(PhotoFeedBox.Props(p.proxy,  _ => getData(), p.ctl, admin = p.admin))
+          PhotoFeedBox(PhotoFeedBox.Props(p.proxy,  _ => Callback{getData()}, p.ctl, admin = p.admin))
         )
       )
     }

@@ -1,7 +1,6 @@
 package scalable.services
 
 import firebase._
-import japgolly.scalajs.react.Callback
 import org.scalajs.dom.raw.File
 
 import scala.scalajs.js
@@ -37,11 +36,12 @@ object FirebaseService {
 
 object DeleteService{
 
-  def deleteSong(id: Long, partyId: String): Callback = Callback{
+  def deleteSong(id: Long, partyId: String): Unit = {
+    println("delete Song")
     RestService.deleteSong (id, partyId, "QUEUE")
   }
 
-  def deletePhoto(id: Long, partyId: String, url: String): Callback = Callback{
+  def deletePhoto(id: Long, partyId: String, url: String): Unit ={
     RestService.deletePhoto(id, partyId)
     FirebaseService.deletePhoto(url, partyId)
   }

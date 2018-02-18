@@ -60,8 +60,8 @@ object PlaylistTab {
     var timer: SetIntervalHandle = _
 
     def mounted: Callback = Callback {
-      getData()
       startUpdateInterval()
+      getData()
     }
 
     def startUpdateInterval(): Unit ={
@@ -75,7 +75,7 @@ object PlaylistTab {
       js.timers.clearInterval(timer)
     }
 
-    def getData(): Callback = Callback{
+    def getData(): Unit = {
       props.proxy.value.partyId match {
           case Some(id) => RestService.getSongs(id).map { songs =>
             println("Getting Data")
