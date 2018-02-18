@@ -25,7 +25,7 @@ object PlaylistBox {
     val host: String = Config.AppConfig.apiHost
 
     def render(props: Props): VdomElement = {
-      <.div(getSongs(props).toVdomArray)
+      <.div(getSongs(props).toTagMod)
     }
   }
 

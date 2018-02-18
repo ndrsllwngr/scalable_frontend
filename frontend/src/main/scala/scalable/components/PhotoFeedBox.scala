@@ -22,7 +22,7 @@ object PhotoFeedBox {
     def mounted: Callback = Callback.log("Mounted!")
 
     def render(props: Props): VdomElement = {
-      <.div(getFeed(props).toVdomArray)
+      <.div(getFeed(props).toTagMod)
     }
   }
 
