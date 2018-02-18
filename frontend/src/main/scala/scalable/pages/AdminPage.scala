@@ -41,13 +41,13 @@ object AdminPage {
           <.div(^.cls := "d-flex flex-row", ^.maxHeight := "50px", ^.width := "parent",
             <.img(^.cls := "img-fluid"
               ,^.borderRadius := 0.px
-              ,^.width := "10vw"
+              ,^.width := "10%"
               ,^.src := "/images/scalable.svg"
               ,^.backgroundColor := "#C93A51"
               ,^.padding := "2px"),
             <.div( ^.height := "parent"
-              ,^.width := "80vw", // Playlist Row (Parent)
-              ^.cls := "d-flex flex-column align-items-center text-dark justify-content-center"
+              ,^.width := "80%", // Playlist Row (Parent)
+              ^.cls := "d-flex flex-column align-items-center justify-content-center"
               ,^.borderRadius := 0.px
               ,^.backgroundColor := "#C93A51",
               <.div(
@@ -57,13 +57,13 @@ object AdminPage {
               , s"Enter room code to join: ${p.proxy.value.partyId.getOrElse("")}")),
             <.img(^.cls := "img-fluid"
               ,^.borderRadius := 0.px
-              ,^.width := "10vw"
+              ,^.width := "10%"
               ,^.onClick --> logout(p)
               ,^.src := "/images/ic_exit_to_app_black_24px.svg"
               ,^.backgroundColor := "#C93A51"
               ,^.padding := "2px")
           ),
-        <.div(^.cls := "d-flex flex-row",
+        <.div(^.cls := "d-flex flex-row mt-2",
           <.div(^.width := "48%", AdminTab(AdminTab.Props(p.proxy, p.ctl))),
           <.div(^.width := "4%"),
           <.div(^.width := "48%",PhotoFeedBox(PhotoFeedBox.Props(p.proxy, p.ctl, admin = true)))

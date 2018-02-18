@@ -67,11 +67,11 @@ object VoteComp {
         <.div(
         <.div( ^.key := props.voteAble.compId,
           ^.classSet(
-            "p-2 align-self-center" -> true),
+            "p-2 text-center align-self-center" -> true),
           calcTotal(props.voteAble).toString
         ),
           <.button(
-            ^.cls := "btn btn-link",
+            ^.cls := "btn btn-link align-self-center",
             ^.onClick --> delete(props),
             <.img(
               ^.alt := "upvote",
