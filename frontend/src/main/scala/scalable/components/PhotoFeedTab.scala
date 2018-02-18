@@ -15,7 +15,7 @@ import scala.scalajs.js.annotation.JSImport
 import scala.scalajs.js.timers.SetIntervalHandle
 import scalable.config.Config
 import scalable.diode.{AppCircuit, AppState, SetPhotosForParty}
-import scalable.json.RestService
+import scalable.services.{FirebaseService, RestService}
 import scalable.models.PhotoReturn
 import scalable.router.AppRouter
 
@@ -59,7 +59,7 @@ object PhotoFeedTab {
       }
     }
 
-    def getData(): Unit ={
+    def getData(): Callback = Callback {
         props.proxy.value.partyId match {
           case Some(id) => RestService.getPhotos(id).map { photos =>
             println("Getting Data")
@@ -77,7 +77,6 @@ object PhotoFeedTab {
     }
 
 
-
     def publishLink(url: String, roomCode: String): Unit = {
       RestService.addPhoto(url, roomCode).onComplete(_ => getData())
     }
@@ -85,13 +84,8 @@ object PhotoFeedTab {
     def onPhotoChanged()(e: ReactEventFromInput) = Callback {
       val choosenFile = e.target.files.item(0)
       props.proxy.value.partyId match {
-          case Some(id) =>
-            val storage = Firebase.storage(app).refFromURL(s"gs://scalable-195120.appspot.com/$id/${choosenFile.name}")
-            storage.put(choosenFile).then(success => {
-              publishLink(success.downloadURL.toString, id)
-            }, reject => {
-              println("Upload Failed")
-            })
+          case Some(pId) => FirebaseService.uploadPhoto(file = choosenFile, id = pId, success => {
+            publishLink(success.downloadURL.toString, pId)}, _ => {})
           case None => println("NO PARTY ID")
         }
 

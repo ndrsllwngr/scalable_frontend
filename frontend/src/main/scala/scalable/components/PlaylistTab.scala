@@ -18,7 +18,7 @@ import scala.scalajs.js.annotation._
 import scala.scalajs.js.timers._
 import scalable.components.PhotoFeedBox.{Component, Props}
 import scalable.diode._
-import scalable.json.RestService
+import scalable.services.RestService
 import scalable.models.{VideoResponse, YoutubeResponse}
 import scalable.router.AppRouter
 
@@ -75,7 +75,7 @@ object PlaylistTab {
       js.timers.clearInterval(timer)
     }
 
-    def getData(): Unit ={
+    def getData(): Callback = Callback{
       props.proxy.value.partyId match {
           case Some(id) => RestService.getSongs(id).map { songs =>
             println("Getting Data")
@@ -182,6 +182,7 @@ object PlaylistTab {
     def render(p: Props, s: State) = {
       val proxy = p.proxy()
       props = p
+
       val select = Select(
         "form-field-name",
         s.selectOptions.toJSArray,

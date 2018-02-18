@@ -40,9 +40,9 @@ object AdminPage {
         <.header(^.cls := "form-group",
           <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width mt-2", ^.onClick --> logout(p), "logout")),
 
-        <.div(^.cls := "d-flex",
+        <.div(^.cls := "d-flex", ^.marginRight := 10.px,
           <.div(AdminTab(AdminTab.Props(p.proxy, p.ctl))),
-          <.div(PhotoFeedTab(PhotoFeedTab.Props(p.proxy, p.ctl, admin = false)))
+          <.div(PhotoFeedTab(PhotoFeedTab.Props(p.proxy, p.ctl, admin = true)))
         )
       )
     }

@@ -8,12 +8,13 @@ import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
 import scalable.diode.AppState
 import scalable.models._
 import scalable.router.AppRouter
+import scalable.services.DeleteService
 
 object PhotoFeedBox {
 
   case class Props (
                      proxy: ModelProxy[AppState],
-                     onVoted : Event => Unit,
+                     var onVoted : Event => Callback,
                      ctl: RouterCtl[AppRouter.Page],
                      admin: Boolean
                    )
@@ -43,6 +44,11 @@ object PhotoFeedBox {
     val customStyle = VdomStyle("background-image")
     val id = photo.id
     val url = photo.url
+
+    if(props.admin)
+      props.onVoted = _ => DeleteService.deletePhoto(id, partyID, url)
+
+
     <.div( // Playlist Row (Parent)
       ^.cls := "d-flex flex-row align-items-center bg-white text-dark p-2",
       ^.maxWidth := 800.px,

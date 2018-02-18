@@ -13,7 +13,7 @@ import scala.scalajs.js.timers.SetIntervalHandle
 import scala.scalajs.js.undefined
 import scalable.config.Config
 import scalable.diode.{AppCircuit, AppState, SetSongsForParty}
-import scalable.json.RestService
+import scalable.services.RestService
 import scalable.models._
 import scalable.router.AppRouter
 
@@ -42,13 +42,7 @@ object AdminTab {
 
 
     def onPlayerReady(e: Event): js.UndefOr[(Event) => Any] = {
-      e.target.whenDefined(p => {
-        if (p.getVideoUrl().isEmpty) {
-          resolveNext(p)
-        }
-        else {
-          p.playVideo()
-        }
+      e.target.whenDefined(p => { p.playVideo()
         TagMod()
       })
       undefined
@@ -109,7 +103,7 @@ object AdminTab {
       }
     }
 
-    def getData(): Unit = {
+    def getData(): Callback = Callback{
       props.proxy.value.partyId match {
         case Some(id) => RestService.getSongs(id).map { songs => {
           AppCircuit.dispatch(SetSongsForParty(songs))
@@ -121,7 +115,6 @@ object AdminTab {
         }
         }
         case None => println("NO PARTY ID")
-
       }
     }
 
@@ -160,10 +153,11 @@ object AdminTab {
         case None => "NO PARTY ID"
 
       }
+      val maxCompWidth = org.scalajs.dom.window.innerWidth/2
 
       <.div(^.cls := "form-group",
         <.label(^.`for` := "roomcode", s"Room $roomCode"),
-        <.div(^.cls := "column", ^.id := "player-view",
+        <.div(^.cls := "column", ^.id := "player-view", ^.maxWidth := s"$maxCompWidth",
           <.div(^.id := "player")
           , <.div(PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl, _ => getData(), admin = true)))
           , <.div(AlreadyPlayedComp(AlreadyPlayedComp.Props(p.proxy, p.ctl)))
