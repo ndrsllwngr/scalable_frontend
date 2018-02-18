@@ -23,7 +23,7 @@ object AlreadyPlayedComp {
     val host: String = Config.AppConfig.apiHost
 
     def render(props: Props): VdomElement = {
-      <.div(getSongs(props).toVdomArray)
+      <.div(getSongs(props).toTagMod)
     }
   }
 
@@ -44,7 +44,7 @@ object AlreadyPlayedComp {
     val name = song.name
     val artist = song.artist
     val albumCoverUrl = song.albumCoverUrl
-    <.div( // Playlist Row (Parent)
+    <.div( ^.key := song.id,// Playlist Row (Parent)
       ^.cls := "d-flex flex-row align-items-center bg-white text-dark p-2 mt-2",
       ^.borderColor := "black",
       <.div( // Child 1 AlbumCover

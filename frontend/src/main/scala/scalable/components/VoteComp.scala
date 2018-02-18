@@ -64,10 +64,10 @@ object VoteComp {
       dom.document.cookie = s"${voteAble.compId}=${voteAble.partyID}/${voteAble.voteType}/${voteAble.compId}/${state.voted}"
     }
 
-    def renderVoteCompAsAdminOrGuest(props: Props, state: State) : VdomArray = {
+    def renderVoteCompAsAdminOrGuest(props: Props, state: State) : VdomElement = {
       if(props.admin){
-        VdomArray(
         <.div(
+        <.div( ^.key := props.voteAble.compId,
           ^.classSet(
             "p-2 align-self-center" -> true),
           calcTotal(props.voteAble).toString
@@ -83,7 +83,7 @@ object VoteComp {
         )
         )
       } else {
-        VdomArray(
+        <.div(
         <.div(
           ^.cls := "align-self-center",
           <.button(
@@ -98,7 +98,7 @@ object VoteComp {
         ),
         <.div(
           ^.classSet(
-            "p-2 align-self-center" -> true),
+            "p-2 text-center align-self-center" -> true),
           ^.classSet(
             "text-success" -> colorGreen(props.voteAble),
             "text-danger" -> colorRed(props.voteAble)),
