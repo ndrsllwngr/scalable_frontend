@@ -188,12 +188,10 @@ object PlaylistTab {
         s.inputValue,
         onInputValueChange,
         onSelectChange,
+        "Add song to playlist",
         pIsLoading = s.isLoading
       )
       <.div(
-         <.div(
-          ^.cls := "h6",
-          "Add song to playlist:"),
         <.div(
           ^.cls := "mb-2",
           select
