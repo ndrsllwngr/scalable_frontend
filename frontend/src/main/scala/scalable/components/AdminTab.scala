@@ -76,6 +76,7 @@ object AdminTab {
         p.getPlayerState() match {
           case 0 => resolveNext(p)
           case -1 => p.playVideo()
+          case _ =>
         }
 
         TagMod()
