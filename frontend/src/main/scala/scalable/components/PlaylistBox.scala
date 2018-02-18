@@ -25,7 +25,7 @@ object PlaylistBox {
     val host: String = Config.AppConfig.apiHost
 
     def render(props: Props): VdomElement = {
-      <.div(getSongs(props).toVdomArray)
+      <.div(getSongs(props).toTagMod)
     }
   }
 
@@ -53,7 +53,7 @@ object PlaylistBox {
     val name = song.name
     val artist = song.artist
     val albumCoverUrl = song.albumCoverUrl
-    <.div( // Playlist Row (Parent)
+    <.div(// Playlist Row (Parent)
       ^.cls := "d-flex flex-row align-items-center bg-white text-dark p-2",
       ^.borderWidth := "2px 0 0 0",
       ^.borderStyle := "solid",
