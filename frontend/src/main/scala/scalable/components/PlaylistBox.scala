@@ -35,7 +35,13 @@ object PlaylistBox {
     val songs                        = proxy.songList
     val partyId                      = proxy.partyId
     partyId match {
-      case Some(id) => for (songs <- songs if songs.playState.equalsIgnoreCase("QUEUE")) yield songView(songs,id, props)
+      case Some(id) => {
+        if(songs.nonEmpty) {
+          for (songs <- songs if songs.playState.equalsIgnoreCase("QUEUE")) yield songView(songs,id, props)
+        } else {
+          Seq(<.p("No Songs in Playlist yet. Dear guests, feel free adding some :-)"))
+        }
+      }
       case None => Seq(<.p("No party ID set"))
     }
 
