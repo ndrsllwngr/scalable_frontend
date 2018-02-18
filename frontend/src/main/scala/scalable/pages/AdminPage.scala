@@ -118,11 +118,11 @@ object AdminPage {
 
       props.proxy.value.partyId match {
         case Some(id) => RestService.getSongs(id).map { songs =>
-          if(songs.nonEmpty && player.isEmpty) {
-            createPlayer()
+          AppCircuit.dispatch(SetSongsForParty(songs))
+          if(songs.nonEmpty && !hasSong && player.isDefined) {
+              resolveNext(player.get)
           }
 
-          AppCircuit.dispatch(SetSongsForParty(songs))
         }
         case None => println("NO PARTY ID")
       }
