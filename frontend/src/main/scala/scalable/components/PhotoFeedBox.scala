@@ -80,7 +80,7 @@ object PhotoFeedBox {
       ^.cls := "d-flex flex-row align-items-center bg-white text-dark p-2",
       <.img(
         ^.cls := "mr-2",
-        ^.flex := "0 0 auto",
+        ^.flex := "1 1 auto",
         ^.width := "80%",
         ^.height := "auto",
         ^.src := pUrl

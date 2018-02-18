@@ -127,7 +127,7 @@ object AdminTab {
       val width = org.scalajs.dom.window.innerWidth / 2
       org.scalajs.dom.window.asInstanceOf[js.Dynamic].onYouTubeIframeAPIReady = () => {
         player = Some(new Player("player", PlayerOptions(
-          width = "parent",
+          width = "530px",
           height = s"${width / 2}",
           videoId = "xecWX51PElI",
           events = PlayerEvents(

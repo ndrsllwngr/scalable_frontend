@@ -72,7 +72,7 @@ object PhotoFeedTab {
 
       <.div(^.cls := "form-group",
         <.div(
-          <.input(^.`type` := "file", ^.cls := "form-control", ^.id := "files", ^.maxWidth := 800.px,
+          <.input(^.`type` := "file", ^.cls := "form-control mb-2 mt-2", ^.id := "files", ^.width :="100%",
             ^.onChange ==> onPhotoChanged())
             .ref(fileChooser = _)
         ), <.div(

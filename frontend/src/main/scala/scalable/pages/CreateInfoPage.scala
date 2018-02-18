@@ -5,6 +5,7 @@ import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
 import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
 import org.scalajs.dom.html.Div
+
 import scalable.models._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js
@@ -82,14 +83,21 @@ object CreateInfoPage {
               ,<.span(dataTxtAttr := "T","T")
             )
           ),
+          <.div( ^.backgroundColor := "#fff", ^.padding := "10px", ^.borderRadius := "100px",
           <.p (s"Created Party ${partyCreateResponse.get.name}"),
           <.p ("Please save the following Details for Later"),
-          <.p (s"Room Code: ${partyCreateResponse.get.id}"),
-          <.p (s"Password for Room Host Page: ${partyCreateResponse.get.password}"),
-          <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width mt-2",
-            ^.onClick --> navigateToAdminPage(partyCreateResponse.get.id),
-            "Continue To Party"
-          )
+          <.p (s"Room Code: <b>${partyCreateResponse.get.id}</b>"),
+          <.p (s"Password for Room Host Page: <b>${partyCreateResponse.get.password}</b>")),
+          <.button(^.`type` := "button", ^.cls := "btn btn-success btn-block mt-2",
+          ^.onClick --> navigateToAdminPage(partyCreateResponse.get.id),
+          ^.maxWidth := 300.px,
+          ^.borderRadius := "500px",
+          ^.fontWeight := "700",
+          ^.textTransform := "uppercase",
+          ^.letterSpacing := "3px",
+          ^.margin:= "0",
+          "Continue"
+        )
         )
       }
 
