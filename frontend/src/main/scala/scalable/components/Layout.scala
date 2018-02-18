@@ -28,8 +28,8 @@ object Layout {
     def render(props: Props): VdomElement = {
       <.div(
         <.div(
-          ^.cls := "container"
-          //TODO
+          ^.cls := "blurBg"
+          //TODO Background
         ),
         <.div(^.cls := "container", props.resolution.render())
         //TODO
