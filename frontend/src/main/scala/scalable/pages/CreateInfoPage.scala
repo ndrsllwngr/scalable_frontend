@@ -39,9 +39,49 @@ object CreateInfoPage {
 
     def render(p: Props): VdomTagOf[Div] = {
       val proxy = p.proxy()
+      val dataTxtAttr = VdomAttr("data-text")
+      val placeHolderAttr = VdomAttr("placeholder")
       proxy.partyCreateResponse match {
-        case None => <.div("Couldn't Create Party. Please go back and try again.")
+        case None => <.div(
+            ^.cls := "d-flex flex-column align-items-center justify-content-center",
+            ^.height := "100vh",
+            <.div( // LOGO
+              ^.cls := "peeledLogo d-flex flex-row align-items-center mb-5 mt-0",
+              ^.flex := "0 0 auto",
+              <.p(
+                ^.aria.label := "CodePen"
+                ,<.span(dataTxtAttr := "E","E")
+                ,<.span(dataTxtAttr := "R","R")
+                ,<.span(dataTxtAttr := "R","R")
+                ,<.span(dataTxtAttr := "O","O")
+                ,<.span(dataTxtAttr := "R","R")
+              )
+            ),
+            <.div(^.cls := "btn-block mt-2",
+              ^.backgroundColor := "#fff",
+              ^.maxWidth := 300.px,
+              ^.borderRadius := "500px",
+              ^.fontWeight := "700",
+              ^.textTransform := "uppercase",
+              ^.letterSpacing := "3px",
+              ^.margin:= "0",
+              "Couldn't Create Party. Please go back and try again."
+            )
+        )
         case partyCreateResponse => <.div(
+          ^.cls := "d-flex flex-column align-items-center justify-content-center",
+          ^.height := "100vh",
+          <.div( // LOGO
+            ^.cls := "peeledLogo d-flex flex-row align-items-center mb-5 mt-0",
+            ^.flex := "0 0 auto",
+            <.p(
+              ^.aria.label := "CodePen"
+              ,<.span(dataTxtAttr := "H","H")
+              ,<.span(dataTxtAttr := "O","O")
+              ,<.span(dataTxtAttr := "S","S")
+              ,<.span(dataTxtAttr := "T","T")
+            )
+          ),
           <.p (s"Created Party ${partyCreateResponse.get.name}"),
           <.p ("Please save the following Details for Later"),
           <.p (s"Room Code: ${partyCreateResponse.get.id}"),
