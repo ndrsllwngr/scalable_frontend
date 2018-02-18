@@ -56,7 +56,7 @@ object PlaylistBox {
     val albumCoverUrl = song.albumCoverUrl
 
     if(props.admin)
-      DeleteService.deleteSong(id, partyID)
+      props.onVoted = _ => DeleteService.deleteSong(id, partyID)
 
     <.div( // Playlist Row (Parent)
       ^.cls := "d-flex flex-row align-items-center bg-white text-dark p-2",
