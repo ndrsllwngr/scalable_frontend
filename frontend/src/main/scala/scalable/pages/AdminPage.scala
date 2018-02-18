@@ -8,7 +8,7 @@ import org.scalajs.dom.html.Div
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
-import scalable.components.{AdminTab, PhotoFeedTab}
+import scalable.components.{AdminTab, PhotoFeedBox, PhotoFeedTab}
 import scalable.config.Config
 import scalable.diode.AppState
 import scalable.router.AppRouter
@@ -37,13 +37,38 @@ object AdminPage {
     def render(p: Props): VdomTagOf[Div] = {
 
       <.div(
-        <.header(^.cls := "form-group",
-          <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width mt-2", ^.onClick --> logout(p), "logout")),
-
-        <.div(^.cls := "d-flex", ^.marginRight := 10.px,
-          <.div(AdminTab(AdminTab.Props(p.proxy, p.ctl))),
-          <.div(PhotoFeedTab(PhotoFeedTab.Props(p.proxy, p.ctl, admin = true)))
+        <.div(
+          <.div(^.cls := "d-flex flex-row", ^.maxHeight := "50px", ^.width := "parent",
+            <.img(^.cls := "img-fluid"
+              ,^.borderRadius := 0.px
+              ,^.width := "10vw"
+              ,^.src := "/images/scalable.svg"
+              ,^.backgroundColor := "#C93A51"
+              ,^.padding := "2px"),
+            <.div( ^.height := "parent"
+              ,^.width := "80vw", // Playlist Row (Parent)
+              ^.cls := "d-flex flex-column align-items-center text-dark justify-content-center"
+              ,^.borderRadius := 0.px
+              ,^.backgroundColor := "#C93A51",
+              <.div(
+               ^.textAlign := "center"
+              ,^.cls := "h3 mb-0 align-middle"
+              ,^.fontWeight := "700"
+              , s"Enter room code to join: ${p.proxy.value.partyId.getOrElse("")}")),
+            <.img(^.cls := "img-fluid"
+              ,^.borderRadius := 0.px
+              ,^.width := "10vw"
+              ,^.onClick --> logout(p)
+              ,^.src := "/images/ic_exit_to_app_black_24px.svg"
+              ,^.backgroundColor := "#C93A51"
+              ,^.padding := "2px")
+          ),
+        <.div(^.cls := "d-flex flex-row",
+          <.div(^.width := "48%", AdminTab(AdminTab.Props(p.proxy, p.ctl))),
+          <.div(^.width := "4%"),
+          <.div(^.width := "48%",PhotoFeedBox(PhotoFeedBox.Props(p.proxy, p.ctl, admin = true)))
         )
+      )
       )
     }
 
