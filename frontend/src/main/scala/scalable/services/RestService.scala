@@ -1,4 +1,4 @@
-package scalable.json
+package scalable.services
 
 import io.circe.generic.auto._
 import io.circe.parser.decode
@@ -66,7 +66,7 @@ object RestService {
     ).map { res =>
       val option = decode[Song](res.responseText)
       option match {
-        case Left(_) => Song("", "", "", 0, 0, 0,"", "",  "")
+        case Left(_) => Song("", "", "", 0, 0, 0,"", "",  "", "")
         case Right(song) => song
       }
     }
@@ -144,6 +144,22 @@ object RestService {
       }
     }
 
+  def deletePhoto(photoID: Long, partyID: String): Future[Int] = {
+    val content = PhotoToDelete(photoID, partyID).asJson.asInstanceOf[Ajax.InputData]
+    Ajax.delete(
+      url = s"$host/party/photo",
+      data = content,
+      headers = Map("Content-Type" -> "application/json")
+    ).map { res =>
+      val option = decode[Int](res.responseText)
+      option match {
+        case Left(_) => -1
+        case Right(int) => int
+      }
+    }
+  }
+
+
   def addPhoto(downloadUrl: String, partyID: String): Future[Int] ={
     val content = AddPhotosToParty(downloadUrl).asJson.asInstanceOf[Ajax.InputData]
     Ajax.put(
@@ -178,6 +194,6 @@ object RestService {
     val album = ""
     val albumCoverUrl = videoResponse.snippet.thumbnails("high").url
 
-    SendSong(streamingServiceID, name, artist, album, albumCoverUrl)
+    SendSong(streamingServiceID, name, artist, album, albumCoverUrl, "YOUTUBE")
   }
 }

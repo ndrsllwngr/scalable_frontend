@@ -12,3 +12,7 @@ case class PhotoReturn
   upvotes: Int,
   downvotes: Int
 )
+
+case class PhotoToDelete(id:Long,
+                         partyID:String){
+}

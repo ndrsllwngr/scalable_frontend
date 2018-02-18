@@ -3,12 +3,11 @@ package scalable.components
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
 import org.scalajs.dom
-import shapeless.ops.nat.Div
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success}
-import scalable.json._
 import scalable.models._
+import scalable.services._
 
 
 object VoteComp {
@@ -30,10 +29,10 @@ object VoteComp {
       }
     }
 
-    def deleteSong(props: Props, state: State) : Callback = Callback {
-        RestService.deleteSong(props.voteAble.compId, props.voteAble.partyID, "QUEUE")
+    def delete(props: Props) : Callback = Callback{
+      println("delete")
+      props.onVoted
     }
-
 
     def colorGreen(voteAble: VoteAble) : Boolean = {
         if(calcTotal(voteAble) > 0){
@@ -74,8 +73,7 @@ object VoteComp {
         ),
           <.button(
             ^.cls := "btn btn-link",
-            ^.onClick --> deleteSong(props, state),
-            ^.disabled := state.voted,
+            ^.onClick --> delete(props),
             <.img(
               ^.alt := "upvote",
               ^.src := "/images/ic_clear_black_24px.svg"
