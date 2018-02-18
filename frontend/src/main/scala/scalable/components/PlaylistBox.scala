@@ -53,10 +53,15 @@ object PlaylistBox {
     val name = song.name
     val artist = song.artist
     val albumCoverUrl = song.albumCoverUrl
+    var maxCompWidth = org.scalajs.dom.window.innerWidth
+    if (props.admin){
+      maxCompWidth = maxCompWidth/2
+    }
     <.div( // Playlist Row (Parent)
       ^.cls := "d-flex flex-row align-items-center bg-white text-dark p-2",
       ^.borderWidth := "2px 0 0 0",
       ^.borderStyle := "solid",
+      ^.maxWidth := s"$maxCompWidth",
       ^.borderColor := "black",
       <.div( // Child 1 AlbumCover
         ^.cls := "mr-2",

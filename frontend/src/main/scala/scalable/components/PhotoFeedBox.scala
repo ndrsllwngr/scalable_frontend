@@ -52,8 +52,8 @@ object PhotoFeedBox {
       <.div( // Child 1 AlbumCover
         ^.cls := "mr-2",
         ^.flex := "0 0 auto",
-        ^.width := 400.px,
-        ^.height := 400.px,
+        ^.width := 500.px,
+        ^.height := 500.px,
         ^.backgroundClip := "padding-box",
         ^.backgroundImage := s"url($url)",
         ^.backgroundSize := "cover",

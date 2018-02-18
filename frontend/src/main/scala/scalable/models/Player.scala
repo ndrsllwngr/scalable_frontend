@@ -116,6 +116,9 @@ import scala.scalajs.js.annotation._
   @js.native
   @JSGlobal("YT.Player")
   class Player protected() extends js.Object {
+
+    var hasSong: Boolean = false
+
     def this(divId:String, settings:PlayerOptions) = this()
 
     //https://developers.google.com/youtube/iframe_api_reference?hl=en#Playback_controls
