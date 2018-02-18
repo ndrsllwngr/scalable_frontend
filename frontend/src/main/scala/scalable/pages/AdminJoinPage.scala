@@ -67,35 +67,42 @@ object AdminJoinPage {
 
     def render(p: Props, s: AdminJoinState): VdomTagOf[Div] = {
       val proxy = p.proxy()
-
-      <.div(^.cls := "d-flex flex-column justify-content-center form-group",
+      val dataTxtAttr = VdomAttr("data-text")
+      val placeHolderAttr = VdomAttr("placeholder")
+      <.div(
+        ^.cls := "d-flex flex-column align-items-center justify-content-center",
         ^.height := "100vh",
-        <.label(^.`for` := "roomcode", "Roomcode:"),
-        <.div(^.cls := "column", ^.id := "roomcode-row",
-          <.div(^.cls := "col-xs-1",
-            <.input(^.`type` := "text", ^.cls := "form-control",
-              ^.onChange ==> onTextCodeChange(s)
-            )
-          ),
-          <.div(
-            ^.cls := "mt-2",
-            <.label("Password:")
-          ),
-          <.div(
-            <.input(^.`type` := "text", ^.cls := "form-control",
-              ^.onChange ==> onTextPWChange(s)
-            )
-          ),
-          <.div(
-            <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width mt-2",
-            ^.onClick --> joinAsAdmin(s.code, s.pw),
-            "Login"
+        <.div( // LOGO
+          ^.cls := "peeledLogo d-flex flex-row align-items-center mb-5 mt-0",
+          ^.flex := "0 0 auto",
+          <.p(
+            ^.aria.label := "CodePen"
+            ,<.span(dataTxtAttr := "H","H")
+            ,<.span(dataTxtAttr := "O","O")
+            ,<.span(dataTxtAttr := "S","S")
+            ,<.span(dataTxtAttr := "T","T")
           )
-        )
+        ),
+        <.input(^.`type` := "text", placeHolderAttr := "Enter room code",  ^.cls := "form-control",
+          ^.maxWidth := 300.px,
+          ^.borderRadius := "500px",
+          ^.onChange ==> onTextCodeChange(s)),
+        <.input(^.`type` := "text", placeHolderAttr := "Enter password",  ^.cls := "form-control mt-2",
+          ^.maxWidth := 300.px,
+          ^.borderRadius := "500px",
+          ^.onChange ==> onTextPWChange(s)),
+        <.button(^.`type` := "button", ^.cls := "btn btn-success btn-block mt-2",
+          ^.onClick --> joinAsAdmin(s.code, s.pw),
+          ^.maxWidth := 300.px,
+          ^.borderRadius := "500px",
+          ^.fontWeight := "700",
+          ^.textTransform := "uppercase",
+          ^.letterSpacing := "3px",
+          ^.margin:= "0",
+          "Rejoin"
         )
       )
     }
-
   }
 
   val Component = ScalaComponent.builder[Props]("AdminJoinPage")

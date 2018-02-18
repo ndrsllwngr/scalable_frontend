@@ -57,26 +57,38 @@ object CreatePage {
 
     def render(p: Props, s: CreateState): VdomTagOf[Div] = {
       val proxy = p.proxy()
-
-      <.div(^.cls := "d-flex flex-column justify-content-center form-group",
+      val dataTxtAttr = VdomAttr("data-text")
+      val placeHolderAttr = VdomAttr("placeholder")
+      <.div(
+        ^.cls := "d-flex flex-column align-items-center justify-content-center",
         ^.height := "100vh",
-        <.label(^.`for` := "roomcode", "Enter a room name:"),
-        <.div(^.cls := "column", ^.id := "roomcode-row",
-          <.div(^.cls := "col-xs-1",
-            <.input(^.`type` := "text", ^.cls := "form-control",
-              ^.onChange ==> onTextChange(s)
-            )
-          ),
-          <.div(
-            <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width mt-2",
-              ^.onClick --> createRoom(s.input),
-              "Create Room"
-            )
+        <.div( // LOGO
+          ^.cls := "peeledLogo d-flex flex-row align-items-center mb-5 mt-0",
+          ^.flex := "0 0 auto",
+          <.p(
+            ^.aria.label := "CodePen"
+            ,<.span(dataTxtAttr := "H","H")
+            ,<.span(dataTxtAttr := "O","O")
+            ,<.span(dataTxtAttr := "S","S")
+            ,<.span(dataTxtAttr := "T","T")
           )
+        ),
+        <.input(^.`type` := "text", placeHolderAttr := "Enter a room name",  ^.cls := "form-control",
+          ^.maxWidth := 300.px,
+          ^.borderRadius := "500px",
+          ^.onChange ==> onTextChange(s)),
+        <.button(^.`type` := "button", ^.cls := "btn btn-success btn-block mt-2",
+          ^.onClick --> createRoom(s.input),
+          ^.maxWidth := 300.px,
+          ^.borderRadius := "500px",
+          ^.fontWeight := "700",
+          ^.textTransform := "uppercase",
+          ^.letterSpacing := "3px",
+          ^.margin:= "0",
+          "Create"
         )
       )
     }
-
   }
 
   val Component = ScalaComponent.builder[Props]("CreatePage")
