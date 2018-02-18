@@ -1,12 +1,11 @@
 package scalable
 
-import firebase.{Firebase, FirebaseConfig}
 import japgolly.scalajs.react.ReactDOM
 import japgolly.scalajs.react.WebpackRequire.React
 import org.scalajs.dom
 
-import scalable.services.FirebaseService
 import scalable.router.AppRouter
+import scalable.services.FirebaseService
 
 object Main {
 

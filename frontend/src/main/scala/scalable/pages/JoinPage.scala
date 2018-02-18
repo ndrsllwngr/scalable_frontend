@@ -11,8 +11,8 @@ import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 import scalable.config.Config
 import scalable.diode._
-import scalable.services.RestService
 import scalable.router.AppRouter
+import scalable.services.RestService
 
 object JoinPage {
 

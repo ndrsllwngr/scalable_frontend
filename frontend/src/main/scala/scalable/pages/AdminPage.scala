@@ -8,7 +8,7 @@ import org.scalajs.dom.html.Div
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
-import scalable.components.{AdminTab, PhotoFeedBox, PhotoFeedTab}
+import scalable.components.{AdminTab, PhotoFeedBox}
 import scalable.config.Config
 import scalable.diode.AppState
 import scalable.router.AppRouter

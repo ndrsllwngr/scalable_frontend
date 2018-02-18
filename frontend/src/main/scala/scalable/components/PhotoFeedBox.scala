@@ -4,10 +4,10 @@ import diode.react.ModelProxy
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^._
 import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js
 import scala.scalajs.js.timers.SetIntervalHandle
-import scalable.components.PhotoFeedTab.Props
 import scalable.diode.{AppCircuit, AppState, SetPhotosForParty}
 import scalable.models._
 import scalable.router.AppRouter
@@ -63,13 +63,17 @@ object PhotoFeedBox {
     val feed                        = proxy.photoFeed
     val partyId                      = proxy.partyId
     partyId match {
-      case Some(id) => feed.map(x => {
-        photoView(x,id, props)
-      })
+      case Some(id) =>
+        if (feed.nonEmpty) {
+          for (photo <- feed) yield photoView(photo, id, props)
+        } else {
+          Seq(<.p("No photos uploaded yet.", ^.cls := "text-white", ^.fontSize := "30", ^.textAlign := "center"),
+            <.p("Dear guests, feel free adding some :-)", ^.cls := "text-white", ^.fontSize := "30", ^.textAlign := "center"))
+        }
       case None => Seq(<.p("No party ID set"))
     }
+    }
 
-  }
 
   def photoView(photo: PhotoReturn, partyID:String ,props: Props) ={
     val customStyle = VdomStyle("background-image")

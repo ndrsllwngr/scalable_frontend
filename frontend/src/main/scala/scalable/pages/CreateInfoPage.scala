@@ -6,13 +6,10 @@ import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
 import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
 import org.scalajs.dom.html.Div
 
-import scalable.models._
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 import scalable.config.Config
-import scalable.diode.{AppCircuit, AppState, SetPartyCreateResponse}
-import scalable.services.RestService
+import scalable.diode.AppState
 import scalable.router.AppRouter
 
 object CreateInfoPage {
@@ -51,22 +48,10 @@ object CreateInfoPage {
               ^.flex := "0 0 auto",
               <.p(
                 ^.aria.label := "CodePen"
-                ,<.span(dataTxtAttr := "E","E")
-                ,<.span(dataTxtAttr := "R","R")
-                ,<.span(dataTxtAttr := "R","R")
-                ,<.span(dataTxtAttr := "O","O")
-                ,<.span(dataTxtAttr := "R","R")
+                ,<.span(dataTxtAttr := "4","4")
+                ,<.span(dataTxtAttr := "0","0")
+                ,<.span(dataTxtAttr := "4","4")
               )
-            ),
-            <.div(^.cls := "btn-block mt-2",
-              ^.backgroundColor := "#fff",
-              ^.maxWidth := 300.px,
-              ^.borderRadius := "500px",
-              ^.fontWeight := "700",
-              ^.textTransform := "uppercase",
-              ^.letterSpacing := "3px",
-              ^.margin:= "0",
-              "Couldn't Create Party. Please go back and try again."
             )
         )
         case partyCreateResponse => <.div(
@@ -83,11 +68,14 @@ object CreateInfoPage {
               ,<.span(dataTxtAttr := "T","T")
             )
           ),
-          <.div( ^.backgroundColor := "#fff", ^.padding := "10px", ^.borderRadius := "100px",
-          <.p (s"Created Party ${partyCreateResponse.get.name}"),
-          <.p ("Please save the following Details for Later"),
-          <.p (s"Room Code: <b>${partyCreateResponse.get.id}</b>"),
-          <.p (s"Password for Room Host Page: <b>${partyCreateResponse.get.password}</b>")),
+          <.div( ^.backgroundColor := "#fff", ^.padding := "10px", ^.cls := "d-flex flex-column align-items-center",
+            ^.maxWidth := 300.px,
+            ^.borderRadius := "10px",
+          <.p ("Please save the following details:"),
+          <.p ("Room Code:", ^.textAlign := "center"),
+            <.samp (s"${partyCreateResponse.get.id}"),
+          <.p ("Password for Room Host Page:"),
+          <.samp (s"${partyCreateResponse.get.password}", ^.textAlign := "center")),
           <.button(^.`type` := "button", ^.cls := "btn btn-success btn-block mt-2",
           ^.onClick --> navigateToAdminPage(partyCreateResponse.get.id),
           ^.maxWidth := 300.px,

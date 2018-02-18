@@ -3,7 +3,6 @@ package scalable.diode
 import diode._
 import diode.react.ReactConnector
 
-import scalable.config.Config
 import scalable.models._
 
 object AppCircuit extends Circuit[AppModel] with ReactConnector[AppModel] {

@@ -6,11 +6,13 @@ import japgolly.scalajs.react.vdom.html_<^.{<, ^, _}
 import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
 import org.scalajs.dom.html.Div
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 import scalable.config.Config
 import scalable.diode._
 import scalable.router.AppRouter
+import scalable.services.RestService
 
 object StartPage {
 
@@ -41,6 +43,21 @@ object StartPage {
     def navigateToCreatePage(): Callback = bs.props.flatMap { props =>
       props.ctl.set(AppRouter.CreateRoute)
     }
+
+    def navigateToCreateInfoPage(): Callback = bs.props.flatMap { props =>
+      props.ctl.set(AppRouter.CreateInfoRoute)
+    }
+
+    def createRoom() : Callback = {
+      val partyCreateResponseFuture = RestService.createParty("")
+      partyCreateResponseFuture.map{x =>
+        AppCircuit.dispatch(SetPartyCreateResponse(x))
+        AppCircuit.dispatch(SetPartyId(x.id))
+      }
+      navigateToCreateInfoPage()
+    }
+
+
 
     def render(props: Props): VdomTagOf[Div] = {
       val proxy = props.proxy()
@@ -101,7 +118,7 @@ object StartPage {
           ^.textTransform := "uppercase",
           ^.letterSpacing := "3px",
           ^.margin:= "0",
-          ^.onClick --> navigateToCreatePage(),
+          ^.onClick --> createRoom(),
           "Create"
         )
       )

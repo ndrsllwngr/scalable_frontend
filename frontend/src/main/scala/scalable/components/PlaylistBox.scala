@@ -8,7 +8,6 @@ import japgolly.scalajs.react.vdom.html_<^._
 import scalable.config.Config
 import scalable.diode._
 import scalable.models._
-import scalable.services._
 import scalable.router.AppRouter
 
 object PlaylistBox {
@@ -39,7 +38,8 @@ object PlaylistBox {
         if(songs.nonEmpty) {
           for (songs <- songs if songs.playState.equalsIgnoreCase("QUEUE")) yield songView(songs,id, props)
         } else {
-          Seq(<.p("No Songs in Playlist yet. Dear guests, feel free adding some :-)"))
+          Seq(<.p("No songs in playlist yet.", ^.cls := "text-white", ^.fontSize := "30", ^.textAlign := "center"),
+            <.p("Dear guests, feel free adding some :-)", ^.cls := "text-white",^.fontSize := "30", ^.textAlign := "center") )
         }
       }
       case None => Seq(<.p("No party ID set"))
