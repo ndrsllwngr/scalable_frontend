@@ -15,12 +15,10 @@ jsDependencies += "org.webjars" % "firebase" % "3.6.4" / "firebase.js"
 
 libraryDependencies ++= {
   // Dependencies
-  val scalajsDomVersion = "0.9.3"
+  val scalajsDomVersion = "0.9.4"
   val scalajsReactVersion = "1.1.1"
-  val testUtilVersion = "1.5"
   val scalajsReactComponentsVersion = "0.8.0"
-  val catsVersion = "0.9.0"
-  val circeVersion = "0.8.0"
+  val circeVersion = "0.9.1"
   val diodeVersion = "1.1.2"
 
   Seq(
@@ -31,10 +29,6 @@ libraryDependencies ++= {
     "com.github.japgolly.scalajs-react" %%% "test"                      % scalajsReactVersion,
 
     "com.olvind"                        %%% "scalajs-react-components"  % scalajsReactComponentsVersion,
-
-    "com.github.japgolly.microlibs"     %%% "test-util"                 % testUtilVersion,
-
-    "org.typelevel"                     %%% "cats"                      % catsVersion,
 
     "io.circe"                          %%% "circe-core"                % circeVersion,
     "io.circe"                          %%% "circe-parser"              % circeVersion,

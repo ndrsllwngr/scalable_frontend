@@ -67,7 +67,10 @@ object AdminPage {
       } else {
         hasSong = true
       }
-      if (songList.nonEmpty) props.proxy.value.partyId match { case Some(id) => loadSong(player, songList.head, id) }
+      if (songList.nonEmpty) props.proxy.value.partyId match {
+        case Some(id) => loadSong(player, songList.head, id)
+        case None => println("No Party ID")
+      }
     }
 
 
@@ -161,6 +164,8 @@ object AdminPage {
       var roomCode: String = "NO PARTY ID"
       p.proxy.value.partyId match {
         case Some(id) => roomCode = id
+        case None => "NO PARTY ID"
+
       }
 
 
