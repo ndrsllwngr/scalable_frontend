@@ -45,6 +45,7 @@ object StartPage {
     def render(props: Props): VdomTagOf[Div] = {
       val proxy = props.proxy()
       val dataTxtAttr = VdomAttr("data-text")
+      val dataTogAttr = VdomAttr("data-toggle")
       <.div(
         ^.cls := "d-flex flex-column align-items-center justify-content-center",
         ^.height := "100vh",
@@ -73,16 +74,33 @@ object StartPage {
             ^.margin:= "0",
             "Join"
           ),
-        <.div(
-          ^.cls := "btn-group-vertical btn-block",
-        <.button(^.`type` := "button", ^.cls := "btn btn-outline-success mt-2 btn-block",
-          ^.onClick --> navigateToJoinAsAdminPage(),
-          "Admin Login"
+        <.div(^.cls := "mt-4 text-center",
+          ^.textTransform := "uppercase",
+          ^.letterSpacing := "8px",
+          ^.color := "#fff",
+      "Host party"),
+          <.button(^.`type` := "button", ^.cls := "btn btn-light btn-block mt-2",
+            ^.onClick --> navigateToJoinPage() ,
+            ^.maxWidth := 300.px,
+            ^.borderRadius := "500px",
+            ^.fontWeight := "700",
+            ^.textTransform := "uppercase",
+            ^.letterSpacing := "3px",
+            ^.margin:= "0",
+            ^.onClick --> navigateToJoinAsAdminPage(),
+            "Rejoin"
         ),
-        <.button(^.`type` := "button", ^.cls := "btn btn-outline-success btn-block mt-0",
+        <.button(^.`type` := "button", ^.cls := "btn btn-ligth btn-block mt-2",
+          ^.onClick --> navigateToJoinPage() ,
+          ^.maxWidth := 300.px,
+          ^.borderRadius := "500px",
+          ^.fontWeight := "700",
+          ^.textTransform := "uppercase",
+          ^.letterSpacing := "3px",
+          ^.margin:= "0",
           ^.onClick --> navigateToCreatePage(),
-          "Create Party"
-        ))
+          "Create"
+        )
       )
     }
   }
