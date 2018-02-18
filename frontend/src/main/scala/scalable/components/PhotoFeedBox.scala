@@ -4,10 +4,14 @@ import diode.react.ModelProxy
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^._
 import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
-
-import scalable.diode.AppState
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.scalajs.js
+import scala.scalajs.js.timers.SetIntervalHandle
+import scalable.components.PhotoFeedTab.Props
+import scalable.diode.{AppCircuit, AppState, SetPhotosForParty}
 import scalable.models._
 import scalable.router.AppRouter
+import scalable.services.RestService
 
 object PhotoFeedBox {
 
@@ -18,9 +22,38 @@ object PhotoFeedBox {
                    )
 
   class Backend(bs: BackendScope[Props, Unit]) {
-    def mounted: Callback = Callback.log("Mounted!")
 
-    def render(props: Props): VdomElement = {
+    var timer: SetIntervalHandle = _
+    var props: Props = _
+
+    def mounted: Callback = Callback{
+      startUpdateInterval()
+      getData()
+    }
+    def startUpdateInterval(): Unit ={
+      timer = js.timers.setInterval(1000) { // note the absence of () =>
+        getData()
+      }
+    }
+
+    def getData(): Unit = {
+      props.proxy.value.partyId match {
+        case Some(id) => RestService.getPhotos(id).map { photos =>
+          println("Getting Data")
+          AppCircuit.dispatch(SetPhotosForParty(photos))
+        }
+        case None => println("NO PARTY ID")
+      }
+
+    }
+
+
+    def unmounted: Callback = Callback {
+      println("Unmounted")
+      js.timers.clearInterval(timer)
+    }
+    def render(p: Props): VdomElement = {
+      props = p
       <.div(getFeed(props).toTagMod)
     }
   }
@@ -45,19 +78,12 @@ object PhotoFeedBox {
 
     <.div( // Playlist Row (Parent)
       ^.cls := "d-flex flex-row align-items-center bg-white text-dark p-2",
-      ^.maxWidth := 800.px,
-      ^.borderWidth := "2px 0 0 0",
-      ^.borderStyle := "solid",
-      ^.borderColor := "black",
-      <.div( // Child 1 AlbumCover
+      <.img(
         ^.cls := "mr-2",
         ^.flex := "0 0 auto",
-        ^.width := 500.px,
-        ^.height := 500.px,
-        ^.backgroundClip := "padding-box",
-        ^.backgroundImage := s"url($pUrl)",
-        ^.backgroundSize := "cover",
-        ^.backgroundPosition := "center center"
+        ^.width := "80%",
+        ^.height := "auto",
+        ^.src := pUrl
       ),
       <.div( // Child 3 VoteComp
         ^.flex := "0 0 auto",
@@ -68,6 +94,7 @@ object PhotoFeedBox {
   val Component = ScalaComponent.builder[Props]("PhotoFeedBox")
     .renderBackend[Backend]
     .componentDidMount(scope => scope.backend.mounted)
+    .componentWillUnmount(scope => scope.backend.unmounted)
     .build
 
   def apply(props: Props) = Component(props)

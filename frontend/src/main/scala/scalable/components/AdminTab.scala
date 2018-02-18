@@ -45,7 +45,7 @@ object AdminTab {
       e.target.whenDefined(p => { p.playVideo()
         TagMod()
       })
-      undefined
+      (e:Event) => true
     }
 
     def resolveNext(player: Player): Unit = {
@@ -80,11 +80,11 @@ object AdminTab {
 
         TagMod()
       })
-      undefined
+      (e:Event) => true
     }
 
     def onPlayerError(e: Event): js.UndefOr[(Event) => Any] = {
-      undefined
+      (e:Event) => true
     }
 
     def mounted: Callback = Callback  {
@@ -127,7 +127,7 @@ object AdminTab {
       val width = org.scalajs.dom.window.innerWidth / 2
       org.scalajs.dom.window.asInstanceOf[js.Dynamic].onYouTubeIframeAPIReady = () => {
         player = Some(new Player("player", PlayerOptions(
-          width = s"$width",
+          width = "parent",
           height = s"${width / 2}",
           videoId = "xecWX51PElI",
           events = PlayerEvents(
@@ -156,14 +156,11 @@ object AdminTab {
       }
       val maxCompWidth = org.scalajs.dom.window.innerWidth/2
 
-      <.div(^.cls := "form-group",
-        <.label(^.`for` := "roomcode", s"Room $roomCode"),
-        <.div(^.cls := "column", ^.id := "player-view", ^.maxWidth := s"$maxCompWidth",
+      <.div(^.width := "parent",
           <.div(^.id := "player")
-          , <.div(PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl, admin = true)))
+          , <.div(^.cls := "mb-5", PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl, admin = true)))
           , <.div(AlreadyPlayedComp(AlreadyPlayedComp.Props(p.proxy, p.ctl)))
         )
-      )
     }
   }
 

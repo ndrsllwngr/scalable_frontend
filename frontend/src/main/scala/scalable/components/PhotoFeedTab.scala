@@ -44,41 +44,11 @@ object PhotoFeedTab {
     var photoFeed: html.Div = _
     var props: Props = _
 
-    val app = Firebase.app("scalable")
 
-    var timer: SetIntervalHandle = _
-
-    def mounted: Callback = Callback{
-      startUpdateInterval()
-      getData()
-    }
-
-    def startUpdateInterval(): Unit ={
-      timer = js.timers.setInterval(1000) { // note the absence of () =>
-        getData()
-      }
-    }
-
-    def getData(): Unit = {
-        props.proxy.value.partyId match {
-          case Some(id) => RestService.getPhotos(id).map { photos =>
-            println("Getting Data")
-            AppCircuit.dispatch(SetPhotosForParty(photos))
-          }
-          case None => println("NO PARTY ID")
-        }
-
-    }
-
-
-    def unmounted: Callback = Callback {
-      println("Unmounted")
-      js.timers.clearInterval(timer)
-    }
 
 
     def publishLink(url: String, roomCode: String): Unit = {
-      RestService.addPhoto(url, roomCode).onComplete(_ => getData())
+      RestService.addPhoto(url, roomCode)
     }
 
     def onPhotoChanged()(e: ReactEventFromInput) = Callback {
@@ -90,7 +60,6 @@ object PhotoFeedTab {
         }
 
       fileChooser.select()
-      js.undefined
     }
 
     def getPhotofeed(partyId: String): Future[List[PhotoReturn]] = {
@@ -102,7 +71,6 @@ object PhotoFeedTab {
       props = p
 
       <.div(^.cls := "form-group",
-        <.label("Fotofeed"),
         <.div(
           <.input(^.`type` := "file", ^.cls := "form-control", ^.id := "files", ^.maxWidth := 800.px,
             ^.onChange ==> onPhotoChanged())
@@ -117,8 +85,6 @@ object PhotoFeedTab {
 
   val Component = ScalaComponent.builder[Props]("PhotoFeedPage")
     .renderBackend[Backend]
-    .componentDidMount(scope => scope.backend.mounted)
-    .componentWillUnmount(scope => scope.backend.unmounted)
     .build
 
 
