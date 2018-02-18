@@ -99,7 +99,7 @@ object PlaylistTab {
       val setLoading = $.modState(s => s.copy(isLoading = true))
 
       def getData(): Future[List[VideoResponse]] = {
-        val ytData = YtRequest(apiKey, 1, "snippet", searchText).asJson.asInstanceOf[dom.ext.Ajax.InputData]
+        val ytData = YtRequest(apiKey, 15, "snippet", searchText).asJson.asInstanceOf[dom.ext.Ajax.InputData]
         Ajax.get(
           url = songSearch(searchText,apiKey,host)
         ).map(xhr => {
