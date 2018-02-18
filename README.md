@@ -12,7 +12,7 @@
 5. `npm run start`
 6. Open in browser `http://localhost:8080`
 
-## Access locally running server and website from local device
+## Access locally running server and website from mobile device
 
 1. Find out your local IP adress 
 2. open `frontend/package.json` and edit `"scripts": { "mobile": "API_HOST=...:5000` to `API_HOST=yourlocalIPadress:5000`
