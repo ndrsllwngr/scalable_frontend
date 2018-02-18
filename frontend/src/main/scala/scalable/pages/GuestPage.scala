@@ -51,13 +51,44 @@ object GuestPage {
       }
 
       <.div(
-        <.header(^.cls := "form-group",
-          <.button(^.`type` := "button", ^.cls := "btn btn-primary custom-button-width mt-2", ^.onClick --> logout(p), "logout")),
-
-        <.div(^.cls := "tab",
-        <.button(^.`type` := "button", "Playlist", ^.onClick --> navigateToTab(0)),
-        <.button(^.`type` := "button", "Fotofeed", ^.onClick --> navigateToTab(1))
-      ), tabContent
+          <.div(^.cls := "d-flex flex-row", ^.maxHeight := "50px", ^.width := "parent",
+            <.img(^.cls := "img-fluid"
+              ,^.borderRadius := 0.px
+              ,^.width := "10vw"
+              ,^.src := "/images/scalable.svg"
+              ,^.backgroundColor := "#C93A51"
+              ,^.padding := "2px"),
+            <.button(
+              ^.`type` := "button"
+              ,^.fontWeight := "700"
+              ,^.textTransform := "uppercase"
+              ,^.letterSpacing := "3px"
+              ,^.margin:= "0"
+              ,^.borderRadius := 0.px
+              ,^.border := "none"
+              ,^.width := "40vw"
+              ,^.onClick --> navigateToTab(0)
+              ,^.backgroundColor := "#C93A51"
+              ,"Music"),
+            <.button(^.`type` := "button"
+              ,^.fontWeight := "700"
+              ,^.textTransform := "uppercase"
+              ,^.letterSpacing := "3px"
+              ,^.margin:= "0"
+              ,^.borderRadius := 0.px
+              ,^.border := "none"
+              ,^.width := "40vw"
+              ,^.backgroundColor := "#C93A51"
+              ,^.onClick --> navigateToTab(1)
+              ,"Photos"),
+            <.img(^.cls := "img-fluid"
+              ,^.borderRadius := 0.px
+              ,^.width := "10vw"
+              ,^.onClick --> logout(p)
+              ,^.src := "/images/ic_exit_to_app_black_24px.svg"
+              ,^.backgroundColor := "#C93A51"
+              ,^.padding := "2px")
+          ), tabContent
       )
     }
 

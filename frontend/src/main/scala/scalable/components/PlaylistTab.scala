@@ -193,17 +193,18 @@ object PlaylistTab {
         pIsLoading = s.isLoading
       )
       <.div(
+
+        <.div(NowPlayingComp(NowPlayingComp.Props(p.proxy, p.ctl))),
         <.div(
-          ^.cls := "mb-2",
+          ^.cls := "mb-2 mt-2",
           select
         ),
         <.div(
-          <.div(NowPlayingComp(NowPlayingComp.Props(p.proxy, p.ctl)))
-          ,<.div(PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl, admin = p.admin)))
-          ,<.div(AlreadyPlayedComp(AlreadyPlayedComp.Props(p.proxy, p.ctl)))
+          <.div(PlaylistBox(PlaylistBox.Props(p.proxy, p.ctl, admin = p.admin))),
+          <.div(AlreadyPlayedComp(AlreadyPlayedComp.Props(p.proxy, p.ctl)))
         )
       )
-    }
+      }
   }
 
   val Component = ScalaComponent.builder[Props]("PlaylistPage")
