@@ -78,7 +78,7 @@ object StartPage {
           ^.textTransform := "uppercase",
           ^.letterSpacing := "8px",
           ^.color := "#fff",
-      "Host area"),
+      "Host party"),
           <.button(^.`type` := "button", ^.cls := "btn btn-light btn-block mt-2",
             ^.onClick --> navigateToJoinPage() ,
             ^.maxWidth := 300.px,
