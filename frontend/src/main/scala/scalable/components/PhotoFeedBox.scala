@@ -4,10 +4,10 @@ import diode.react.ModelProxy
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^._
 import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js
 import scala.scalajs.js.timers.SetIntervalHandle
-import scalable.components.PhotoFeedTab.Props
 import scalable.diode.{AppCircuit, AppState, SetPhotosForParty}
 import scalable.models._
 import scalable.router.AppRouter

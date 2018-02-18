@@ -17,7 +17,7 @@ import scala.scalajs.js.JSConverters._
 import scala.scalajs.js.annotation._
 import scala.scalajs.js.timers._
 import scalable.components.PhotoFeedBox.{Component, Props}
-import scalable.diode._
+import scalable.diode.{GetVideoSuggestions, _}
 import scalable.services.RestService
 import scalable.models.{VideoResponse, YoutubeResponse}
 import scalable.router.AppRouter
@@ -91,6 +91,7 @@ object PlaylistTab {
       data.zipWithIndex.map { case (item, index) => Select.Options(
         value = s"$intputValue::$index",
         label = s"${item.snippet.title}"
+
       )
       }
     }
@@ -143,6 +144,8 @@ object PlaylistTab {
     def onInputValueChange(value: String): Unit = {
       if (value.length >= 3)
         $.modState(s => s.copy(inputValue = value)).runNow()
+      else{
+        $.modState(s => s.copy(inputValue = "")).runNow()}
       throttleInputValueChange()
     }
 
@@ -155,9 +158,8 @@ object PlaylistTab {
       $.modState(s => {
         s.inputValue = selectedValue.getOrElse("")
         if (s.inputValue == "") {
-          s.selectOptions = List.empty[Select.Options]
           s.selectedData = None: Option[VideoResponse]
-
+          s.selectOptions = List.empty[Select.Options]
         } else {
           val arr = option.value.split("::")
           val index = if (arr.length == 2) arr(1).toInt else -1
@@ -169,7 +171,7 @@ object PlaylistTab {
           case partyId => {
             s.selectedData match {
               case None => println("no video response")
-              case videoResponse => RestService.addSongToParty(partyId.get, videoResponse.get).onComplete(_ => getData())
+              case videoResponse => RestService.addSongToParty(partyId.get, videoResponse.get)
             }
           }
         }

@@ -10,12 +10,11 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 import scala.scalajs.js.timers.SetIntervalHandle
-import scala.scalajs.js.undefined
 import scalable.config.Config
 import scalable.diode.{AppCircuit, AppState, SetSongsForParty}
-import scalable.services.RestService
 import scalable.models._
 import scalable.router.AppRouter
+import scalable.services.RestService
 
 object AdminTab {
 
@@ -53,8 +52,7 @@ object AdminTab {
       val state = props.proxy.modelReader.apply()
       var songList = state.songList.filter(s => s.playState.equals("QUEUE"))
       if (songList.isEmpty) {
-        songList = state.songList
-        scala.util.Random.shuffle(songList)
+        songList = scala.util.Random.shuffle(state.songList)
       }
       player.hasSong = true
       if (songList.nonEmpty) props.proxy.value.partyId match {
